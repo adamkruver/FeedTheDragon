@@ -37,11 +37,12 @@ namespace Sources.Client.Characters
 
             if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, layer))
             {
-                _direction = raycastHit.point - character.Position.CurrentPosition;
+                _direction = raycastHit.point - character.Position.Value;
                 _direction.y = 0;
 
                 Vector3 moveDelta = character.Speed.Value * Time.deltaTime * _direction.normalized;
                     
+                _signalBus.Handle(new CharacterRotateSignal(moveDelta));
                 _signalBus.Handle(new CharacterMoveSignal(moveDelta));
             }
         }

@@ -2,11 +2,11 @@
 using Sources.Client.PresentationInterfaces.Binds.CharacterController;
 using UnityEngine;
 
-namespace Sources.Client.Presentation.Binds.CharacterController
+namespace Sources.Client.Presentation.Binds.CharacterControllerBinds
 {
     public class CharacterControllerMovePropertyBind : BindableViewProperty<Vector3>, ICharacterControllerMovePropertyBind
     {
-        [SerializeField] private UnityEngine.CharacterController _characterController;
+        [SerializeField] private CharacterController _characterController;
         
         public override Vector3 BindableProperty
         {

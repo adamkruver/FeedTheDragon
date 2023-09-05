@@ -6,6 +6,7 @@ using Sources.Client.Characters;
 using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Characters.Actions;
 using Sources.Client.Controllers.Characters.SIgnals;
+using Sources.Client.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
@@ -24,7 +25,7 @@ namespace Sources.Client.Bootstrap
         private void Awake()
         {
             Camera mainCamera = Camera.main;
-            
+
             SignalHandler signalHandler = new SignalHandler();
             ISignalBus signalBus = new SignalBus(signalHandler);
 
@@ -47,10 +48,16 @@ namespace Sources.Client.Bootstrap
                 );
 
             CharacterMoveSignalAction characterMoveSignalAction = new CharacterMoveSignalAction(entityRepository);
+            CharacterRotateSignalAction characterRotateSignalAction = new CharacterRotateSignalAction(entityRepository);
 
             CharacterSignalController characterSignalController = new CharacterSignalController
             (
-                new ISignalAction[] { createCharacterSignalAction, characterMoveSignalAction }
+                new ISignalAction[]
+                {
+                    createCharacterSignalAction,
+                    characterMoveSignalAction,
+                    characterRotateSignalAction
+                }
             );
 
             _characterMovementService = new CharacterMovementService(currentPlayerService, signalBus, mainCamera);

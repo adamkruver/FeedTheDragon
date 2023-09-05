@@ -6,13 +6,13 @@ namespace Sources.Client.Domain.Characters
 {
     public class Character : Enity
     {
-        public readonly DirectionComponent Direction;
+        public readonly LookDirectionComponent LookDirection;
         public readonly PositionComponent Position;
         public readonly SpeedComponent Speed;
 
-        public Character(int id, DirectionComponent direction, PositionComponent position, SpeedComponent speed) : base(id)
+        public Character(int id, LookDirectionComponent lookDirection, PositionComponent position, SpeedComponent speed) : base(id)
         {
-            Direction = direction;
+            LookDirection = lookDirection;
             Position = position;
             Speed = speed;
         }

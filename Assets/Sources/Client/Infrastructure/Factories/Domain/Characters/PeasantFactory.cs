@@ -11,7 +11,7 @@ namespace Sources.Client.Infrastructure.Factories.Domain.Characters
         {
             return new Character(
                 id,
-                new DirectionComponent(),
+                new LookDirectionComponent(Vector3.zero),
                 new PositionComponent(spawnPosition),
                 new SpeedComponent(10)
             ); //todo Make spawn info

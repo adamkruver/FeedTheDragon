@@ -5,18 +5,23 @@ namespace Sources.Client.Domain.Components
 {
     public class PositionComponent
     {
-        public PositionComponent(Vector3 currentPosition)
+        public PositionComponent(Vector3 value)
         {
-            CurrentPosition = currentPosition;
+            Value = value;
         }
 
         public event Action Changed;
         
-        public Vector3 CurrentPosition { get; private set; }
+        public Vector3 Value { get; private set; }
+
+        public void Set(Vector3 position)
+        {
+            Value = position;
+        }
 
         public void Move(Vector3 signalMoveDelta)
         {
-            CurrentPosition += signalMoveDelta;
+            Value += signalMoveDelta;
 
             Changed?.Invoke();
         }
