@@ -1,3 +1,5 @@
+using Sources.Infrastructure.SignalBus.Interfaces;
+using Sources.Infrastructure.SignalBus.Signals;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -5,11 +7,12 @@ public class CharacterMovement : MonoBehaviour
 {
     [SerializeField] private float _speed = 1f;
     [SerializeField] private LayerMask _layerMask;
-    [SerializeField] private SignalBus _signalBus;
 
     private CharacterController _characterController;
     private Transform _transform;
     private Camera _camera;
+    
+    private ISignalBus _signalBus;
 
     private Vector3 _direction;
 
@@ -30,10 +33,15 @@ public class CharacterMovement : MonoBehaviour
             {
                 _direction = raycastHit.point - _transform.position;
                 _direction.y = 0;
-                
-                _signalBus.Handle(new MoveSignal(_speed * Time.deltaTime * _direction.normalized));
+
+                _signalBus?.Handle(new CharacterMoveSignal(_speed * Time.deltaTime * _direction.normalized));
             }
         }
+    }
+
+    public void Init(ISignalBus signalBus)
+    {
+        _signalBus = signalBus;
     }
 
     public void Move(Vector3 moveDelta)
