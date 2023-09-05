@@ -1,0 +1,14 @@
+{
+    "name": "08_Controllers.Frameworks.Mvvm",
+    "rootNamespace": "Controllers.Frameworks.Mvvm",
+    "references": ["GUID:d905eb39f1cc44646b7fe8eb82d8efd9"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

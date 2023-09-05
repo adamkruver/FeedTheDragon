@@ -1,0 +1,14 @@
+{
+    "name": "01_DomainInterfaces.Frameworks.Mvvm",
+    "rootNamespace": "DomainInterfaces.Frameworks.Mvvm",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

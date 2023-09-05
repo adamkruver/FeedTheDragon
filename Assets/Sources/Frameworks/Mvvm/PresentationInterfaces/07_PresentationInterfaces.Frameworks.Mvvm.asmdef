@@ -1,0 +1,14 @@
+{
+    "name": "07_PresentationInterfaces.Frameworks.Mvvm",
+    "rootNamespace": "PresentationInterfaces.Frameworks.Mvvm",
+    "references": ["GUID:13c928a0c91e0f749a1fb553b331a0e3"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

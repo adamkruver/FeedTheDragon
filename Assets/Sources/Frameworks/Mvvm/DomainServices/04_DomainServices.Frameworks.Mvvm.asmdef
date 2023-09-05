@@ -1,0 +1,14 @@
+{
+    "name": "04_DomainServices.Frameworks.Mvvm",
+    "rootNamespace": "DomainServices.Frameworks.Mvvm",
+    "references": ["GUID:1723c6bc9c5509e4a8b2d7d3850fb1ac","GUID:13c928a0c91e0f749a1fb553b331a0e3"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
