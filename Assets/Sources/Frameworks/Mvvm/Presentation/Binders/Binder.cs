@@ -6,6 +6,7 @@ using Controllers.Frameworks.Mvvm.ViewModels;
 using Domain.Frameworks.Mvvm.Attributes;
 using DomainInterfaces.Frameworks.Mvvm.Methods;
 using DomainInterfaces.Frameworks.Mvvm.Properties;
+using DomainServices.Frameworks.Mvvm.Factories;
 using Presentation.Frameworks.Mvvm.Exceptions;
 using PresentationInterfaces.Frameworks.Mvvm.Binders;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
@@ -20,18 +21,8 @@ namespace Presentation.Frameworks.Mvvm.Binders
         private static readonly string s_viewModelPartsFieldName = "_components";
 
         private readonly List<Type> _notFoundTypes = new List<Type>();
-        private readonly IBindablePropertyFactory _propertyFactory;
-        private readonly IBindableMethodFactory _methodFactory;
-
-        public Binder(
-            IBindablePropertyFactory propertyFactory,
-            IBindableMethodFactory methodFactory
-        )
-        {
-            _propertyFactory = propertyFactory;
-            _methodFactory = methodFactory;
-        }
-
+        private readonly IBindablePropertyFactory _propertyFactory = new BindablePropertyFactory();
+        private readonly IBindableMethodFactory _methodFactory = new BindableMethodFactory();
 
         public void Bind(IBindableView view, IViewModel viewModel)
         {
