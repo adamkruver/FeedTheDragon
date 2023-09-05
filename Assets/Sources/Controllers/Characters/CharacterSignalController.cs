@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Sources.Infrastructure.SignalBus.Interfaces;
+using Sources.InfrastructureInterfaces.SignalBus.Actions;
 
-namespace Sources.Infrastructure.SignalBus
+namespace Sources.Controllers
 {
     public class CharacterSignalController : BaseSignalController
     {

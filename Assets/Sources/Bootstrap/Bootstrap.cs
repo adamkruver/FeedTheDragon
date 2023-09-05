@@ -1,5 +1,7 @@
+using Sources.Character;
+using Sources.Controllers;
+using Sources.Infrastructure.Actions;
 using Sources.Infrastructure.SignalBus;
-using Sources.Infrastructure.SignalBus.Actions;
 using UnityEngine;
 
 namespace Sources.Bootstrap

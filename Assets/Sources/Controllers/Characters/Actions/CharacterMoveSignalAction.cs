@@ -1,7 +1,8 @@
-﻿using Sources.Infrastructure.SignalBus.Interfaces;
-using Sources.Infrastructure.SignalBus.Signals;
+﻿using Sources.Character;
+using Sources.Infrastructure.Signals;
+using Sources.InfrastructureInterfaces.SignalBus.Actions.Generic;
 
-namespace Sources.Infrastructure.SignalBus.Actions
+namespace Sources.Infrastructure.Actions
 {
     public class CharacterMoveSignalAction : ISignalAction<CharacterMoveSignal>
     {

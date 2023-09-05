@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class TargetFollower : MonoBehaviour
+namespace Sources.Camera
 {
-    [SerializeField] private Transform _target;
+    public class TargetFollower : MonoBehaviour
+    {
+        [SerializeField] private Transform _target;
     
-    private Transform _transform;
+        private Transform _transform;
 
-    private void Awake()
-    {
-        _transform = GetComponent<Transform>();
-    }
+        private void Awake()
+        {
+            _transform = GetComponent<Transform>();
+        }
 
-    private void LateUpdate()
-    {
-        _transform.position = _target.position;
+        private void LateUpdate()
+        {
+            _transform.position = _target.position;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FlatKit {
+namespace Downloaded.FlatKit.Demos.Common.Scripts.Motion {
 public class CameraMouseOrbit : MonoBehaviour {
     public enum TargetMode {
         Transform,

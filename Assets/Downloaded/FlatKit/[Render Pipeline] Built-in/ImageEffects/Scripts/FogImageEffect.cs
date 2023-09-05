@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FlatKit {
+namespace Downloaded.FlatKit._Render_Pipeline__Built_in.ImageEffects.Scripts {
     [ExecuteInEditMode, ImageEffectAllowedInSceneView, RequireComponent(typeof(Camera))]
     public class FogImageEffect : MonoBehaviour {
         public bool useDistance = true;

@@ -1,7 +1,7 @@
-using Sources.Infrastructure.SignalBus.Interfaces.Signals;
+using Sources.InfrastructureInterfaces.SignalBus.Signals;
 using UnityEngine;
 
-namespace Sources.Infrastructure.SignalBus.Signals
+namespace Sources.Infrastructure.Signals
 {
     public class CharacterMoveSignal : ISignal
     {

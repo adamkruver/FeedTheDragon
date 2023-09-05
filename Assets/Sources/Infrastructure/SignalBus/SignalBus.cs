@@ -1,5 +1,6 @@
-﻿using Sources.Infrastructure.SignalBus.Interfaces;
-using Sources.Infrastructure.SignalBus.Interfaces.Signals;
+﻿using Sources.InfrastructureInterfaces.SignalBus;
+using Sources.InfrastructureInterfaces.SignalBus.Handlers;
+using Sources.InfrastructureInterfaces.SignalBus.Signals;
 
 namespace Sources.Infrastructure.SignalBus
 {

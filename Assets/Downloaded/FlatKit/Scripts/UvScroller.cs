@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FlatKit {
+namespace Downloaded.FlatKit.Scripts {
     public class UvScroller : MonoBehaviour {
         public Material targetMaterial;
         public float speedX = 0f;

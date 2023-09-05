@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sources.Infrastructure.SignalBus.Interfaces;
-using Sources.Infrastructure.SignalBus.Interfaces.Signals;
+using Sources.InfrastructureInterfaces.SignalBus.Actions;
+using Sources.InfrastructureInterfaces.SignalBus.Actions.Generic;
+using Sources.InfrastructureInterfaces.SignalBus.Controllers;
+using Sources.InfrastructureInterfaces.SignalBus.Signals;
 
-namespace Sources.Infrastructure.SignalBus
+namespace Sources.Controllers
 {
     public abstract class BaseSignalController : ISignalController
     {

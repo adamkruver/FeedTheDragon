@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Sources.Infrastructure.SignalBus.Interfaces;
-using Sources.Infrastructure.SignalBus.Interfaces.Signals;
+using Sources.InfrastructureInterfaces.SignalBus.Controllers;
+using Sources.InfrastructureInterfaces.SignalBus.Handlers;
+using Sources.InfrastructureInterfaces.SignalBus.Signals;
 
 namespace Sources.Infrastructure.SignalBus
 {
