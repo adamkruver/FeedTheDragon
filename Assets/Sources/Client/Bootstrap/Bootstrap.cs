@@ -18,19 +18,20 @@ namespace Sources.Client.Bootstrap
 {
     public class Bootstrap : MonoBehaviour
     {
-        private ISignalBus _signalBus;
         private CharacterMovementService _characterMovementService;
         private CameraFollowService _cameraFollowService;
 
         private void Awake()
         {
+            Camera mainCamera = Camera.main;
+            
             SignalHandler signalHandler = new SignalHandler();
-            _signalBus = new SignalBus(signalHandler);
+            ISignalBus signalBus = new SignalBus(signalHandler);
 
             Binder binder = new Binder();
 
             CurrentPlayerService currentPlayerService = new CurrentPlayerService();
-            _cameraFollowService = new CameraFollowService(Camera.main.transform.parent);
+            _cameraFollowService = new CameraFollowService(mainCamera.transform.parent);
 
             PeasantFactory peasantFactory = new PeasantFactory();
             EntityRepository entityRepository = new EntityRepository();
@@ -52,12 +53,11 @@ namespace Sources.Client.Bootstrap
                 new ISignalAction[] { createCharacterSignalAction, characterMoveSignalAction }
             );
 
-            _characterMovementService = new CharacterMovementService(currentPlayerService, _signalBus, Camera.main);
+            _characterMovementService = new CharacterMovementService(currentPlayerService, signalBus, mainCamera);
 
             signalHandler.Register(characterSignalController);
 
-            //_characterMovement.Init(signalBus);
-            _signalBus.Handle(new CreateCharacterSignal());
+            signalBus.Handle(new CreateCharacterSignal());
         }
 
         private void Update()
