@@ -1,7 +1,8 @@
 ﻿using Domain.Frameworks.Mvvm.Properties;
+using Sources.Client.PresentationInterfaces.Binds.Rotations;
 using UnityEngine;
 
-namespace Sources.Client.Presentation.Binds.Common
+namespace Sources.Client.Presentation.Binds.Rotations
 {
     public class LookDirectionPropertyBind : BindableViewProperty<Vector3>, ILookDirectionPropertyBind
     {

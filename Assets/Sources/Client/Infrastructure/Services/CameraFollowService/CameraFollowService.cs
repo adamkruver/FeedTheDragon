@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Sources.Client.CameraFollower
+namespace Sources.Client.Infrastructure.Services.CameraFollowService
 {
     public class CameraFollowService
     {

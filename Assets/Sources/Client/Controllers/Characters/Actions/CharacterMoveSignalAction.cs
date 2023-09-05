@@ -1,26 +1,21 @@
-﻿using Sources.Client.Characters;
-using Sources.Client.Controllers.Characters.SIgnals;
-using Sources.Client.Domain.Characters;
-using Sources.Client.InfrastructureInterfaces.Repositories;
+﻿using Sources.Client.Controllers.Characters.SIgnals;
+using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
-using UnityEngine;
 
 namespace Sources.Client.Controllers.Characters.Actions
 {
     public class CharacterMoveSignalAction : ISignalAction<CharacterMoveSignal>
     {
-        private readonly IEntityRepository _entityRepository;
+        private readonly ICurrentPlayerService _currentPlayerService;
 
-        public CharacterMoveSignalAction(IEntityRepository entityRepository)
+        public CharacterMoveSignalAction(ICurrentPlayerService currentPlayerService)
         {
-            _entityRepository = entityRepository;
+            _currentPlayerService = currentPlayerService;
         }
         
         public void Handle(CharacterMoveSignal signal)
         {
-            Character character = (Character)_entityRepository.Get(0);
-            
-            character.Position.Move(signal.MoveDelta);
+            _currentPlayerService.Character.Position.Move(signal.MoveDelta);
         }
     }
 }

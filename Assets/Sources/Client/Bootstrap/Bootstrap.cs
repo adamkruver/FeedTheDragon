@@ -1,15 +1,21 @@
 using System;
 using Presentation.Frameworks.Mvvm.Binders;
 using Presentation.Frameworks.Mvvm.Factories;
-using Sources.Client.CameraFollower;
 using Sources.Client.Characters;
 using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Characters.Actions;
 using Sources.Client.Controllers.Characters.SIgnals;
+using Sources.Client.Controllers.Ingredients;
+using Sources.Client.Controllers.Ingredients.Actions;
+using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Domain.Characters;
+using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
+using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
 using Sources.Client.Infrastructure.Repositories;
+using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
+using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
@@ -26,13 +32,13 @@ namespace Sources.Client.Bootstrap
         {
             Camera mainCamera = Camera.main;
 
+            Binder binder = new Binder();
+            CurrentPlayerService currentPlayerService = new CurrentPlayerService();
+            IdGenerator idGenerator = new IdGenerator(10);
+            _cameraFollowService = new CameraFollowService(mainCamera.transform.parent);
+
             SignalHandler signalHandler = new SignalHandler();
             ISignalBus signalBus = new SignalBus(signalHandler);
-
-            Binder binder = new Binder();
-
-            CurrentPlayerService currentPlayerService = new CurrentPlayerService();
-            _cameraFollowService = new CameraFollowService(mainCamera.transform.parent);
 
             PeasantFactory peasantFactory = new PeasantFactory();
             EntityRepository entityRepository = new EntityRepository();
@@ -44,11 +50,12 @@ namespace Sources.Client.Bootstrap
                     entityRepository,
                     bindableViewFactory,
                     currentPlayerService,
-                    _cameraFollowService
+                    _cameraFollowService,
+                    idGenerator
                 );
 
-            CharacterMoveSignalAction characterMoveSignalAction = new CharacterMoveSignalAction(entityRepository);
-            CharacterRotateSignalAction characterRotateSignalAction = new CharacterRotateSignalAction(entityRepository);
+            CharacterMoveSignalAction characterMoveSignalAction = new CharacterMoveSignalAction(currentPlayerService);
+            CharacterRotateSignalAction characterRotateSignalAction = new CharacterRotateSignalAction(currentPlayerService);
 
             CharacterSignalController characterSignalController = new CharacterSignalController
             (
@@ -62,9 +69,28 @@ namespace Sources.Client.Bootstrap
 
             _characterMovementService = new CharacterMovementService(currentPlayerService, signalBus, mainCamera);
 
+            IngredientFactory ingredientFactory = new IngredientFactory();
+            
+            CreateIngredientSignalAction createIngredientSignalAction =
+                new CreateIngredientSignalAction
+                (
+                    entityRepository,
+                    ingredientFactory,
+                    idGenerator,
+                    bindableViewFactory
+                );
+
+            IngredientSignalController ingredientSignalController = new IngredientSignalController(
+                new ISignalAction[]
+                {
+                    createIngredientSignalAction
+                });
+
             signalHandler.Register(characterSignalController);
+            signalHandler.Register(ingredientSignalController);
 
             signalBus.Handle(new CreateCharacterSignal());
+            signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
         }
 
         private void Update()

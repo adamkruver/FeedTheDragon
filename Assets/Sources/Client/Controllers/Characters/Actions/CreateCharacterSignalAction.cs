@@ -1,13 +1,14 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using PresentationInterfaces.Frameworks.Mvvm.Views;
-using Sources.Client.CameraFollower;
 using Sources.Client.Controllers.Characters.SIgnals;
 using Sources.Client.Controllers.Characters.ViewModels;
 using Sources.Client.Domain.Characters;
+using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.Characters;
 using Sources.Client.InfrastructureInterfaces.Repositories;
+using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace Sources.Client.Controllers.Characters.Actions
         private readonly IBindableViewFactory _bindableViewFactory;
         private readonly CurrentPlayerService _currentPlayerService;
         private readonly CameraFollowService _cameraFollowService;
+        private readonly IIdGenerator _idGenerator;
 
         public CreateCharacterSignalAction
         (
@@ -27,7 +29,8 @@ namespace Sources.Client.Controllers.Characters.Actions
             IEntityRepository entityRepository,
             IBindableViewFactory bindableViewFactory,
             CurrentPlayerService currentPlayerService,
-            CameraFollowService cameraFollowService
+            CameraFollowService cameraFollowService,
+            IIdGenerator idGenerator
         )
         {
             _characterFactory = characterFactory;
@@ -35,11 +38,12 @@ namespace Sources.Client.Controllers.Characters.Actions
             _bindableViewFactory = bindableViewFactory;
             _currentPlayerService = currentPlayerService;
             _cameraFollowService = cameraFollowService;
+            _idGenerator = idGenerator;
         }
 
         public void Handle(CreateCharacterSignal signal)
         {
-            Character character = _characterFactory.Create(0, Vector3.zero); //todo Id generator
+            Character character = _characterFactory.Create(_idGenerator.GetId(), Vector3.zero);
             _entityRepository.Add(character);
 
             CharacterViewModel viewModel = new CharacterViewModel(new IViewModelComponent[] { }, character);

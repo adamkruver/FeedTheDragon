@@ -5,8 +5,8 @@ using PresentationInterfaces.Frameworks.Mvvm.Binds.BindableViews;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.Transforms;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Domain.Characters;
-using Sources.Client.Presentation.Binds.Common;
 using Sources.Client.PresentationInterfaces.Binds.CharacterController;
+using Sources.Client.PresentationInterfaces.Binds.Rotations;
 using UnityEngine;
 
 namespace Sources.Client.Controllers.Characters.ViewModels
@@ -44,6 +44,8 @@ namespace Sources.Client.Controllers.Characters.ViewModels
         {
             _character.Position.Changed -= OnPositionChanged;
             _character.LookDirection.Changed -= OnLookDirectionChanged;
+            
+            _isEnabled.Value = false;
         }
 
         private void OnLookDirectionChanged()
@@ -54,6 +56,10 @@ namespace Sources.Client.Controllers.Characters.ViewModels
         private void OnPositionChanged()
         {
             _controllerPosition.Value = _character.Position.Value - _transformPosition.Value;
+            
+            Vector3 position = _character.Position.Value;
+            position.y = 0;
+            _transformPosition.Value = position;
             
             _character.Position.Set(_transformPosition.Value);
         }
