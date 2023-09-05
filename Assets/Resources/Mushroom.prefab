@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameObject: {fileID: 6536260036838634027}
-  _enabledOnStart: 1
+  _enabledOnStart: 0
 --- !u!65 &3742193642278707216
 BoxCollider:
   m_ObjectHideFlags: 0

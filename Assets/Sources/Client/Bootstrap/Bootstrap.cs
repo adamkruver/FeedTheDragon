@@ -56,6 +56,7 @@ namespace Sources.Client.Bootstrap
 
             CharacterMoveSignalAction characterMoveSignalAction = new CharacterMoveSignalAction(currentPlayerService);
             CharacterRotateSignalAction characterRotateSignalAction = new CharacterRotateSignalAction(currentPlayerService);
+            CharacterSpeedSignalAction characterSpeedSignalAction = new CharacterSpeedSignalAction(currentPlayerService);
 
             CharacterSignalController characterSignalController = new CharacterSignalController
             (
@@ -63,7 +64,8 @@ namespace Sources.Client.Bootstrap
                 {
                     createCharacterSignalAction,
                     characterMoveSignalAction,
-                    characterRotateSignalAction
+                    characterRotateSignalAction,
+                    characterSpeedSignalAction,
                 }
             );
 

@@ -1,6 +1,7 @@
 ﻿using Controllers.Frameworks.Mvvm.ViewModels;
 using Domain.Frameworks.Mvvm.Attributes;
 using DomainInterfaces.Frameworks.Mvvm.Properties;
+using PresentationInterfaces.Frameworks.Mvvm.Binds.Animators;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.BindableViews;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.Transforms;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
@@ -25,7 +26,10 @@ namespace Sources.Client.Controllers.Characters.ViewModels
         private IBindableProperty<Vector3> _controllerPosition;
         
         [PropertyBinding(typeof(ILookDirectionPropertyBind))]
-        private IBindableProperty<Vector3> _worldRotation;
+        private IBindableProperty<Vector3> _worldRotation;     
+        
+        [PropertyBinding(typeof(IAnimatorFloatPropertyBind), "Speed")]
+        private IBindableProperty<float> _animationSpeed;
 
         public CharacterViewModel(IViewModelComponent[] components, Character character) : base(components)
         {
@@ -38,12 +42,14 @@ namespace Sources.Client.Controllers.Characters.ViewModels
             
             _character.Position.Changed += OnPositionChanged;
             _character.LookDirection.Changed += OnLookDirectionChanged;
+            _character.Speed.Changed += OnSpeedChanged;
         }
 
         protected override void OnDisable()
         {
             _character.Position.Changed -= OnPositionChanged;
             _character.LookDirection.Changed -= OnLookDirectionChanged;
+            _character.Speed.Changed -= OnSpeedChanged;
             
             _isEnabled.Value = false;
         }
@@ -57,11 +63,15 @@ namespace Sources.Client.Controllers.Characters.ViewModels
         {
             _controllerPosition.Value = _character.Position.Value - _transformPosition.Value;
             
-            Vector3 position = _character.Position.Value;
+            Vector3 position = _transformPosition.Value;
             position.y = 0;
-            _transformPosition.Value = position;
             
-            _character.Position.Set(_transformPosition.Value);
+            _character.Position.Set(position);
+        }
+
+        private void OnSpeedChanged()
+        {
+            _animationSpeed.Value = _character.Speed.Value;
         }
     }
 }

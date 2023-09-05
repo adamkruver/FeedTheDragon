@@ -1,12 +1,25 @@
-﻿namespace Sources.Client.Domain.Components
+﻿using System;
+
+namespace Sources.Client.Domain.Components
 {
     public class SpeedComponent
     {
-        public SpeedComponent(float value)
-        {
-            Value = value;
-        }
+        private readonly float _multiplier;
+        
+        private float _value;
 
-        public float Value { get; }
+        public SpeedComponent(float multiplier) =>
+            _multiplier = multiplier;
+
+        public event Action Changed;
+
+        public float Value => _value * _multiplier;
+
+        public void Set(float speed)
+        {
+            _value = speed;
+            
+            Changed?.Invoke();
+        }
     }
 }
