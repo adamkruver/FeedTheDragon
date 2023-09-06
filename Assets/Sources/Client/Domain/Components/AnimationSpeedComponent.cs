@@ -2,13 +2,13 @@
 
 namespace Sources.Client.Domain.Components
 {
-    public class SpeedComponent : IComponent
+    public class AnimationSpeedComponent : IComponent
     {
         private readonly float _multiplier;
         
         private float _value;
 
-        public SpeedComponent(float multiplier) =>
+        public AnimationSpeedComponent(float multiplier) =>
             _multiplier = multiplier;
 
         public event Action Changed;

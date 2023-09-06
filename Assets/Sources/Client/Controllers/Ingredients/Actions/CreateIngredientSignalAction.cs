@@ -37,15 +37,16 @@ namespace Sources.Client.Controllers.Ingredients.Actions
 
         public void Handle(CreateIngredientSignal signal)
         {
+            int id = _idGenerator.GetId();
             IIngredientType type = signal.Type;
             IngredientSpawnInfo spawnInfo = new IngredientSpawnInfo(signal.Position);
-
-            Ingredient ingredient = _ingredientFactory.Create(_idGenerator.GetId(), type, spawnInfo);
+            
+            Ingredient ingredient = _ingredientFactory.Create(id, type, spawnInfo);
             _entityRepository.Add(ingredient);
 
             IBindableView view = _bindableViewFactory.Create("", type.GetType().Name); //todo: Make constant path
 
-            IViewModel viewModel = _ingredientViewModelFactory.Create(ingredient);
+            IViewModel viewModel = _ingredientViewModelFactory.Create(id);
 
             view.Bind(viewModel);
         }
