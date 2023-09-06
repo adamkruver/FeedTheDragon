@@ -4,7 +4,7 @@ using Presentation.Frameworks.Mvvm.Factories;
 using Sources.Client.Characters;
 using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Characters.Actions;
-using Sources.Client.Controllers.Characters.SIgnals;
+using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Ingredients;
 using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.Signals;
@@ -91,7 +91,7 @@ namespace Sources.Client.Bootstrap
             signalHandler.Register(characterSignalController);
             signalHandler.Register(ingredientSignalController);
 
-            signalBus.Handle(new CreateCharacterSignal());
+            signalBus.Handle(new CreateCharacterSignal(Vector3.zero));
             signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
         }
 

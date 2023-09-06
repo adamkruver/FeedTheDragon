@@ -1,4 +1,6 @@
-﻿using Sources.Client.Controllers.Characters.SIgnals;
+﻿using System;
+using Sources.Client.Controllers.Characters.Signals;
+using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 
@@ -15,7 +17,10 @@ namespace Sources.Client.Controllers.Characters.Actions
         
         public void Handle(CharacterRotateSignal signal)
         {
-            _currentPlayerService.Character.LookDirection.Set(signal.LookDirection);
+            if (_currentPlayerService.Character.TryGetComponent(out LookDirectionComponent characterLookDirection) == false)
+                throw new NullReferenceException();
+            
+            characterLookDirection.Set(signal.LookDirection);
         }
     }
 }

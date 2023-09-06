@@ -35,8 +35,9 @@ namespace Sources.Client.Controllers.Ingredients.Actions
         public void Handle(CreateIngredientSignal signal)
         {
             IIngredientType type = signal.Type;
+            IngredientSpawnInfo spawnInfo = new IngredientSpawnInfo(signal.Position);
 
-            Ingredient ingredient = _ingredientFactory.Create(_idGenerator.GetId(), type, signal.Position);
+            Ingredient ingredient = _ingredientFactory.Create(_idGenerator.GetId(), type, spawnInfo);
             _entityRepository.Add(ingredient);
 
             IBindableView view = _bindableViewFactory.Create("", type.GetType().Name); //todo: Make constant path

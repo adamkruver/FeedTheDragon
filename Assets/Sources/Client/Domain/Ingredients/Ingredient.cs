@@ -1,18 +1,16 @@
-﻿using Sources.Client.Domain.Components;
-using Sources.Client.Domain.Entities;
+﻿using Sources.Client.Domain.Entities;
 
 namespace Sources.Client.Domain.Ingredients
 {
-    public class Ingredient : Enity
+    public class Ingredient : Composite, IEntity
     {
-        public readonly PositionComponent Position;
-        
-        public Ingredient(int id, IIngredientType type, PositionComponent position) : base(id)
+        public Ingredient(int id, IIngredientType type)
         {
+            Id = id;
             Type = type;
-            Position = position;
         }
 
         public IIngredientType Type { get; }
+        public int Id { get; }
     }
 }

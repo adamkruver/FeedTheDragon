@@ -1,7 +1,7 @@
 ﻿using Sources.Client.InfrastructureInterfaces.SignalBus.Signals;
 using UnityEngine;
 
-namespace Sources.Client.Controllers.Characters.SIgnals
+namespace Sources.Client.Controllers.Characters.Signals
 {
     public class CharacterRotateSignal : ISignal
     {

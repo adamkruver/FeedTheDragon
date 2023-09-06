@@ -4,8 +4,8 @@ namespace Sources.Client.InfrastructureInterfaces.Repositories
 {
     public interface IEntityRepository
     {
-        void Add(Enity entity);
+        void Add(IEntity entity);
         
-        Enity Get(int id);
+        IEntity Get(int id);
     }
 }

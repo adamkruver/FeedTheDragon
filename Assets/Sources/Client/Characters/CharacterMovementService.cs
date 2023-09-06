@@ -1,5 +1,7 @@
-using Sources.Client.Controllers.Characters.SIgnals;
+using System;
+using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Domain.Characters;
+using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using UnityEngine;
@@ -29,6 +31,8 @@ namespace Sources.Client.Characters
             _layer = 1 << LayerMask.NameToLayer("Terrain"); //todo Move to constans
         }
 
+        private Character Character => _currentPlayerService.Character;
+
         public void Update()
         {
             Debug.Log(_speed);
@@ -55,10 +59,16 @@ namespace Sources.Client.Characters
                 return;
             }
 
-            _direction = raycastHit.point - character.Position.Value;
+            if (Character.TryGetComponent(out PositionComponent characterPosition) == false)
+                throw new NullReferenceException();
+            
+            if(Character.TryGetComponent(out SpeedComponent characterSpeed) == false)
+                throw new NullReferenceException();
+
+            _direction = raycastHit.point - characterPosition.Value;
             _direction.y = 0;
 
-            Vector3 moveDelta = character.Speed.Value * Time.deltaTime * _direction.normalized;
+            Vector3 moveDelta = characterSpeed.Value * Time.deltaTime * _direction.normalized;
 
             _signalBus.Handle(new CharacterRotateSignal(moveDelta));
             _signalBus.Handle(new CharacterMoveSignal(moveDelta));

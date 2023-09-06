@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Sources.Client.Domain.Components
 {
-    public class PositionComponent
+    public class PositionComponent : IComponent
     {
         public PositionComponent(Vector3 value)
         {

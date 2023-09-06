@@ -1,7 +1,7 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using PresentationInterfaces.Frameworks.Mvvm.Views;
-using Sources.Client.Controllers.Characters.SIgnals;
+using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Characters.ViewModels;
 using Sources.Client.Domain.Characters;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
@@ -43,7 +43,9 @@ namespace Sources.Client.Controllers.Characters.Actions
 
         public void Handle(CreateCharacterSignal signal)
         {
-            Character character = _characterFactory.Create(_idGenerator.GetId(), Vector3.zero);
+            CharacterSpawnInfo spawnInfo = new CharacterSpawnInfo(signal.SpawnPosition);
+            
+            Character character = _characterFactory.Create(_idGenerator.GetId(), spawnInfo);
             _entityRepository.Add(character);
 
             CharacterViewModel viewModel = new CharacterViewModel(new IViewModelComponent[] { }, character);

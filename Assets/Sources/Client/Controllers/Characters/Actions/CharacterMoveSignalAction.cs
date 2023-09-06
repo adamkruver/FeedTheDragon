@@ -1,4 +1,6 @@
-﻿using Sources.Client.Controllers.Characters.SIgnals;
+﻿using System;
+using Sources.Client.Controllers.Characters.Signals;
+using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 
@@ -15,7 +17,10 @@ namespace Sources.Client.Controllers.Characters.Actions
         
         public void Handle(CharacterMoveSignal signal)
         {
-            _currentPlayerService.Character.Position.Move(signal.MoveDelta);
+            if (_currentPlayerService.Character.TryGetComponent(out PositionComponent characterPosition) == false)
+                throw new NullReferenceException();
+            
+            characterPosition.Move(signal.MoveDelta);
         }
     }
 }

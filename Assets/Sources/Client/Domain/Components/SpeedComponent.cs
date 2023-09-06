@@ -2,7 +2,7 @@
 
 namespace Sources.Client.Domain.Components
 {
-    public class SpeedComponent
+    public class SpeedComponent : IComponent
     {
         private readonly float _multiplier;
         

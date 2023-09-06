@@ -7,9 +7,13 @@ namespace Sources.Client.Infrastructure.Factories.Domain.Ingredients
 {
     public class IngredientFactory : IIngredientFactory
     {
-        public Ingredient Create(int id, IIngredientType type, Vector3 position)
+        public Ingredient Create(int id, IIngredientType type, IngredientSpawnInfo spawnInfo)
         {
-            return new Ingredient(id, type, new PositionComponent(position));
+            Ingredient ingredient = new Ingredient(id, type);
+            
+            ingredient.AddComponent(new PositionComponent(spawnInfo.Position));
+            
+            return ingredient;
         }
     }
 }

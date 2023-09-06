@@ -1,20 +1,14 @@
-﻿using Sources.Client.Domain.Components;
-using Sources.Client.Domain.Entities;
-using UnityEditor;
+﻿using Sources.Client.Domain.Entities;
 
 namespace Sources.Client.Domain.Characters
 {
-    public class Character : Enity
+    public class Character : Composite, IEntity
     {
-        public readonly LookDirectionComponent LookDirection;
-        public readonly PositionComponent Position;
-        public readonly SpeedComponent Speed;
+        private readonly int _id;
 
-        public Character(int id, LookDirectionComponent lookDirection, PositionComponent position, SpeedComponent speed) : base(id)
-        {
-            LookDirection = lookDirection;
-            Position = position;
-            Speed = speed;
-        }
+        public Character(int id) =>
+            _id = id;
+
+        public int Id { get; }
     }
 }

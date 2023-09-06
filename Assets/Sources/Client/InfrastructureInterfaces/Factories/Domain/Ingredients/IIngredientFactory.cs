@@ -5,6 +5,6 @@ namespace Sources.Client.InfrastructureInterfaces.Factories.Domain.Ingredients
 {
     public interface IIngredientFactory
     {
-        Ingredient Create(int id, IIngredientType type, Vector3 position);
+        Ingredient Create(int id, IIngredientType type, IngredientSpawnInfo spawnInfo);
     }
 }

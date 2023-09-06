@@ -1,12 +1,7 @@
 ﻿namespace Sources.Client.Domain.Entities
 {
-    public abstract class Enity
+    public interface IEntity
     {
-        public Enity(int id)
-        {
-            Id = id;
-        }
-
         public int Id { get; }
     }
 }

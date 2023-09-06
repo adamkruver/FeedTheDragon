@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Sources.Client.Domain.Components
 {
-    public class LookDirectionComponent
+    public class LookDirectionComponent : IComponent
     {
         public LookDirectionComponent(Vector3 initialValue)
         {

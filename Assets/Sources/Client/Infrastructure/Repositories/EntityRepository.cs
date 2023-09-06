@@ -8,9 +8,9 @@ namespace Sources.Client.Infrastructure.Repositories
 {
     public class EntityRepository : IEntityRepository
     {
-        private List<Enity> _entities = new List<Enity>();
+        private List<IEntity> _entities = new List<IEntity>();
 
-        public void Add(Enity entity)
+        public void Add(IEntity entity)
         {
             if (_entities.Contains(entity))
                 throw new AggregateException();
@@ -18,7 +18,7 @@ namespace Sources.Client.Infrastructure.Repositories
             _entities.Add(entity);
         }
 
-        public Enity Get(int id)
+        public IEntity Get(int id)
         {
             return _entities.FirstOrDefault(entity => entity.Id == id) ?? throw new NullReferenceException();
         }
