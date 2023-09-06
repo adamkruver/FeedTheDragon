@@ -25,20 +25,20 @@ namespace Domain.Frameworks.Mvvm.Properties
 
         public T Value
         {
-            get =>(T)_propertyInfo.GetValue(_target);
+            get => (T)_propertyInfo.GetValue(_target);
             set
             {
                 _propertyInfo.SetValue(_target, value);
                 InvokeChanged();
             }
-        } 
+        }
 
-        public void Dispose() => 
+        public void Dispose() =>
             _actions.Clear();
 
         private void InvokeChanged()
         {
-            foreach (Action action in _actions) 
+            foreach (Action action in _actions)
                 action.Invoke();
         }
     }

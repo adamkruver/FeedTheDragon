@@ -43,7 +43,7 @@ namespace Sources.Client.Domain
             {
                 if (currentComponent is T typedComponent)
                 {
-                    component =  typedComponent;
+                    component = typedComponent;
 
                     return true;
                 }

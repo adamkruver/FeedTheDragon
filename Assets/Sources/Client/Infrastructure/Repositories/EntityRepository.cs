@@ -20,7 +20,7 @@ namespace Sources.Client.Infrastructure.Repositories
 
         public IEntity Get(int id)
         {
-            return _entities.FirstOrDefault(entity => entity.Id == id) ?? throw new NullReferenceException();
+            return _entities.FirstOrDefault(entity => entity.Id == id) ?? throw new NullReferenceException(id.ToString());
         }
     }
 }
