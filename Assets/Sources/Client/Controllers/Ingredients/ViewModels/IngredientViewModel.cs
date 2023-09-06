@@ -1,6 +1,8 @@
 ﻿using Controllers.Frameworks.Mvvm.ViewModels;
 using Domain.Frameworks.Mvvm.Attributes;
 using DomainInterfaces.Frameworks.Mvvm.Properties;
+using PresentationInterfaces.Frameworks.Mvvm.Binds.BindableViews;
+using PresentationInterfaces.Frameworks.Mvvm.Binds.Buttons;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.GameObjects;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.Mouses;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.Triggers;
@@ -14,6 +16,9 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
     {
         [PropertyBinding(typeof(IGameObjectEnabledPropertyBind))]
         private IBindableProperty<bool> _isProximityEnabled;
+
+        [PropertyBinding(typeof(IBindableViewEnabledPropertyBind))]
+        private IBindableProperty<bool> _isEnabled;
 
         public IngredientViewModel(IViewModelComponent[] components) : base(components)
         {
@@ -41,10 +46,11 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
                 _isProximityEnabled.Value = false;
         }
 
-        [MethodBinding(typeof(IMouseDownMethodBind))]
+        [MethodBinding(typeof(IButtonClickMethodBind))]
         private void OnClick(Vector3 position)
         {
             Debug.Log(position + " clicked!");
+            _isEnabled.Value = false;
         }
     }
 }

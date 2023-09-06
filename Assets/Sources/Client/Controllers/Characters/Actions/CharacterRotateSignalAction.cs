@@ -24,6 +24,9 @@ namespace Sources.Client.Controllers.Characters.Actions
 
         public void Handle(CharacterRotateSignal signal)
         {
+            if(signal.LookDirection.magnitude < 0.01f)
+                return;
+            
             _lookDirectionCommand.Handle(_currentPlayerService.CharacterId, signal.LookDirection);
         }
     }
