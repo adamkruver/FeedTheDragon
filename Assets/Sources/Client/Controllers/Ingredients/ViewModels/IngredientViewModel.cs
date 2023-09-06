@@ -22,7 +22,6 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
             _ingredient = ingredient;
         }
 
-
         protected override void OnEnable()
         {
         }
