@@ -28,6 +28,7 @@ namespace Sources.Client.Bootstrap
     {
         private CharacterMovementService _characterMovementService;
         private CameraFollowService _cameraFollowService;
+        private SignalBus _signalBus;
 
         private void Awake()
         {
@@ -39,7 +40,7 @@ namespace Sources.Client.Bootstrap
             _cameraFollowService = new CameraFollowService(mainCamera.transform.parent);
 
             SignalHandler signalHandler = new SignalHandler();
-            ISignalBus signalBus = new SignalBus(signalHandler);
+            _signalBus = new SignalBus(signalHandler);
 
             PeasantFactory peasantFactory = new PeasantFactory();
             EntityRepository entityRepository = new EntityRepository();
@@ -79,7 +80,7 @@ namespace Sources.Client.Bootstrap
                 }
             );
 
-            _characterMovementService = new CharacterMovementService(currentPlayerService, signalBus, mainCamera);
+            _characterMovementService = new CharacterMovementService(currentPlayerService, _signalBus, mainCamera);
 
             IngredientFactory ingredientFactory = new IngredientFactory();
             
@@ -102,8 +103,12 @@ namespace Sources.Client.Bootstrap
             signalHandler.Register(characterSignalController);
             signalHandler.Register(ingredientSignalController);
 
-            signalBus.Handle(new CreateCharacterSignal(Vector3.zero));
-            signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
+        }
+
+        private void Start()
+        {
+            _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20,0,10)));
+            _signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
         }
 
         private void Update()

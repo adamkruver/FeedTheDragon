@@ -16,6 +16,9 @@ namespace Sources.Client.Controllers.ViewModels.Components
         private IBindableProperty<Vector3> _transformPosition;
         
         [PropertyBinding(typeof(ICharacterControllerMovePropertyBind))]
+        private IBindableProperty<Vector3> _controllerMovement;
+        
+        [PropertyBinding(typeof(ICharacterControllerPositionPropertyBind))]
         private IBindableProperty<Vector3> _controllerPosition;
 
         public CharacterControllerMoveViewModelComponent(IComposite composite)
@@ -31,6 +34,7 @@ namespace Sources.Client.Controllers.ViewModels.Components
         public void Enable()
         {
             Position.Changed += OnPositionChanged;
+            _controllerPosition.Value = Position.Value;
             OnPositionChanged();
         }
 
@@ -41,7 +45,7 @@ namespace Sources.Client.Controllers.ViewModels.Components
 
         private void OnPositionChanged()
         {
-            _controllerPosition.Value = Position.Value - _transformPosition.Value;
+            _controllerMovement.Value = Position.Value - _transformPosition.Value;
 
             Vector3 position = _transformPosition.Value;
             position.y = 0;
