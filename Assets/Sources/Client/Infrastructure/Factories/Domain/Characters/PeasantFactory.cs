@@ -11,6 +11,7 @@ namespace Sources.Client.Infrastructure.Factories.Domain.Characters
         {
             Character character = new Character(id);
             
+            character.AddComponent(new VisibilityComponent(true));
             character.AddComponent(new LookDirectionComponent(Vector3.zero));
             character.AddComponent(new PositionComponent(spawnInfo.Position));
             character.AddComponent(new SpeedComponent(10));

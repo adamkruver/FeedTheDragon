@@ -10,6 +10,7 @@ using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Domain.Characters;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
 using Sources.Client.Infrastructure.Repositories;
@@ -44,6 +45,14 @@ namespace Sources.Client.Bootstrap
             EntityRepository entityRepository = new EntityRepository();
             BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
 
+            #region ViewModelFactories
+
+            CharacterViewModelFactory characterViewModelFactory = new CharacterViewModelFactory();
+            IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory();
+
+            #endregion
+            
+
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
                     peasantFactory,
@@ -51,7 +60,8 @@ namespace Sources.Client.Bootstrap
                     bindableViewFactory,
                     currentPlayerService,
                     _cameraFollowService,
-                    idGenerator
+                    idGenerator,
+                    characterViewModelFactory
                 );
 
             CharacterMoveSignalAction characterMoveSignalAction = new CharacterMoveSignalAction(currentPlayerService);
@@ -79,7 +89,8 @@ namespace Sources.Client.Bootstrap
                     entityRepository,
                     ingredientFactory,
                     idGenerator,
-                    bindableViewFactory
+                    bindableViewFactory,
+                    ingredientViewModelFactory
                 );
 
             IngredientSignalController ingredientSignalController = new IngredientSignalController(

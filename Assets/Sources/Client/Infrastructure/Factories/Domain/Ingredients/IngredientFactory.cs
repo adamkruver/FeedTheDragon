@@ -11,6 +11,7 @@ namespace Sources.Client.Infrastructure.Factories.Domain.Ingredients
         {
             Ingredient ingredient = new Ingredient(id, type);
             
+            ingredient.AddComponent(new VisibilityComponent(true));
             ingredient.AddComponent(new PositionComponent(spawnInfo.Position));
             
             return ingredient;

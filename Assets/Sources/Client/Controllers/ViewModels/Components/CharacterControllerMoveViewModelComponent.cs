@@ -5,16 +5,20 @@ using PresentationInterfaces.Frameworks.Mvvm.Binds.Transforms;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Domain;
 using Sources.Client.Domain.Components;
+using Sources.Client.PresentationInterfaces.Binds.CharacterController;
 using UnityEngine;
 
 namespace Sources.Client.Controllers.ViewModels.Components
 {
-    public class PositionViewModelComponent : IViewModelComponent
+    public class CharacterControllerMoveViewModelComponent : IViewModelComponent
     {
         [PropertyBinding(typeof(ITransformPositionPropertyBind))]
         private IBindableProperty<Vector3> _transformPosition;
+        
+        [PropertyBinding(typeof(ICharacterControllerMovePropertyBind))]
+        private IBindableProperty<Vector3> _controllerPosition;
 
-        public PositionViewModelComponent(IComposite composite)
+        public CharacterControllerMoveViewModelComponent(IComposite composite)
         {
             if (composite.TryGetComponent(out PositionComponent positionComponent) == false)
                 throw new NullReferenceException();
@@ -37,7 +41,12 @@ namespace Sources.Client.Controllers.ViewModels.Components
 
         private void OnPositionChanged()
         {
-            _transformPosition.Value = Position.Value;
-        }        
+            _controllerPosition.Value = Position.Value - _transformPosition.Value;
+
+            Vector3 position = _transformPosition.Value;
+            position.y = 0;
+
+            Position.Set(position);
+        }
     }
 }

@@ -4,6 +4,7 @@ using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Characters.ViewModels;
 using Sources.Client.Domain.Characters;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.Characters;
@@ -22,6 +23,7 @@ namespace Sources.Client.Controllers.Characters.Actions
         private readonly CurrentPlayerService _currentPlayerService;
         private readonly CameraFollowService _cameraFollowService;
         private readonly IIdGenerator _idGenerator;
+        private readonly CharacterViewModelFactory _characterViewModelFactory;
 
         public CreateCharacterSignalAction
         (
@@ -30,7 +32,8 @@ namespace Sources.Client.Controllers.Characters.Actions
             IBindableViewFactory bindableViewFactory,
             CurrentPlayerService currentPlayerService,
             CameraFollowService cameraFollowService,
-            IIdGenerator idGenerator
+            IIdGenerator idGenerator,
+            CharacterViewModelFactory characterViewModelFactory
         )
         {
             _characterFactory = characterFactory;
@@ -39,6 +42,7 @@ namespace Sources.Client.Controllers.Characters.Actions
             _currentPlayerService = currentPlayerService;
             _cameraFollowService = cameraFollowService;
             _idGenerator = idGenerator;
+            _characterViewModelFactory = characterViewModelFactory;
         }
 
         public void Handle(CreateCharacterSignal signal)
@@ -48,7 +52,7 @@ namespace Sources.Client.Controllers.Characters.Actions
             Character character = _characterFactory.Create(_idGenerator.GetId(), spawnInfo);
             _entityRepository.Add(character);
 
-            CharacterViewModel viewModel = new CharacterViewModel(new IViewModelComponent[] { }, character);
+            IViewModel viewModel = _characterViewModelFactory.Create(character);
             IBindableView view = _bindableViewFactory.Create("", "Peasant"); //todo: Make constant path
 
             _currentPlayerService.Character = character;
