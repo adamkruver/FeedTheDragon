@@ -17,6 +17,7 @@ using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.Infrastructure.Services.IdGenerators;
+using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
@@ -29,6 +30,7 @@ namespace Sources.Client.Bootstrap
         private CharacterMovementService _characterMovementService;
         private CameraFollowService _cameraFollowService;
         private SignalBus _signalBus;
+        private SpawnService<Mushroom> _mushroomSpawnService;
 
         private void Awake()
         {
@@ -52,7 +54,6 @@ namespace Sources.Client.Bootstrap
             IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory();
 
             #endregion
-            
 
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
@@ -83,7 +84,7 @@ namespace Sources.Client.Bootstrap
             _characterMovementService = new CharacterMovementService(currentPlayerService, _signalBus, mainCamera);
 
             IngredientFactory ingredientFactory = new IngredientFactory();
-            
+
             CreateIngredientSignalAction createIngredientSignalAction =
                 new CreateIngredientSignalAction
                 (
@@ -103,12 +104,14 @@ namespace Sources.Client.Bootstrap
             signalHandler.Register(characterSignalController);
             signalHandler.Register(ingredientSignalController);
 
+            _mushroomSpawnService = new SpawnService<Mushroom>(_signalBus);
         }
 
         private void Start()
         {
-            _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20,0,10)));
-            _signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
+            _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
+            _mushroomSpawnService.Spawn();
+           // _signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
         }
 
         private void Update()
