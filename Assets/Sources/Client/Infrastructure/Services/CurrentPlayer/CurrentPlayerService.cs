@@ -5,6 +5,6 @@ namespace Sources.Client.Infrastructure.Services.CurrentPlayer
 {
     public class CurrentPlayerService : ICurrentPlayerService
     {
-        public Character Character { get; set; }
+        public int CharacterId { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using Sources.Client.InfrastructureInterfaces.Factories.Domain.Characters;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
+using Sources.Client.UseCases.Characters.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Controllers.Characters.Actions
@@ -24,6 +25,7 @@ namespace Sources.Client.Controllers.Characters.Actions
         private readonly CameraFollowService _cameraFollowService;
         private readonly IIdGenerator _idGenerator;
         private readonly CharacterViewModelFactory _characterViewModelFactory;
+        private readonly CreateCurrentCharacterQuery _createCurrentCharacterQuery;
 
         public CreateCharacterSignalAction
         (
@@ -33,7 +35,8 @@ namespace Sources.Client.Controllers.Characters.Actions
             CurrentPlayerService currentPlayerService,
             CameraFollowService cameraFollowService,
             IIdGenerator idGenerator,
-            CharacterViewModelFactory characterViewModelFactory
+            CharacterViewModelFactory characterViewModelFactory,
+            CreateCurrentCharacterQuery createCurrentCharacterQuery
         )
         {
             _characterFactory = characterFactory;
@@ -43,20 +46,17 @@ namespace Sources.Client.Controllers.Characters.Actions
             _cameraFollowService = cameraFollowService;
             _idGenerator = idGenerator;
             _characterViewModelFactory = characterViewModelFactory;
+            _createCurrentCharacterQuery = createCurrentCharacterQuery;
         }
 
         public void Handle(CreateCharacterSignal signal)
         {
-            CharacterSpawnInfo spawnInfo = new CharacterSpawnInfo(signal.SpawnPosition);
+            int id = _createCurrentCharacterQuery.Handle(signal.SpawnPosition);
             
-            Character character = _characterFactory.Create(_idGenerator.GetId(), spawnInfo);
-            _entityRepository.Add(character);
-
-            IViewModel viewModel = _characterViewModelFactory.Create(character);
+            IViewModel viewModel = _characterViewModelFactory.Create(id);
             IBindableView view = _bindableViewFactory.Create("", "Peasant"); //todo: Make constant path
 
-            _currentPlayerService.Character = character;
-
+            _currentPlayerService.CharacterId = id;
             _cameraFollowService.Follow(((MonoBehaviour)view).transform);
 
             view.Bind(viewModel);

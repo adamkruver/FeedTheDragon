@@ -12,14 +12,11 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
 {
     public class IngredientViewModel : ViewModelBase
     {
-        private readonly Ingredient _ingredient;
-
         [PropertyBinding(typeof(IGameObjectEnabledPropertyBind))]
         private IBindableProperty<bool> _isProximityEnabled;
 
-        public IngredientViewModel(IViewModelComponent[] components, Ingredient ingredient) : base(components)
+        public IngredientViewModel(IViewModelComponent[] components) : base(components)
         {
-            _ingredient = ingredient;
         }
 
         protected override void OnEnable()

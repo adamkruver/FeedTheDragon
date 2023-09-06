@@ -5,38 +5,50 @@ using PresentationInterfaces.Frameworks.Mvvm.Binds.BindableViews;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Domain;
 using Sources.Client.Domain.Components;
+using Sources.Client.UseCases.Common.Components.Visibilities.Listeners;
+using Sources.Client.UseCases.Common.Components.Visibilities.Queries;
 
 namespace Sources.Client.Controllers.ViewModels.Components
 {
     public class VisibilityViewModelComponent : IViewModelComponent
     {
+        private readonly int _id;
+        private readonly AddVisibilityListener _addVisibilityListener;
+        private readonly RemoveVisibilityListener _removeVisibilityListener;
+        private readonly GetVisibilityQuery _getVisibilityQuery;
+
         [PropertyBinding(typeof(IBindableViewEnabledPropertyBind))]
         private IBindableProperty<bool> _isEnabled;
 
-        public VisibilityViewModelComponent(IComposite composite)
+        public VisibilityViewModelComponent
+        (
+            int id,
+            AddVisibilityListener addVisibilityListener,
+            RemoveVisibilityListener removeVisibilityListener,
+            GetVisibilityQuery getVisibilityQuery
+        )
         {
-            if (composite.TryGetComponent(out VisibilityComponent visibilityComponent) == false)
-                throw new NullReferenceException();
-
-            Visibility = visibilityComponent;
+            _id = id;
+            _addVisibilityListener = addVisibilityListener;
+            _removeVisibilityListener = removeVisibilityListener;
+            _getVisibilityQuery = getVisibilityQuery;
         }
-
-        private VisibilityComponent Visibility { get; }
 
         public void Enable()
         {
-            Visibility.Changed += OnVisibilityChanged;
             OnVisibilityChanged();
+            
+            _addVisibilityListener.Handle(_id, OnVisibilityChanged);
         }
 
         public void Disable()
         {
-            Visibility.Changed += OnVisibilityChanged;
+            _removeVisibilityListener.Handle(_id, OnVisibilityChanged);
         }
 
         private void OnVisibilityChanged()
         {
-            _isEnabled.Value = Visibility.IsVisible;
+            _isEnabled.Value = _getVisibilityQuery.Handle(_id);
         }
     }
 }

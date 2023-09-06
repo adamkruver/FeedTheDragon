@@ -8,9 +8,9 @@ using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Ingredients;
 using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.Signals;
-using Sources.Client.Domain.Characters;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
 using Sources.Client.Infrastructure.Repositories;
@@ -18,8 +18,13 @@ using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.Infrastructure.SignalBus;
-using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
+using Sources.Client.UseCases.Characters.Queries;
+using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
+using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
+using Sources.Client.UseCases.Common.Components.Positions.Commands;
+using Sources.Client.UseCases.Common.Components.Positions.Queries;
+using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Bootstrap
@@ -45,14 +50,57 @@ namespace Sources.Client.Bootstrap
             PeasantFactory peasantFactory = new PeasantFactory();
             EntityRepository entityRepository = new EntityRepository();
             BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
-
+            
             #region ViewModelFactories
 
-            CharacterViewModelFactory characterViewModelFactory = new CharacterViewModelFactory();
-            IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory();
+            VisibilityViewModelComponentFactory visibilityViewModelComponentFactory =
+                new VisibilityViewModelComponentFactory(entityRepository);
+
+            AnimationSpeedViewModelComponentFactory animationSpeedViewModelComponentFactory =
+                new AnimationSpeedViewModelComponentFactory(entityRepository);
+
+            LookDirectionViewModelComponentFactory lookDirectionViewModelComponentFactory =
+                new LookDirectionViewModelComponentFactory(entityRepository);
+
+            CharacterControllerMovementViewModelComponentFactory characterControllerMovementViewModelComponentFactory =
+                new CharacterControllerMovementViewModelComponentFactory(entityRepository);
+
+            PositionViewModelComponentFactory positionViewModelComponentFactory =
+                new PositionViewModelComponentFactory(entityRepository);
+
+            CharacterViewModelFactory characterViewModelFactory = new CharacterViewModelFactory
+            (
+                visibilityViewModelComponentFactory,
+                animationSpeedViewModelComponentFactory,
+                lookDirectionViewModelComponentFactory,
+                characterControllerMovementViewModelComponentFactory
+            );
+
+            IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory
+            (
+                visibilityViewModelComponentFactory,
+                positionViewModelComponentFactory
+            );
 
             #endregion
+
+            #region UseCases
+
+            CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery
+            (
+                entityRepository,
+                peasantFactory,
+                idGenerator
+            );
             
+            MovePositionCommand movePositionCommand = new MovePositionCommand(entityRepository);
+            SetLookDirectionCommand setLookDirectionCommand = new SetLookDirectionCommand(entityRepository);
+            SetAnimationSpeedCommand setAnimationSpeedCommand = new SetAnimationSpeedCommand(entityRepository);
+            
+            GetPositionQuery getPositionQuery = new GetPositionQuery(entityRepository);
+            GetSpeedQuery getSpeedQuery = new GetSpeedQuery(entityRepository);
+            
+            #endregion
 
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
@@ -62,12 +110,16 @@ namespace Sources.Client.Bootstrap
                     currentPlayerService,
                     _cameraFollowService,
                     idGenerator,
-                    characterViewModelFactory
+                    characterViewModelFactory,
+                    createCurrentCharacterQuery
                 );
 
-            CharacterMoveSignalAction characterMoveSignalAction = new CharacterMoveSignalAction(currentPlayerService);
-            CharacterRotateSignalAction characterRotateSignalAction = new CharacterRotateSignalAction(currentPlayerService);
-            CharacterSpeedSignalAction characterSpeedSignalAction = new CharacterSpeedSignalAction(currentPlayerService);
+            CharacterMoveSignalAction characterMoveSignalAction = 
+                new CharacterMoveSignalAction(currentPlayerService, movePositionCommand);
+            CharacterRotateSignalAction characterRotateSignalAction =
+                new CharacterRotateSignalAction(currentPlayerService, setLookDirectionCommand);
+            CharacterSpeedSignalAction characterSpeedSignalAction =
+                new CharacterSpeedSignalAction(currentPlayerService, setAnimationSpeedCommand);
 
             CharacterSignalController characterSignalController = new CharacterSignalController
             (
@@ -80,10 +132,11 @@ namespace Sources.Client.Bootstrap
                 }
             );
 
-            _characterMovementService = new CharacterMovementService(currentPlayerService, _signalBus, mainCamera);
+            _characterMovementService = 
+                new CharacterMovementService(currentPlayerService, _signalBus, mainCamera, getPositionQuery, getSpeedQuery);
 
             IngredientFactory ingredientFactory = new IngredientFactory();
-            
+
             CreateIngredientSignalAction createIngredientSignalAction =
                 new CreateIngredientSignalAction
                 (
@@ -102,12 +155,11 @@ namespace Sources.Client.Bootstrap
 
             signalHandler.Register(characterSignalController);
             signalHandler.Register(ingredientSignalController);
-
         }
 
         private void Start()
         {
-            _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20,0,10)));
+            _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
             _signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
         }
 

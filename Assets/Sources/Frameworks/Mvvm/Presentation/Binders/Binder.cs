@@ -126,27 +126,23 @@ namespace Presentation.Frameworks.Mvvm.Binders
             }
         }
 
-        private void BindField(object viewModel, FieldInfo fieldInfo,
-            IBindableViewProperty bindableViewProperty)
+        private void BindField(object viewModel, FieldInfo fieldInfo, IBindableViewProperty bindableViewProperty)
         {
             fieldInfo.SetValue(viewModel, bindableViewProperty.OnBind(_propertyFactory));
         }
 
-        private void UnbindField(object viewModel, FieldInfo fieldInfo,
-            IBindableViewProperty bindableViewProperty)
+        private void UnbindField(object viewModel, FieldInfo fieldInfo, IBindableViewProperty bindableViewProperty)
         {
             (fieldInfo.GetValue(viewModel) as IDisposable)?.Dispose();
             fieldInfo.SetValue(viewModel, null);
         }
 
-        private void BindMethod(object viewModel, MethodInfo methodInfo,
-            IBindableViewMethod bindableViewMethod)
+        private void BindMethod(object viewModel, MethodInfo methodInfo, IBindableViewMethod bindableViewMethod)
         {
             bindableViewMethod.OnBind(_methodFactory.Create(viewModel, methodInfo));
         }
 
-        private void UnbindMethod(object viewModel, MethodInfo methodInfo,
-            IBindableViewMethod bindableViewMethod)
+        private void UnbindMethod(object viewModel, MethodInfo methodInfo, IBindableViewMethod bindableViewMethod)
         {
             bindableViewMethod.Unbind();
         }
