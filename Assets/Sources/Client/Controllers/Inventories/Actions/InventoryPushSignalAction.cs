@@ -15,42 +15,38 @@ namespace Sources.Client.Controllers.Inventories.Actions
     public class InventoryPushSignalAction : ISignalAction<PushIngredientToInventorySignal>
     {
         private readonly IEntityRepository _entityRepository;
+        private readonly ICurrentPlayerService _currentPlayerService;
         private readonly CanPushInventoryQuery _canPushInventoryQuery;
         private readonly PushIngredientToInventoryCommand _pushIngredientToInventoryCommand;
         private readonly HideCommand _hideCommand;
-        private readonly ICurrentPlayerService _currentPlayerService;
 
-        public InventoryPushSignalAction
-        (
+        public InventoryPushSignalAction(
             IEntityRepository entityRepository,
+            ICurrentPlayerService currentPlayerService,
             CanPushInventoryQuery canPushInventoryQuery,
             PushIngredientToInventoryCommand pushIngredientToInventoryCommand,
-            HideCommand hideCommand,
-            ICurrentPlayerService currentPlayerService
+            HideCommand hideCommand
         )
         {
             _entityRepository = entityRepository;
+            _currentPlayerService = currentPlayerService;
             _canPushInventoryQuery = canPushInventoryQuery;
             _pushIngredientToInventoryCommand = pushIngredientToInventoryCommand;
             _hideCommand = hideCommand;
-            _currentPlayerService = currentPlayerService;
         }
 
         public void Handle(PushIngredientToInventorySignal signal)
         {
             int inventoryId = _currentPlayerService.CharacterId; //todo: Get from valid source;
 
+            if (_canPushInventoryQuery.Handle(inventoryId) == false)
+                return;
+
             IEntity ingredientEntity = _entityRepository.Get(signal.IngredientId);
 
             if (ingredientEntity is not Ingredient ingredient) //todo: Rid of cast
                 throw new ArgumentException($"Object under id {signal.IngredientId} is not an ingredient");
 
-            if (_canPushInventoryQuery.Handle(inventoryId) == false)
-            {
-                Debug.Log("Cannot push ingredient to inventory, it filled");
-                return;
-            }
-            
             _pushIngredientToInventoryCommand.Handle(inventoryId, ingredient);
             _hideCommand.Handle(signal.IngredientId);
         }

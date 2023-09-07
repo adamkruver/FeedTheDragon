@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Presentation.Frameworks.Mvvm.Binders;
 using Presentation.Frameworks.Mvvm.Factories;
 using Sources.Client.Characters;
@@ -8,7 +6,6 @@ using Sources.Client.Controllers.Characters.Actions;
 using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Ingredients;
 using Sources.Client.Controllers.Ingredients.Actions;
-using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
@@ -75,20 +72,18 @@ namespace Sources.Client.Bootstrap
 
             PositionViewModelComponentFactory positionViewModelComponentFactory =
                 new PositionViewModelComponentFactory(entityRepository);
-            
+
             IngredientClickViewModelComponentFactory ingredientClickViewModelComponentFactory =
                 new IngredientClickViewModelComponentFactory(_signalBus);
 
-            CharacterViewModelFactory characterViewModelFactory = new CharacterViewModelFactory
-            (
+            CharacterViewModelFactory characterViewModelFactory = new CharacterViewModelFactory(
                 visibilityViewModelComponentFactory,
                 animationSpeedViewModelComponentFactory,
                 lookDirectionViewModelComponentFactory,
                 characterControllerMovementViewModelComponentFactory
             );
 
-            IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory
-            (
+            IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory(
                 visibilityViewModelComponentFactory,
                 positionViewModelComponentFactory,
                 ingredientClickViewModelComponentFactory
@@ -98,8 +93,7 @@ namespace Sources.Client.Bootstrap
 
             #region UseCases
 
-            CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery
-            (
+            CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery(
                 entityRepository,
                 peasantFactory,
                 idGenerator
@@ -111,6 +105,11 @@ namespace Sources.Client.Bootstrap
 
             GetPositionQuery getPositionQuery = new GetPositionQuery(entityRepository);
             GetSpeedQuery getSpeedQuery = new GetSpeedQuery(entityRepository);
+
+            HideCommand hideCommand = new HideCommand(entityRepository);
+            CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
+            PushIngredientToInventoryCommand pushIngredientToInventoryCommand = 
+                new PushIngredientToInventoryCommand(entityRepository);
 
             #endregion
 
@@ -133,9 +132,8 @@ namespace Sources.Client.Bootstrap
             CharacterSpeedSignalAction characterSpeedSignalAction =
                 new CharacterSpeedSignalAction(currentPlayerService, setAnimationSpeedCommand);
 
-            CharacterSignalController characterSignalController = new CharacterSignalController
-            (
-                new ISignalAction[]
+            CharacterSignalController characterSignalController = new CharacterSignalController(
+                new ISignalAction[] 
                 {
                     createCharacterSignalAction,
                     characterMoveSignalAction,
@@ -150,15 +148,13 @@ namespace Sources.Client.Bootstrap
 
             IngredientFactory ingredientFactory = new IngredientFactory();
 
-            CreateIngredientSignalAction createIngredientSignalAction =
-                new CreateIngredientSignalAction
-                (
-                    entityRepository,
-                    ingredientFactory,
-                    idGenerator,
-                    bindableViewFactory,
-                    ingredientViewModelFactory
-                );
+            CreateIngredientSignalAction createIngredientSignalAction = new CreateIngredientSignalAction(
+                entityRepository,
+                ingredientFactory,
+                idGenerator,
+                bindableViewFactory,
+                ingredientViewModelFactory
+            );
 
             IngredientSignalController ingredientSignalController = new IngredientSignalController(
                 new ISignalAction[]
@@ -166,15 +162,13 @@ namespace Sources.Client.Bootstrap
                     createIngredientSignalAction
                 });
 
-            InventoryPushSignalAction inventoryPushSignalAction =
-                new InventoryPushSignalAction
-                (
-                    entityRepository,
-                    new CanPushInventoryQuery(entityRepository),
-                    new PushIngredientToInventoryCommand(entityRepository),
-                    new HideCommand(entityRepository),
-                    currentPlayerService
-                );
+            InventoryPushSignalAction inventoryPushSignalAction = new InventoryPushSignalAction(
+                entityRepository,
+                currentPlayerService,
+                canPushInventoryQuery,
+                pushIngredientToInventoryCommand,
+                hideCommand
+            );
 
             InventorySignalController inventorySignalController = new InventorySignalController(
                 new ISignalAction[]
@@ -194,7 +188,6 @@ namespace Sources.Client.Bootstrap
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
 
             _mushroomSpawnService.Spawn();
-            // _signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
         }
 
         private void Update()
