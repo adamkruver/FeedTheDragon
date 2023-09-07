@@ -8,13 +8,14 @@ using PresentationInterfaces.Frameworks.Mvvm.Binds.Mouses;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.Triggers;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Domain.Ingredients;
+using Sources.Client.PresentationInterfaces.Binds.Scales;
 using UnityEngine;
 
 namespace Sources.Client.Controllers.Ingredients.ViewModels
 {
     public class IngredientViewModel : ViewModelBase
     {
-        [PropertyBinding(typeof(IGameObjectEnabledPropertyBind))]
+        [PropertyBinding(typeof(IGameObjectEnableWithScaleFadePropertyBind))]
         private IBindableProperty<bool> _isProximityEnabled;
 
         [PropertyBinding(typeof(IBindableViewEnabledPropertyBind))]
