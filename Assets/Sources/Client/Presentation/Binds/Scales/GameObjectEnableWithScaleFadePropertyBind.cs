@@ -11,7 +11,7 @@ namespace Sources.Client.Presentation.Binds.Scales
         [SerializeField] private GameObject _gameObject;
         [SerializeField] private bool _isEnabledOnStart = false;
         [SerializeField] private float _scaleSpeed = 1f;
-        
+
         private Transform _transform;
         private Coroutine _scaleJob;
         private float _scale = 0;
@@ -33,22 +33,22 @@ namespace Sources.Client.Presentation.Binds.Scales
 
         private void Enable()
         {
-            if(_isEnabled)
+            if (_isEnabled)
                 return;
-            
+
             _gameObject.SetActive(true);
             _isEnabled = true;
         }
 
         private void Disable()
         {
-            if(_isEnabled == false)
+            if (_isEnabled == false)
                 return;
-            
+
             _gameObject.SetActive(false);
             _isEnabled = false;
         }
-        
+
         private void SetScale(float scale)
         {
             StopScale();
@@ -57,12 +57,12 @@ namespace Sources.Client.Presentation.Binds.Scales
 
         private void StopScale()
         {
-            if(_scaleJob == null)
+            if (_scaleJob == null)
                 return;
-            
+
             StopCoroutine(_scaleJob);
-            
-            if(_scale == 0)
+
+            if (_scale == 0)
                 Disable();
             else
                 Enable();

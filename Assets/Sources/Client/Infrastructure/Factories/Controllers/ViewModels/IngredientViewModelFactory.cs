@@ -1,7 +1,5 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.Ingredients.ViewModels;
-using Sources.Client.Controllers.ViewModels.Components;
-using Sources.Client.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
@@ -10,15 +8,18 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
     {
         private readonly VisibilityViewModelComponentFactory _visibilityViewModelComponentFactory;
         private readonly PositionViewModelComponentFactory _positionViewModelComponentFactory;
+        private readonly IngredientClickViewModelComponentFactory _ingredientClickViewModelComponentFactory;
 
         public IngredientViewModelFactory
         (
             VisibilityViewModelComponentFactory visibilityViewModelComponentFactory,
-            PositionViewModelComponentFactory positionViewModelComponentFactory
+            PositionViewModelComponentFactory positionViewModelComponentFactory,
+            IngredientClickViewModelComponentFactory ingredientClickViewModelComponentFactory
         )
         {
             _visibilityViewModelComponentFactory = visibilityViewModelComponentFactory;
             _positionViewModelComponentFactory = positionViewModelComponentFactory;
+            _ingredientClickViewModelComponentFactory = ingredientClickViewModelComponentFactory;
         }
 
         public IViewModel Create(int id)
@@ -26,7 +27,8 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
             return new IngredientViewModel(new[]
                 {
                     _visibilityViewModelComponentFactory.Create(id),
-                    _positionViewModelComponentFactory.Create(id)
+                    _positionViewModelComponentFactory.Create(id),
+                    _ingredientClickViewModelComponentFactory.Create(id)
                 }
             );
         }

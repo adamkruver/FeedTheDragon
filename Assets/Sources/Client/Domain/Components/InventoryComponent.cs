@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sources.Client.Domain.Ingredients;
+using UnityEngine;
 
 namespace Sources.Client.Domain.Components
 {
@@ -15,7 +16,7 @@ namespace Sources.Client.Domain.Components
 
         public bool IsEmpty => _ingredients.Count == 0;
 
-        private bool CanPush => _ingredients.Count < _maxCount;
+        public bool CanPush => _ingredients.Count < _maxCount;
 
         public bool TryPush(Ingredient ingredient)
         {
@@ -24,6 +25,7 @@ namespace Sources.Client.Domain.Components
 
             _ingredients.Add(ingredient);
 
+            Debug.Log("Pushed ingredient to inventory " + ingredient.GetType().Name);
             return true;
         }
 

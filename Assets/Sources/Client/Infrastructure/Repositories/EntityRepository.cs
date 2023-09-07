@@ -18,9 +18,8 @@ namespace Sources.Client.Infrastructure.Repositories
             _entities.Add(entity);
         }
 
-        public IEntity Get(int id)
-        {
-            return _entities.FirstOrDefault(entity => entity.Id == id) ?? throw new NullReferenceException(id.ToString());
-        }
+        public IEntity Get(int id) =>
+            _entities.FirstOrDefault(entity => entity.Id == id) 
+            ?? throw new NullReferenceException(id.ToString());
     }
 }
