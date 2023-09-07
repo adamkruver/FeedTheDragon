@@ -2,12 +2,8 @@
 using Domain.Frameworks.Mvvm.Attributes;
 using DomainInterfaces.Frameworks.Mvvm.Properties;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.BindableViews;
-using PresentationInterfaces.Frameworks.Mvvm.Binds.Buttons;
-using PresentationInterfaces.Frameworks.Mvvm.Binds.GameObjects;
-using PresentationInterfaces.Frameworks.Mvvm.Binds.Mouses;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.Triggers;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
-using Sources.Client.Domain.Ingredients;
 using Sources.Client.PresentationInterfaces.Binds.Scales;
 using UnityEngine;
 
@@ -34,7 +30,7 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
         }
 
         [MethodBinding(typeof(ITriggerEnterMethodBind))]
-        private void OnTriggerEnter(Component other)
+        private void OnTriggerEnter(Component other) // todo: вынести в компоненты
         {
             if (other.TryGetComponent<CharacterController>(out _))
                 _isProximityEnabled.Value = true;
@@ -45,13 +41,6 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
         {
             if (other.TryGetComponent<CharacterController>(out _))
                 _isProximityEnabled.Value = false;
-        }
-
-        [MethodBinding(typeof(IButtonClickMethodBind))]
-        private void OnClick(Vector3 position)
-        {
-            Debug.Log(position + " clicked!");
-            _isEnabled.Value = false;
         }
     }
 }

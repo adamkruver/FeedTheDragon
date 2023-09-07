@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Presentation.Frameworks.Mvvm.Binders;
 using Presentation.Frameworks.Mvvm.Factories;
 using Sources.Client.Characters;
@@ -8,6 +9,8 @@ using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Ingredients;
 using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.Signals;
+using Sources.Client.Controllers.Inventories;
+using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
@@ -20,12 +23,15 @@ using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
+using Sources.Client.UseCases.Characters.InventoryComponents.Commands;
+using Sources.Client.UseCases.Characters.InventoryComponents.Queries;
 using Sources.Client.UseCases.Characters.Queries;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
 using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Speeds.Queries;
+using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
 using UnityEngine;
 
 namespace Sources.Client.Bootstrap
@@ -52,7 +58,7 @@ namespace Sources.Client.Bootstrap
             PeasantFactory peasantFactory = new PeasantFactory();
             EntityRepository entityRepository = new EntityRepository();
             BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
-            
+
             #region ViewModelFactories
 
             VisibilityViewModelComponentFactory visibilityViewModelComponentFactory =
@@ -69,6 +75,9 @@ namespace Sources.Client.Bootstrap
 
             PositionViewModelComponentFactory positionViewModelComponentFactory =
                 new PositionViewModelComponentFactory(entityRepository);
+            
+            IngredientClickViewModelComponentFactory ingredientClickViewModelComponentFactory =
+                new IngredientClickViewModelComponentFactory(_signalBus);
 
             CharacterViewModelFactory characterViewModelFactory = new CharacterViewModelFactory
             (
@@ -81,7 +90,8 @@ namespace Sources.Client.Bootstrap
             IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory
             (
                 visibilityViewModelComponentFactory,
-                positionViewModelComponentFactory
+                positionViewModelComponentFactory,
+                ingredientClickViewModelComponentFactory
             );
 
             #endregion
@@ -94,14 +104,14 @@ namespace Sources.Client.Bootstrap
                 peasantFactory,
                 idGenerator
             );
-            
+
             MovePositionCommand movePositionCommand = new MovePositionCommand(entityRepository);
             SetLookDirectionCommand setLookDirectionCommand = new SetLookDirectionCommand(entityRepository);
             SetAnimationSpeedCommand setAnimationSpeedCommand = new SetAnimationSpeedCommand(entityRepository);
-            
+
             GetPositionQuery getPositionQuery = new GetPositionQuery(entityRepository);
             GetSpeedQuery getSpeedQuery = new GetSpeedQuery(entityRepository);
-            
+
             #endregion
 
             CreateCharacterSignalAction createCharacterSignalAction =
@@ -116,7 +126,7 @@ namespace Sources.Client.Bootstrap
                     createCurrentCharacterQuery
                 );
 
-            CharacterMoveSignalAction characterMoveSignalAction = 
+            CharacterMoveSignalAction characterMoveSignalAction =
                 new CharacterMoveSignalAction(currentPlayerService, movePositionCommand);
             CharacterRotateSignalAction characterRotateSignalAction =
                 new CharacterRotateSignalAction(currentPlayerService, setLookDirectionCommand);
@@ -134,8 +144,9 @@ namespace Sources.Client.Bootstrap
                 }
             );
 
-            _characterMovementService = 
-                new CharacterMovementService(currentPlayerService, _signalBus, mainCamera, getPositionQuery, getSpeedQuery);
+            _characterMovementService =
+                new CharacterMovementService(currentPlayerService, _signalBus, mainCamera, getPositionQuery,
+                    getSpeedQuery);
 
             IngredientFactory ingredientFactory = new IngredientFactory();
 
@@ -155,8 +166,25 @@ namespace Sources.Client.Bootstrap
                     createIngredientSignalAction
                 });
 
+            InventoryPushSignalAction inventoryPushSignalAction =
+                new InventoryPushSignalAction
+                (
+                    entityRepository,
+                    new CanPushInventoryQuery(entityRepository),
+                    new PushIngredientToInventoryCommand(entityRepository),
+                    new HideCommand(entityRepository),
+                    currentPlayerService
+                );
+
+            InventorySignalController inventorySignalController = new InventorySignalController(
+                new ISignalAction[]
+                {
+                    inventoryPushSignalAction
+                });
+
             signalHandler.Register(characterSignalController);
             signalHandler.Register(ingredientSignalController);
+            signalHandler.Register(inventorySignalController);
 
             _mushroomSpawnService = new SpawnService<Mushroom>(_signalBus);
         }
@@ -166,7 +194,7 @@ namespace Sources.Client.Bootstrap
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
 
             _mushroomSpawnService.Spawn();
-           // _signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
+            // _signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
         }
 
         private void Update()
