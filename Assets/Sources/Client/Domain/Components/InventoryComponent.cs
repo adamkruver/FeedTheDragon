@@ -7,17 +7,17 @@ namespace Sources.Client.Domain.Components
 {
     public class InventoryComponent : IComponent
     {
-        private readonly int _maxCount;
         private readonly List<Ingredient> _ingredients = new List<Ingredient>();
 
         public InventoryComponent(int maxCount)
         {
-            _maxCount = maxCount;
+            MaxCount = maxCount;
         }
 
         public bool IsEmpty => _ingredients.Count == 0;
-        public bool CanPush => _ingredients.Count < _maxCount;
-        
+        public bool CanPush => _ingredients.Count < MaxCount;
+        public int MaxCount { get; }
+
         public IEnumerable<IIngredientType> IngredientTypes => _ingredients.Select(ingredient => ingredient.Type);
 
         public event Action Changed;
@@ -29,7 +29,7 @@ namespace Sources.Client.Domain.Components
 
             _ingredients.Add(ingredient);
             Changed?.Invoke();
-            
+
             return true;
         }
 

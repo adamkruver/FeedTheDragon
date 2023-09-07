@@ -25,6 +25,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Compone
             AddInventoryListener addInventoryListener = new AddInventoryListener(_entityRepository);
             RemoveInventoryListener removeInventoryListener = new RemoveInventoryListener(_entityRepository);
             GetInvenoryItemTypesQuery getInvenoryItemTypesQuery = new GetInvenoryItemTypesQuery(_entityRepository);
+            GetInventoryCapacityQuery getInventoryCapacityQuery = new GetInventoryCapacityQuery(_entityRepository);
 
             return new InventoryChangedViewModelComponent
             (
@@ -32,7 +33,8 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Compone
                 id,
                 addInventoryListener,
                 removeInventoryListener,
-                getInvenoryItemTypesQuery
+                getInvenoryItemTypesQuery,
+                getInventoryCapacityQuery
             );
         }
     }

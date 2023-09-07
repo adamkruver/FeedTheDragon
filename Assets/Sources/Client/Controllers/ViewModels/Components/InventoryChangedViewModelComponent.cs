@@ -14,12 +14,13 @@ namespace Sources.Client.Controllers.ViewModels.Components
     public class InventoryChangedViewModelComponent : IViewModelComponent
     {
         private readonly IResourceLoader _resourceLoader;
-        
+
         private readonly int _id;
         private readonly AddInventoryListener _addInventoryListener;
         private readonly RemoveInventoryListener _removeInventoryListener;
         private readonly GetInvenoryItemTypesQuery _getInvenoryItemTypesQuery;
-        
+        private readonly GetInventoryCapacityQuery _getInventoryCapacityQuery;
+
         [PropertyBinding(typeof(IInventorySlotsViewPropertyBind))]
         private BindableProperty<Sprite[]> _invenotySpriteRenderers;
 
@@ -28,7 +29,8 @@ namespace Sources.Client.Controllers.ViewModels.Components
             int id,
             AddInventoryListener addInventoryListener,
             RemoveInventoryListener removeInventoryListener,
-            GetInvenoryItemTypesQuery getInvenoryItemTypesQuery
+            GetInvenoryItemTypesQuery getInvenoryItemTypesQuery,
+            GetInventoryCapacityQuery getInventoryCapacityQuery
         )
         {
             _resourceLoader = resourceLoader;
@@ -36,6 +38,7 @@ namespace Sources.Client.Controllers.ViewModels.Components
             _addInventoryListener = addInventoryListener;
             _removeInventoryListener = removeInventoryListener;
             _getInvenoryItemTypesQuery = getInvenoryItemTypesQuery;
+            _getInventoryCapacityQuery = getInventoryCapacityQuery;
         }
 
         public void Enable()
@@ -51,14 +54,13 @@ namespace Sources.Client.Controllers.ViewModels.Components
         private void OnInventoryChanged()
         {
             List<Sprite> sprites = new List<Sprite>();
-            
+
             foreach (IIngredientType ingredientType in _getInvenoryItemTypesQuery.Handle(_id))
-            {
-                Sprite sprite = _resourceLoader.Load<Sprite>("", ingredientType.GetType().Name); //todo to constants
-                
-                sprites.Add(sprite);
-            }
-            
+                sprites.Add(_resourceLoader.Load<Sprite>("", ingredientType.GetType().Name)); //todo to constants
+
+            for (int i = sprites.Count; i < _getInventoryCapacityQuery.Handle(_id); i++)
+                sprites.Add(null); //todo default inventory sprite
+
             _invenotySpriteRenderers.Value = sprites.ToArray();
         }
     }
