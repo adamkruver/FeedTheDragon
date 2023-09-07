@@ -6,8 +6,8 @@ using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 using Sources.Client.UseCases.Characters.InventoryComponents.Commands;
-using Sources.Client.UseCases.Characters.InventoryComponents.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
+using Sources.Client.UseCases.InventoryComponents.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Controllers.Inventories.Actions

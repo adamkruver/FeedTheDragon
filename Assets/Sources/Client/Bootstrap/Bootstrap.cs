@@ -22,7 +22,6 @@ using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.UseCases.Characters.InventoryComponents.Commands;
-using Sources.Client.UseCases.Characters.InventoryComponents.Queries;
 using Sources.Client.UseCases.Characters.Queries;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
@@ -30,6 +29,7 @@ using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
+using Sources.Client.UseCases.InventoryComponents.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Bootstrap
@@ -46,7 +46,7 @@ namespace Sources.Client.Bootstrap
         {
             Camera mainCamera = Camera.main;
             
-            ResourcesLoader resourcesLoader = new ResourcesLoader();
+            ResourceLoader resourceLoader = new ResourceLoader();
 
             Binder binder = new Binder();
             BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
@@ -94,7 +94,7 @@ namespace Sources.Client.Bootstrap
             );
             
             InventoryViewModelFactory inventoryViewModelFactory = 
-                new InventoryViewModelFactory(entityRepository, visibilityViewModelComponentFactory);
+                new InventoryViewModelFactory(entityRepository, visibilityViewModelComponentFactory, resourceLoader);
 
             #endregion
 

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
+using Sources.Client.InfrastructureInterfaces.Providers;
 using UnityEngine;
 
 namespace Sources.Client.Infrastructure.Providers
 {
-    public class ResourcesLoader
+    public class ResourceLoader : IResourceLoader
     {
         private Dictionary<string, Object> _resources = new Dictionary<string, Object>();
 

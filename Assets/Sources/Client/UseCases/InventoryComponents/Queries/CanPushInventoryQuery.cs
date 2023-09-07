@@ -2,7 +2,7 @@
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.UseCases.Common.Components;
 
-namespace Sources.Client.UseCases.Characters.InventoryComponents.Queries
+namespace Sources.Client.UseCases.InventoryComponents.Queries
 {
     public class CanPushInventoryQuery : ComponentUseCaseBase<InventoryComponent>
     {

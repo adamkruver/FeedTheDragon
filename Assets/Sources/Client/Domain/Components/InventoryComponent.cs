@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sources.Client.Domain.Ingredients;
 
 namespace Sources.Client.Domain.Components
@@ -16,6 +17,8 @@ namespace Sources.Client.Domain.Components
 
         public bool IsEmpty => _ingredients.Count == 0;
         public bool CanPush => _ingredients.Count < _maxCount;
+        
+        public IEnumerable<IIngredientType> IngredientTypes => _ingredients.Select(ingredient => ingredient.Type);
 
         public event Action Changed;
 
