@@ -28,7 +28,6 @@ using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
-using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
 using UnityEngine;
 
