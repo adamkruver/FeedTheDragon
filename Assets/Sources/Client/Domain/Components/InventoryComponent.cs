@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sources.Client.Domain.Ingredients;
-using UnityEngine;
 
 namespace Sources.Client.Domain.Components
 {
@@ -15,8 +15,9 @@ namespace Sources.Client.Domain.Components
         }
 
         public bool IsEmpty => _ingredients.Count == 0;
-
         public bool CanPush => _ingredients.Count < _maxCount;
+
+        public event Action Changed;
 
         public bool TryPush(Ingredient ingredient)
         {
@@ -24,8 +25,8 @@ namespace Sources.Client.Domain.Components
                 return false;
 
             _ingredients.Add(ingredient);
-
-            Debug.Log("Pushed ingredient to inventory " + ingredient.GetType().Name);
+            Changed?.Invoke();
+            
             return true;
         }
 
@@ -38,6 +39,7 @@ namespace Sources.Client.Domain.Components
 
             ingredient = _ingredients[0];
             _ingredients.Remove(ingredient);
+            Changed?.Invoke();
 
             return true;
         }

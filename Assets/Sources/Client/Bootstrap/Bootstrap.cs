@@ -13,6 +13,7 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
+using Sources.Client.Infrastructure.Providers;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
@@ -28,7 +29,6 @@ using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
-using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
 using UnityEngine;
 
@@ -45,18 +45,20 @@ namespace Sources.Client.Bootstrap
         private void Awake()
         {
             Camera mainCamera = Camera.main;
+            
+            ResourcesLoader resourcesLoader = new ResourcesLoader();
 
             Binder binder = new Binder();
+            BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
+            
+            EntityRepository entityRepository = new EntityRepository();
+
             CurrentPlayerService currentPlayerService = new CurrentPlayerService();
             IdGenerator idGenerator = new IdGenerator(10);
             _cameraFollowService = new CameraFollowService(mainCamera.transform.parent);
 
             SignalHandler signalHandler = new SignalHandler();
             _signalBus = new SignalBus(signalHandler);
-
-            PeasantFactory peasantFactory = new PeasantFactory();
-            EntityRepository entityRepository = new EntityRepository();
-            BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
 
             #region ViewModelFactories
 
@@ -90,11 +92,16 @@ namespace Sources.Client.Bootstrap
                 positionViewModelComponentFactory,
                 ingredientClickViewModelComponentFactory
             );
+            
+            InventoryViewModelFactory inventoryViewModelFactory = 
+                new InventoryViewModelFactory(entityRepository, visibilityViewModelComponentFactory);
 
             #endregion
 
             #region UseCases
-
+            
+            PeasantFactory peasantFactory = new PeasantFactory();
+            
             CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery(
                 entityRepository,
                 peasantFactory,
@@ -112,19 +119,17 @@ namespace Sources.Client.Bootstrap
             CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
             PushIngredientToInventoryCommand pushIngredientToInventoryCommand = 
                 new PushIngredientToInventoryCommand(entityRepository);
-
+            
             #endregion
 
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
-                    peasantFactory,
-                    entityRepository,
                     bindableViewFactory,
                     currentPlayerService,
                     _cameraFollowService,
-                    idGenerator,
                     characterViewModelFactory,
-                    createCurrentCharacterQuery
+                    createCurrentCharacterQuery,
+                    inventoryViewModelFactory
                 );
 
             CharacterMoveSignalAction characterMoveSignalAction =

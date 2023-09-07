@@ -2,9 +2,9 @@
 
 namespace Sources.Client.Domain.Characters
 {
-    public class CharacterSpawnInfo
+    public class PeasantSpawnInfo
     {
-        public CharacterSpawnInfo(Vector3 position)
+        public PeasantSpawnInfo(Vector3 position)
         {
             Position = position;
         }

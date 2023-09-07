@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Sources.Client.InfrastructureInterfaces.Factories.Domain.Characters
 {
-    public interface ICharacterFactory
+    public interface IPeasantFactory
     {
-        Character Create(int id, CharacterSpawnInfo spawnInfo);
+        Character Create(int id, PeasantSpawnInfo spawnInfo);
     }
 }
