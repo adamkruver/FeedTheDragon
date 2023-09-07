@@ -4,8 +4,8 @@ using Sources.Client.Domain.Characters;
 using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
+using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
-using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Characters

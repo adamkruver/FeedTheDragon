@@ -22,10 +22,10 @@ using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.UseCases.Characters.Queries;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
+using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
-using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Bootstrap
@@ -36,6 +36,7 @@ namespace Sources.Client.Bootstrap
         private CameraFollowService _cameraFollowService;
         private SignalBus _signalBus;
         private SpawnService<Mushroom> _mushroomSpawnService;
+        private SpawnService<ToxicFrog> _frogSpawnService;
 
         private void Awake()
         {
@@ -159,6 +160,7 @@ namespace Sources.Client.Bootstrap
             signalHandler.Register(ingredientSignalController);
 
             _mushroomSpawnService = new SpawnService<Mushroom>(_signalBus);
+            _frogSpawnService = new SpawnService<ToxicFrog>(_signalBus);
         }
 
         private void Start()
@@ -166,6 +168,7 @@ namespace Sources.Client.Bootstrap
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
 
             _mushroomSpawnService.Spawn();
+            _frogSpawnService.Spawn();
            // _signalBus.Handle(new CreateIngredientSignal(new Mushroom(), Vector3.forward * 5));
         }
 

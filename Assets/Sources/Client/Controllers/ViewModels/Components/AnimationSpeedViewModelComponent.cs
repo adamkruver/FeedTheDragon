@@ -2,8 +2,8 @@
 using DomainInterfaces.Frameworks.Mvvm.Properties;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.Animators;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
-using Sources.Client.UseCases.Common.Components.Speeds.Listeners;
-using Sources.Client.UseCases.Common.Components.Speeds.Queries;
+using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Listeners;
+using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 
 namespace Sources.Client.Controllers.ViewModels.Components
 {

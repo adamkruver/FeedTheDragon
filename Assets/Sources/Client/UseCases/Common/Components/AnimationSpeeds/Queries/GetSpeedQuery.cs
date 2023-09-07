@@ -1,7 +1,7 @@
 ﻿using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 
-namespace Sources.Client.UseCases.Common.Components.Speeds.Queries
+namespace Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries
 {
     public class GetSpeedQuery : ComponentUseCaseBase<AnimationSpeedComponent>
     {

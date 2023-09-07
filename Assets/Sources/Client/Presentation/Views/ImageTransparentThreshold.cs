@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
-public class TransparentImageThreshold : MonoBehaviour
+namespace Sources.Client.Presentation.Views
 {
-    [Range(0f, 1f)]
-    [SerializeField] private float _alphaThreshold = .5f;
-
-    private void Awake()
+    [RequireComponent(typeof(Image))]
+    public class TransparentImageThreshold : MonoBehaviour
     {
-        Image image = GetComponent<Image>();
-        image.alphaHitTestMinimumThreshold = _alphaThreshold;
+        [Range(0f, 1f)]
+        [SerializeField] private float _alphaThreshold = .5f;
+
+        private void Awake()
+        {
+            Image image = GetComponent<Image>();
+            image.alphaHitTestMinimumThreshold = _alphaThreshold;
+        }
     }
 }
