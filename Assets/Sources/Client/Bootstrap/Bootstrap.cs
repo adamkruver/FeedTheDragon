@@ -24,6 +24,7 @@ using Sources.Client.UseCases.Characters.InventoryComponents.Commands;
 using Sources.Client.UseCases.Characters.InventoryComponents.Queries;
 using Sources.Client.UseCases.Characters.Queries;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
+using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
@@ -39,6 +40,7 @@ namespace Sources.Client.Bootstrap
         private CameraFollowService _cameraFollowService;
         private SignalBus _signalBus;
         private SpawnService<Mushroom> _mushroomSpawnService;
+        private SpawnService<ToxicFrog> _frogSpawnService;
 
         private void Awake()
         {
@@ -181,6 +183,7 @@ namespace Sources.Client.Bootstrap
             signalHandler.Register(inventorySignalController);
 
             _mushroomSpawnService = new SpawnService<Mushroom>(_signalBus);
+            _frogSpawnService = new SpawnService<ToxicFrog>(_signalBus);
         }
 
         private void Start()
@@ -188,6 +191,7 @@ namespace Sources.Client.Bootstrap
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
 
             _mushroomSpawnService.Spawn();
+            _frogSpawnService.Spawn();
         }
 
         private void Update()

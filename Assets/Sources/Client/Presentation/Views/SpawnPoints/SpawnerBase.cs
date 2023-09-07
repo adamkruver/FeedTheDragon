@@ -1,7 +1,7 @@
 ﻿using Sources.Client.Domain.Ingredients;
 using UnityEngine;
 
-namespace Sources.Spawners
+namespace Sources.Client.Presentation.Views.SpawnPoints
 {
     public abstract class SpawnerBase : MonoBehaviour
     {

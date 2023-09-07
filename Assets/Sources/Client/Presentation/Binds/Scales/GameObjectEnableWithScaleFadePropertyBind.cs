@@ -79,9 +79,10 @@ namespace Sources.Client.Presentation.Binds.Scales
             {
                 _scale = Mathf.Lerp(_scale, scale, _scaleSpeed * Time.deltaTime);
                 Transform.localScale = _scale * Vector3.one;
+                
                 yield return null;
             } while (Mathf.Abs(_scale - scale) > 0.01f);
-
+            
             StopScale();
         }
     }

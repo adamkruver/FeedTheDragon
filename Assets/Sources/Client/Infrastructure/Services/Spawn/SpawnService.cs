@@ -1,7 +1,7 @@
 ﻿using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
-using Sources.Spawners;
+using Sources.Client.Presentation.Views.SpawnPoints;
 using UnityEngine;
 
 namespace Sources.Client.Infrastructure.Services.Spawn

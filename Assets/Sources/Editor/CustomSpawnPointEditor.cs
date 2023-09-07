@@ -1,5 +1,4 @@
-using Presentation.Resources.Spawners;
-using Sources.Spawners;
+using Sources.Client.Presentation.Views.SpawnPoints;
 using UnityEditor;
 using UnityEngine;
 

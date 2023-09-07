@@ -1,8 +1,7 @@
 ﻿using Sources.Client.Domain.Ingredients;
-using Sources.Spawners;
 using UnityEngine;
 
-namespace Presentation.Resources.Spawners.Ingredients
+namespace Sources.Client.Presentation.Views.SpawnPoints.Ingredients
 {
     public abstract class IngredientSpawnPointBase : SpawnerBase
     {
