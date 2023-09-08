@@ -1,7 +1,5 @@
-using System;
 using Sources.Client.Controllers.Characters.Signals;
-using Sources.Client.Domain.Characters;
-using Sources.Client.Domain.Components;
+using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
@@ -14,13 +12,14 @@ namespace Sources.Client.Characters
     {
         private CharacterController _characterController;
 
-        private Camera _camera;
         private readonly GetPositionQuery _getPositionQuery;
         private readonly GetSpeedQuery _getSpeedQuery;
         private readonly ICurrentPlayerService _currentPlayerService;
         private readonly ISignalBus _signalBus;
         private readonly int _layer;
+        private readonly PointerUIService _pointerUIService = new PointerUIService();
 
+        private Camera _camera;
         private Vector3 _direction;
 
         private float _speed = 0;
@@ -57,9 +56,9 @@ namespace Sources.Client.Characters
 
                 return;
             }
-
+            
             if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit,
-                    Mathf.Infinity, _layer) == false)
+                    Mathf.Infinity, _layer) == false || _pointerUIService.IsPointerOverUI)
             {
                 _speed -= _speedDelta * Time.deltaTime;
                 _speed = Mathf.Clamp(_speed, 0, 1);
@@ -69,7 +68,7 @@ namespace Sources.Client.Characters
             }
 
             int characterId = _currentPlayerService.CharacterId;
-            
+
             _direction = raycastHit.point - _getPositionQuery.Handle(characterId);
             _direction.y = 0;
 
