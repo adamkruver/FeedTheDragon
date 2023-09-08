@@ -25,12 +25,14 @@ namespace Sources.Client.Domain.Inventories
 
         public void Add(InventorySlot slot)
         {
+            slot.Changed += InvokeChanges;
             _slots.Add(slot);
             Changed?.Invoke();
         }
 
         public void Remove(InventorySlot slot)
         {
+            slot.Changed -= InvokeChanges;
             _slots.Remove(slot);
             Changed?.Invoke();
         }
@@ -40,5 +42,8 @@ namespace Sources.Client.Domain.Inventories
 
         IEnumerator IEnumerable.GetEnumerator() => 
             GetEnumerator();
+
+        private void InvokeChanges() =>
+            Changed?.Invoke();
     }
 }

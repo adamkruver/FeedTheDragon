@@ -6,9 +6,10 @@ namespace Sources.Client.UseCases.Inventories.Queries
 {
     public class CanPushInventoryQuery : ComponentUseCaseBase<Inventory>
     {
-        public CanPushInventoryQuery(IEntityRepository entityRepository) : base(entityRepository)
-        {
-        }
+        private readonly IEntityRepository _repository;
+
+        public CanPushInventoryQuery(IEntityRepository repository) : base(repository) =>
+            _repository = repository;
 
         public bool Handle(int id) =>
             GetComponent(id).CanPush;

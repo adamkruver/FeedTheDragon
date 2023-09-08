@@ -2,10 +2,12 @@
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Controllers.Characters.Signals;
+using Sources.Client.Controllers.Inventories.Signals;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.Presentation.Views;
+using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 using Sources.Client.UseCases.Characters.Queries;
 using UnityEngine;
@@ -14,6 +16,7 @@ namespace Sources.Client.Controllers.Characters.Actions
 {
     public class CreateCharacterSignalAction : ISignalAction<CreateCharacterSignal>
     {
+        private readonly ISignalBus _signalBus;
         private readonly IBindableViewFactory _bindableViewFactory;
         private readonly CurrentPlayerService _currentPlayerService;
         private readonly CameraFollowService _cameraFollowService;
@@ -24,6 +27,7 @@ namespace Sources.Client.Controllers.Characters.Actions
 
         public CreateCharacterSignalAction
         (
+            ISignalBus signalBus,
             IBindableViewFactory bindableViewFactory,
             CurrentPlayerService currentPlayerService,
             CameraFollowService cameraFollowService,
@@ -33,6 +37,7 @@ namespace Sources.Client.Controllers.Characters.Actions
             IInventoryViewFactory inventoryViewFactory
         )
         {
+            _signalBus = signalBus;
             _bindableViewFactory = bindableViewFactory;
             _currentPlayerService = currentPlayerService;
             _cameraFollowService = cameraFollowService;
@@ -44,12 +49,13 @@ namespace Sources.Client.Controllers.Characters.Actions
 
         public void Handle(CreateCharacterSignal signal)
         {
-            int id = _createCurrentCharacterQuery.Handle(signal.SpawnPosition);
-
-            IViewModel viewModel = _characterViewModelFactory.Create(id);
+            int characterId = _createCurrentCharacterQuery.Handle(signal.SpawnPosition);
+            _signalBus.Handle(new CreateInventorySignal(characterId, 2));
+            
+            IViewModel viewModel = _characterViewModelFactory.Create(characterId);
             IBindableView view = _bindableViewFactory.Create("", "Peasant"); //todo: Make constant path
 
-            _currentPlayerService.CharacterId = id;
+            _currentPlayerService.CharacterId = characterId;
             _cameraFollowService.Follow(((MonoBehaviour)view).transform);
 
             view.Bind(viewModel);

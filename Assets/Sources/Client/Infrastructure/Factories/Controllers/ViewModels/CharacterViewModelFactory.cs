@@ -11,16 +11,19 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
         private readonly VisibilityViewModelComponentFactory _visibilityViewModelComponentFactory;
         private readonly AnimationSpeedViewModelComponentFactory _animationSpeedViewModelComponentFactory;
         private readonly LookDirectionViewModelComponentFactory _lookDirectionViewModelComponentFactory;
+        private readonly IngredientInteractorViewModelComponentFactory _ingredientInteractorViewModelComponentFactory;
 
         private readonly CharacterControllerMovementViewModelComponentFactory
             _characterControllerMovementViewModelComponentFactory;
+
 
         public CharacterViewModelFactory
         (
             VisibilityViewModelComponentFactory visibilityViewModelComponentFactory,
             AnimationSpeedViewModelComponentFactory animationSpeedViewModelComponentFactory,
             LookDirectionViewModelComponentFactory lookDirectionViewModelComponentFactory,
-            CharacterControllerMovementViewModelComponentFactory characterControllerMovementViewModelComponentFactory
+            CharacterControllerMovementViewModelComponentFactory characterControllerMovementViewModelComponentFactory,
+            IngredientInteractorViewModelComponentFactory ingredientInteractorViewModelComponentFactory
         )
         {
             _visibilityViewModelComponentFactory = visibilityViewModelComponentFactory;
@@ -28,15 +31,17 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
             _lookDirectionViewModelComponentFactory = lookDirectionViewModelComponentFactory;
             _characterControllerMovementViewModelComponentFactory =
                 characterControllerMovementViewModelComponentFactory;
+            _ingredientInteractorViewModelComponentFactory = ingredientInteractorViewModelComponentFactory;
         }
 
-        public IViewModel Create(int id) =>
+        public IViewModel Create(int characterId) =>
             new CharacterViewModel(new IViewModelComponent[]
             {
-                _characterControllerMovementViewModelComponentFactory.Create(id),
-                _lookDirectionViewModelComponentFactory.Create(id),
-                _visibilityViewModelComponentFactory.Create(id),
-                _animationSpeedViewModelComponentFactory.Create(id)
+                _characterControllerMovementViewModelComponentFactory.Create(characterId),
+                _lookDirectionViewModelComponentFactory.Create(characterId),
+                _visibilityViewModelComponentFactory.Create(characterId),
+                _animationSpeedViewModelComponentFactory.Create(characterId),
+                _ingredientInteractorViewModelComponentFactory.Create(characterId),
             });
     }
 }

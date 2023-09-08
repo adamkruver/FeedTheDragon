@@ -33,6 +33,7 @@ using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
 using Sources.Client.UseCases.Inventories.Commands;
+using Sources.Client.UseCases.Inventories.Listeners;
 using Sources.Client.UseCases.Inventories.Queries;
 using Sources.Client.UseCases.Inventories.Slots.Listeners;
 using Sources.Client.UseCases.Inventories.Slots.Queries;
@@ -105,7 +106,6 @@ namespace Sources.Client.Bootstrap
             GetSpeedQuery getSpeedQuery = new GetSpeedQuery(entityRepository);
 
             HideCommand hideCommand = new HideCommand(entityRepository);
-            CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
 
             InventoryPushItemCommand inventoryPushItemCommand =
                 new InventoryPushItemCommand(entityRepository);
@@ -124,10 +124,21 @@ namespace Sources.Client.Bootstrap
             GetInventorySlotItemTypeQuery getInventorySlotItemTypeQuery =
                 new GetInventorySlotItemTypeQuery(entityRepository);
 
+            AddInventoryListener addInventoryListener = new AddInventoryListener(entityRepository);
+            RemoveInventoryListener removeInventoryListener = new RemoveInventoryListener(entityRepository);
+            CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
+
             #endregion
 
 
             #region ViewModelFactories
+
+            IngredientInteractorViewModelComponentFactory ingredientInteractorViewModelComponentFactory =
+                new IngredientInteractorViewModelComponentFactory(
+                    addInventoryListener,
+                    removeInventoryListener,
+                    canPushInventoryQuery
+                );
 
             VisibilityViewModelComponentFactory visibilityViewModelComponentFactory =
                 new VisibilityViewModelComponentFactory(entityRepository);
@@ -151,7 +162,8 @@ namespace Sources.Client.Bootstrap
                 visibilityViewModelComponentFactory,
                 animationSpeedViewModelComponentFactory,
                 lookDirectionViewModelComponentFactory,
-                characterControllerMovementViewModelComponentFactory
+                characterControllerMovementViewModelComponentFactory,
+                ingredientInteractorViewModelComponentFactory
             );
 
             IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory(
@@ -175,6 +187,7 @@ namespace Sources.Client.Bootstrap
 
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
+                    _signalBus,
                     bindableViewFactory,
                     _currentPlayerService,
                     _cameraFollowService,
@@ -269,7 +282,7 @@ namespace Sources.Client.Bootstrap
         private void Start()
         {
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
-            _signalBus.Handle(new CreateInventorySignal(_currentPlayerService.CharacterId, 2));
+
 
             _mushroomSpawnService.Spawn();
             _frogSpawnService.Spawn();
