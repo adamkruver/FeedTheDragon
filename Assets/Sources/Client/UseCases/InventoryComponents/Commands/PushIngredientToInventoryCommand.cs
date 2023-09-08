@@ -3,7 +3,7 @@ using Sources.Client.Domain.Ingredients;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.UseCases.Common.Components;
 
-namespace Sources.Client.UseCases.Characters.InventoryComponents.Commands
+namespace Sources.Client.UseCases.InventoryComponents.Commands
 {
     public class PushIngredientToInventoryCommand : ComponentUseCaseBase<InventoryComponent>
     {

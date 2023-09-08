@@ -1,22 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sources.Client.Domain.Ingredients;
-using UnityEngine;
 
 namespace Sources.Client.Domain.Components
 {
     public class InventoryComponent : IComponent
     {
-        private readonly int _maxCount;
         private readonly List<Ingredient> _ingredients = new List<Ingredient>();
 
         public InventoryComponent(int maxCount)
         {
-            _maxCount = maxCount;
+            MaxCount = maxCount;
         }
 
         public bool IsEmpty => _ingredients.Count == 0;
+        public bool CanPush => _ingredients.Count < MaxCount;
+        public int MaxCount { get; }
 
-        public bool CanPush => _ingredients.Count < _maxCount;
+        public IEnumerable<IIngredientType> IngredientTypes => _ingredients.Select(ingredient => ingredient.Type);
+
+        public event Action Changed;
 
         public bool TryPush(Ingredient ingredient)
         {
@@ -24,8 +28,8 @@ namespace Sources.Client.Domain.Components
                 return false;
 
             _ingredients.Add(ingredient);
+            Changed?.Invoke();
 
-            Debug.Log("Pushed ingredient to inventory " + ingredient.GetType().Name);
             return true;
         }
 
@@ -38,6 +42,7 @@ namespace Sources.Client.Domain.Components
 
             ingredient = _ingredients[0];
             _ingredients.Remove(ingredient);
+            Changed?.Invoke();
 
             return true;
         }

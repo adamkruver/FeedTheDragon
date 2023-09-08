@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Sources.Client.Infrastructure.Factories.Domain.Characters
 {
-    public class PeasantFactory : ICharacterFactory
+    public class PeasantFactory : IPeasantFactory
     {
-        public Character Create(int id, CharacterSpawnInfo spawnInfo)
+        public Character Create(int id, PeasantSpawnInfo spawnInfo)
         {
             Character character = new Character(id);
             

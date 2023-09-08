@@ -9,29 +9,29 @@ namespace Sources.Client.UseCases.Characters.Queries
     public class CreateCurrentCharacterQuery
     {
         private readonly IEntityRepository _entityRepository;
-        private readonly ICharacterFactory _characterFactory;
+        private readonly IPeasantFactory _peasantFactory;
         private readonly IIdGenerator _idGenerator;
 
         public CreateCurrentCharacterQuery
         (
             IEntityRepository entityRepository,
-            ICharacterFactory characterFactory,
+            IPeasantFactory peasantFactory,
             IIdGenerator idGenerator
         )
         {
             _entityRepository = entityRepository;
-            _characterFactory = characterFactory;
+            _peasantFactory = peasantFactory;
             _idGenerator = idGenerator;
         }
 
         public int Handle(Vector3 spawnPosition)
         {
-            CharacterSpawnInfo spawnInfo = new CharacterSpawnInfo(spawnPosition);
+            PeasantSpawnInfo spawnInfo = new PeasantSpawnInfo(spawnPosition);
             int id = _idGenerator.GetId();
 
-            Character character = _characterFactory.Create(id, spawnInfo);
+            Character character = _peasantFactory.Create(id, spawnInfo);
             _entityRepository.Add(character);
-            
+
             return id;
         }
     }

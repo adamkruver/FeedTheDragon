@@ -8,11 +8,13 @@ using Sources.Client.Controllers.Ingredients;
 using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
+using Sources.Client.Controllers.Inventories.Signals;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
+using Sources.Client.Infrastructure.Providers;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
@@ -20,8 +22,6 @@ using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
-using Sources.Client.UseCases.Characters.InventoryComponents.Commands;
-using Sources.Client.UseCases.Characters.InventoryComponents.Queries;
 using Sources.Client.UseCases.Characters.Queries;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
@@ -29,6 +29,8 @@ using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
+using Sources.Client.UseCases.InventoryComponents.Commands;
+using Sources.Client.UseCases.InventoryComponents.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Bootstrap
@@ -45,17 +47,19 @@ namespace Sources.Client.Bootstrap
         {
             Camera mainCamera = Camera.main;
 
+            ResourceLoader resourceLoader = new ResourceLoader();
+
             Binder binder = new Binder();
+            BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
+
+            EntityRepository entityRepository = new EntityRepository();
+
             CurrentPlayerService currentPlayerService = new CurrentPlayerService();
             IdGenerator idGenerator = new IdGenerator(10);
             _cameraFollowService = new CameraFollowService(mainCamera.transform.parent);
 
             SignalHandler signalHandler = new SignalHandler();
             _signalBus = new SignalBus(signalHandler);
-
-            PeasantFactory peasantFactory = new PeasantFactory();
-            EntityRepository entityRepository = new EntityRepository();
-            BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
 
             #region ViewModelFactories
 
@@ -90,9 +94,14 @@ namespace Sources.Client.Bootstrap
                 ingredientClickViewModelComponentFactory
             );
 
+            InventoryViewModelFactory inventoryViewModelFactory =
+                new InventoryViewModelFactory(entityRepository, visibilityViewModelComponentFactory, resourceLoader);
+
             #endregion
 
             #region UseCases
+
+            PeasantFactory peasantFactory = new PeasantFactory();
 
             CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery(
                 entityRepository,
@@ -109,21 +118,23 @@ namespace Sources.Client.Bootstrap
 
             HideCommand hideCommand = new HideCommand(entityRepository);
             CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
-            PushIngredientToInventoryCommand pushIngredientToInventoryCommand = 
+
+            PushIngredientToInventoryCommand pushIngredientToInventoryCommand =
                 new PushIngredientToInventoryCommand(entityRepository);
+
+            TryPopIngredientFromInventoryQuery tryPopIngredientFromInventoryQuery =
+                new TryPopIngredientFromInventoryQuery(entityRepository);
 
             #endregion
 
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
-                    peasantFactory,
-                    entityRepository,
                     bindableViewFactory,
                     currentPlayerService,
                     _cameraFollowService,
-                    idGenerator,
                     characterViewModelFactory,
-                    createCurrentCharacterQuery
+                    createCurrentCharacterQuery,
+                    inventoryViewModelFactory
                 );
 
             CharacterMoveSignalAction characterMoveSignalAction =
@@ -134,7 +145,7 @@ namespace Sources.Client.Bootstrap
                 new CharacterSpeedSignalAction(currentPlayerService, setAnimationSpeedCommand);
 
             CharacterSignalController characterSignalController = new CharacterSignalController(
-                new ISignalAction[] 
+                new ISignalAction[]
                 {
                     createCharacterSignalAction,
                     characterMoveSignalAction,
@@ -171,10 +182,17 @@ namespace Sources.Client.Bootstrap
                 hideCommand
             );
 
+            InventoryPopSignalAction inventoryPopSignalAction = new InventoryPopSignalAction(
+                currentPlayerService,
+                entityRepository,
+                tryPopIngredientFromInventoryQuery
+            );
+
             InventorySignalController inventorySignalController = new InventorySignalController(
                 new ISignalAction[]
                 {
-                    inventoryPushSignalAction
+                    inventoryPushSignalAction,
+                    inventoryPopSignalAction
                 });
 
             signalHandler.Register(characterSignalController);
@@ -196,6 +214,9 @@ namespace Sources.Client.Bootstrap
         private void Update()
         {
             _characterMovementService.Update();
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                _signalBus.Handle(new PopInventorySignal());
         }
 
         private void LateUpdate()
