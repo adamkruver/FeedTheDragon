@@ -9,17 +9,12 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
     public class InventoryViewModelFactory
     {
         private readonly VisibilityViewModelComponentFactory _visibilityViewModelComponentFactory;
-        private readonly InventoryChangedViewModelComponentFactory _inventoryChangedViewModelComponentFactory;
 
         public InventoryViewModelFactory(
-            IEntityRepository entityRepository,
-            VisibilityViewModelComponentFactory visibilityViewModelComponentFactory,
-            IResourceLoader resourceLoader
+            VisibilityViewModelComponentFactory visibilityViewModelComponentFactory
         )
         {
             _visibilityViewModelComponentFactory = visibilityViewModelComponentFactory;
-            _inventoryChangedViewModelComponentFactory =
-                new InventoryChangedViewModelComponentFactory(entityRepository, resourceLoader);
         }
 
         public IViewModel Create(int id)
@@ -27,7 +22,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
             return new InventoryViewModel(
                 new[]
                 {
-                    _inventoryChangedViewModelComponentFactory.Create(id),
                     _visibilityViewModelComponentFactory.Create(id)
                 }
             );

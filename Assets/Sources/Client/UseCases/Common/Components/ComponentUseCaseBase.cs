@@ -2,6 +2,7 @@
 using Sources.Client.Domain;
 using Sources.Client.Domain.Entities;
 using Sources.Client.InfrastructureInterfaces.Repositories;
+using UnityEngine;
 
 namespace Sources.Client.UseCases.Common.Components
 {

@@ -5,6 +5,7 @@ using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
+using Sources.Client.InfrastructureInterfaces.Factories.Domain.Presentation.Views;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 using Sources.Client.UseCases.Characters.Queries;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Sources.Client.Controllers.Characters.Actions
         private readonly CharacterViewModelFactory _characterViewModelFactory;
         private readonly CreateCurrentCharacterQuery _createCurrentCharacterQuery;
         private readonly InventoryViewModelFactory _inventoryViewModelFactory;
+        private readonly IInventoryViewFactory _inventoryViewFactory;
 
         public CreateCharacterSignalAction
         (
@@ -27,7 +29,8 @@ namespace Sources.Client.Controllers.Characters.Actions
             CameraFollowService cameraFollowService,
             CharacterViewModelFactory characterViewModelFactory,
             CreateCurrentCharacterQuery createCurrentCharacterQuery,
-            InventoryViewModelFactory inventoryViewModelFactory
+            InventoryViewModelFactory inventoryViewModelFactory,
+            IInventoryViewFactory inventoryViewFactory
         )
         {
             _bindableViewFactory = bindableViewFactory;
@@ -36,22 +39,19 @@ namespace Sources.Client.Controllers.Characters.Actions
             _characterViewModelFactory = characterViewModelFactory;
             _createCurrentCharacterQuery = createCurrentCharacterQuery;
             _inventoryViewModelFactory = inventoryViewModelFactory;
+            _inventoryViewFactory = inventoryViewFactory;
         }
 
         public void Handle(CreateCharacterSignal signal)
         {
             int id = _createCurrentCharacterQuery.Handle(signal.SpawnPosition);
-            
+
             IViewModel viewModel = _characterViewModelFactory.Create(id);
             IBindableView view = _bindableViewFactory.Create("", "Peasant"); //todo: Make constant path
-            
-            IBindableView inventoryBindable = _bindableViewFactory.Create("", "InventoryView"); //todo: Make constant path
-            IViewModel inventoryViewModel = _inventoryViewModelFactory.Create(id); //todo : Должно быть не тут
-            
+
             _currentPlayerService.CharacterId = id;
             _cameraFollowService.Follow(((MonoBehaviour)view).transform);
 
-            inventoryBindable.Bind(inventoryViewModel);
             view.Bind(viewModel);
         }
     }

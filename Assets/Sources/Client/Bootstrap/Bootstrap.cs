@@ -9,11 +9,13 @@ using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Controllers.Inventories.Signals;
+using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
+using Sources.Client.Infrastructure.Factories.Presentation.Views;
 using Sources.Client.Infrastructure.Providers;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
@@ -21,6 +23,7 @@ using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.SignalBus;
+using Sources.Client.Infrastructure.ViewProviders;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.UseCases.Characters.Queries;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
@@ -29,8 +32,10 @@ using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
-using Sources.Client.UseCases.InventoryComponents.Commands;
-using Sources.Client.UseCases.InventoryComponents.Queries;
+using Sources.Client.UseCases.Inventories.Commands;
+using Sources.Client.UseCases.Inventories.Queries;
+using Sources.Client.UseCases.Inventories.Slots.Listeners;
+using Sources.Client.UseCases.Inventories.Slots.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Bootstrap
@@ -40,8 +45,9 @@ namespace Sources.Client.Bootstrap
         private CharacterMovementService _characterMovementService;
         private CameraFollowService _cameraFollowService;
         private SignalBus _signalBus;
-        private SpawnService<Mushroom> _mushroomSpawnService;
+        private SpawnService<Chanterelle> _mushroomSpawnService;
         private SpawnService<ToxicFrog> _frogSpawnService;
+        private CurrentPlayerService _currentPlayerService;
 
         private void Awake()
         {
@@ -50,16 +56,76 @@ namespace Sources.Client.Bootstrap
             ResourceLoader resourceLoader = new ResourceLoader();
 
             Binder binder = new Binder();
+            PrefabFactory prefabFactory = new PrefabFactory();
             BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
+            ViewProvider viewProvider = new ViewProvider();
 
             EntityRepository entityRepository = new EntityRepository();
 
-            CurrentPlayerService currentPlayerService = new CurrentPlayerService();
+            _currentPlayerService = new CurrentPlayerService();
             IdGenerator idGenerator = new IdGenerator(10);
             _cameraFollowService = new CameraFollowService(mainCamera.transform.parent);
 
             SignalHandler signalHandler = new SignalHandler();
             _signalBus = new SignalBus(signalHandler);
+
+            IIngredientType[] ingredientTypes = new IIngredientType[]
+            {
+                new ToxicFrog(),
+                new Chanterelle()
+            };
+
+            #region ViewFactories
+
+            IngredientViewFactory ingredientViewFactory = new IngredientViewFactory(prefabFactory);
+
+            InventorySlotViewFactory inventorySlotViewFactory =
+                new InventorySlotViewFactory(bindableViewFactory, ingredientViewFactory, ingredientTypes);
+
+            InventoryViewFactory inventoryViewFactory =
+                new InventoryViewFactory(bindableViewFactory);
+
+            #endregion
+
+            #region UseCases
+
+            PeasantFactory peasantFactory = new PeasantFactory();
+
+            CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery(
+                entityRepository,
+                peasantFactory,
+                idGenerator
+            );
+
+            MovePositionCommand movePositionCommand = new MovePositionCommand(entityRepository);
+            SetLookDirectionCommand setLookDirectionCommand = new SetLookDirectionCommand(entityRepository);
+            SetAnimationSpeedCommand setAnimationSpeedCommand = new SetAnimationSpeedCommand(entityRepository);
+
+            GetPositionQuery getPositionQuery = new GetPositionQuery(entityRepository);
+            GetSpeedQuery getSpeedQuery = new GetSpeedQuery(entityRepository);
+
+            HideCommand hideCommand = new HideCommand(entityRepository);
+            CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
+
+            InventoryPushItemCommand inventoryPushItemCommand =
+                new InventoryPushItemCommand(entityRepository);
+
+            InventoryPopItemQuery inventoryPopItemQuery =
+                new InventoryPopItemQuery(entityRepository);
+
+            GetInventoryIdQuery getInventoryIdQuery = new GetInventoryIdQuery(entityRepository);
+
+            CreateInventoryQuery createInventoryQuery = new CreateInventoryQuery(entityRepository, idGenerator);
+            CreateInventorySlotQuery createInventorySlotQuery =
+                new CreateInventorySlotQuery(entityRepository, idGenerator);
+
+            AddInventorySlotListener addInventorySlotListener = new AddInventorySlotListener(entityRepository);
+            RemoveInventorySlotListener removeInventorySlotListener = new RemoveInventorySlotListener(entityRepository);
+            GetInventorySlotItemTypeQuery getInventorySlotItemTypeQuery =
+                new GetInventorySlotItemTypeQuery(entityRepository);
+
+            #endregion
+
 
             #region ViewModelFactories
 
@@ -95,54 +161,35 @@ namespace Sources.Client.Bootstrap
             );
 
             InventoryViewModelFactory inventoryViewModelFactory =
-                new InventoryViewModelFactory(entityRepository, visibilityViewModelComponentFactory, resourceLoader);
+                new InventoryViewModelFactory(visibilityViewModelComponentFactory);
 
-            #endregion
-
-            #region UseCases
-
-            PeasantFactory peasantFactory = new PeasantFactory();
-
-            CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery(
-                entityRepository,
-                peasantFactory,
-                idGenerator
+            InventorySlotViewModelFactory inventorySlotViewModelFactory = new InventorySlotViewModelFactory(
+                visibilityViewModelComponentFactory,
+                addInventorySlotListener,
+                removeInventorySlotListener,
+                getInventorySlotItemTypeQuery
             );
 
-            MovePositionCommand movePositionCommand = new MovePositionCommand(entityRepository);
-            SetLookDirectionCommand setLookDirectionCommand = new SetLookDirectionCommand(entityRepository);
-            SetAnimationSpeedCommand setAnimationSpeedCommand = new SetAnimationSpeedCommand(entityRepository);
-
-            GetPositionQuery getPositionQuery = new GetPositionQuery(entityRepository);
-            GetSpeedQuery getSpeedQuery = new GetSpeedQuery(entityRepository);
-
-            HideCommand hideCommand = new HideCommand(entityRepository);
-            CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
-
-            PushIngredientToInventoryCommand pushIngredientToInventoryCommand =
-                new PushIngredientToInventoryCommand(entityRepository);
-
-            TryPopIngredientFromInventoryQuery tryPopIngredientFromInventoryQuery =
-                new TryPopIngredientFromInventoryQuery(entityRepository);
-
             #endregion
+
 
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
                     bindableViewFactory,
-                    currentPlayerService,
+                    _currentPlayerService,
                     _cameraFollowService,
                     characterViewModelFactory,
                     createCurrentCharacterQuery,
-                    inventoryViewModelFactory
+                    inventoryViewModelFactory,
+                    inventoryViewFactory
                 );
 
             CharacterMoveSignalAction characterMoveSignalAction =
-                new CharacterMoveSignalAction(currentPlayerService, movePositionCommand);
+                new CharacterMoveSignalAction(_currentPlayerService, movePositionCommand);
             CharacterRotateSignalAction characterRotateSignalAction =
-                new CharacterRotateSignalAction(currentPlayerService, setLookDirectionCommand);
+                new CharacterRotateSignalAction(_currentPlayerService, setLookDirectionCommand);
             CharacterSpeedSignalAction characterSpeedSignalAction =
-                new CharacterSpeedSignalAction(currentPlayerService, setAnimationSpeedCommand);
+                new CharacterSpeedSignalAction(_currentPlayerService, setAnimationSpeedCommand);
 
             CharacterSignalController characterSignalController = new CharacterSignalController(
                 new ISignalAction[]
@@ -155,7 +202,7 @@ namespace Sources.Client.Bootstrap
             );
 
             _characterMovementService =
-                new CharacterMovementService(currentPlayerService, _signalBus, mainCamera, getPositionQuery,
+                new CharacterMovementService(_currentPlayerService, _signalBus, mainCamera, getPositionQuery,
                     getSpeedQuery);
 
             IngredientFactory ingredientFactory = new IngredientFactory();
@@ -175,22 +222,38 @@ namespace Sources.Client.Bootstrap
                 });
 
             InventoryPushSignalAction inventoryPushSignalAction = new InventoryPushSignalAction(
-                entityRepository,
-                currentPlayerService,
-                canPushInventoryQuery,
-                pushIngredientToInventoryCommand,
+                _currentPlayerService,
+                inventoryPushItemCommand,
+                getInventoryIdQuery,
                 hideCommand
             );
 
             InventoryPopSignalAction inventoryPopSignalAction = new InventoryPopSignalAction(
-                currentPlayerService,
-                entityRepository,
-                tryPopIngredientFromInventoryQuery
+                _currentPlayerService,
+                inventoryPopItemQuery,
+                getInventoryIdQuery
+            );
+
+            CreateInventorySignalAction createInventorySignalAction = new CreateInventorySignalAction(
+                _signalBus,
+                inventoryViewFactory,
+                inventoryViewModelFactory,
+                viewProvider,
+                createInventoryQuery
+            );
+
+            CreateInventorySlotSignalAction createInventorySlotSignalAction = new CreateInventorySlotSignalAction(
+                viewProvider,
+                inventorySlotViewFactory,
+                inventorySlotViewModelFactory,
+                createInventorySlotQuery
             );
 
             InventorySignalController inventorySignalController = new InventorySignalController(
                 new ISignalAction[]
                 {
+                    createInventorySignalAction,
+                    createInventorySlotSignalAction,
                     inventoryPushSignalAction,
                     inventoryPopSignalAction
                 });
@@ -199,13 +262,14 @@ namespace Sources.Client.Bootstrap
             signalHandler.Register(ingredientSignalController);
             signalHandler.Register(inventorySignalController);
 
-            _mushroomSpawnService = new SpawnService<Mushroom>(_signalBus);
+            _mushroomSpawnService = new SpawnService<Chanterelle>(_signalBus);
             _frogSpawnService = new SpawnService<ToxicFrog>(_signalBus);
         }
 
         private void Start()
         {
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
+            _signalBus.Handle(new CreateInventorySignal(_currentPlayerService.CharacterId, 2));
 
             _mushroomSpawnService.Spawn();
             _frogSpawnService.Spawn();

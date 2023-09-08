@@ -1,35 +1,34 @@
 ﻿using System;
 using Sources.Client.Controllers.Inventories.Signals;
-using Sources.Client.Domain.Ingredients;
-using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
-using Sources.Client.UseCases.InventoryComponents.Queries;
+using Sources.Client.UseCases.Inventories.Queries;
 
 namespace Sources.Client.Controllers.Inventories.Actions
 {
     public class InventoryPopSignalAction : ISignalAction<PopInventorySignal>
     {
         private readonly ICurrentPlayerService _currentPlayerService;
-        private readonly IEntityRepository _entityRepository;
-        private readonly TryPopIngredientFromInventoryQuery _tryPopIngredientFromInventoryQuery;
+        private readonly InventoryPopItemQuery _inventoryPopItemQuery;
+        private readonly GetInventoryIdQuery _getInventoryIdQuery;
 
         public InventoryPopSignalAction
         (
             ICurrentPlayerService currentPlayerService,
-            IEntityRepository entityRepository,
-            TryPopIngredientFromInventoryQuery tryPopIngredientFromInventoryQuery
+            InventoryPopItemQuery inventoryPopItemQuery,
+            GetInventoryIdQuery getInventoryIdQuery
         )
         {
             _currentPlayerService = currentPlayerService;
-            _entityRepository = entityRepository;
-            _tryPopIngredientFromInventoryQuery = tryPopIngredientFromInventoryQuery;
+            _inventoryPopItemQuery = inventoryPopItemQuery;
+            _getInventoryIdQuery = getInventoryIdQuery;
         }
 
         public void Handle(PopInventorySignal signal)
         {
-            _tryPopIngredientFromInventoryQuery.Handle(_currentPlayerService.CharacterId, out Ingredient _);
-            
+            int inventoryId = _getInventoryIdQuery.Handle(_currentPlayerService.CharacterId);
+            int itemId = _inventoryPopItemQuery.Handle(inventoryId);
+
             throw new NotImplementedException();
         }
     }

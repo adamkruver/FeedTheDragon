@@ -37,7 +37,6 @@ namespace Sources.Client.Controllers.ViewModels.Components
         public void Enable()
         {
             OnVisibilityChanged();
-            
             _addVisibilityListener.Handle(_id, OnVisibilityChanged);
         }
 

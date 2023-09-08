@@ -10,15 +10,14 @@ namespace Sources.Client.Infrastructure.Factories.Domain.Characters
         public Character Create(int id, PeasantSpawnInfo spawnInfo)
         {
             Character character = new Character(id);
-            
+
             //TODO: Move values into Config
-            
+
             character.AddComponent(new VisibilityComponent(true));
             character.AddComponent(new LookDirectionComponent(Vector3.zero));
             character.AddComponent(new PositionComponent(spawnInfo.Position));
             character.AddComponent(new AnimationSpeedComponent(10));
-            character.AddComponent(new InventoryComponent(4));
-            
+
             return character;
         }
     }
