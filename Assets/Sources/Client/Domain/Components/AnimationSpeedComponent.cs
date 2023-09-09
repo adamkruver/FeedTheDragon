@@ -1,25 +1,19 @@
-﻿using System;
+﻿using Utils.LiveData;
 
 namespace Sources.Client.Domain.Components
 {
     public class AnimationSpeedComponent : IComponent
     {
         private readonly float _multiplier;
-        
-        private float _value;
+
+        private readonly MutableLiveData<float> _animationSpeed = new MutableLiveData<float>();
 
         public AnimationSpeedComponent(float multiplier) =>
             _multiplier = multiplier;
 
-        public event Action Changed;
+        public LiveData<float> AnimationSpeed => _animationSpeed;
 
-        public float Value => _value * _multiplier;
-
-        public void Set(float speed)
-        {
-            _value = speed;
-            
-            Changed?.Invoke();
-        }
+        public void Set(float speed) =>
+            _animationSpeed.Value = speed * _multiplier;
     }
 }

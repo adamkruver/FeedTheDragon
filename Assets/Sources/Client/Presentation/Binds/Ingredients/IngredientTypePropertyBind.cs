@@ -1,19 +1,19 @@
-﻿using Domain.Frameworks.Mvvm.Properties;
-using Sources.Client.Domain.Ingredients;
+﻿using System;
+using Domain.Frameworks.Mvvm.Properties;
 using Sources.Client.Presentation.Views.Inventories;
 using Sources.Client.PresentationInterfaces.Binds.Ingredients;
 using UnityEngine;
 
 namespace Sources.Client.Presentation.Binds.Ingredients
 {
-    public class IngredientTypePropertyBind : BindableViewProperty<IIngredientType>, IIngredientTypePropertyBind
+    public class IngredientTypePropertyBind : BindableViewProperty<Type>, IIngredientTypePropertyBind
     {
         [SerializeField] private InventorySlotView _view;
 
-        public override IIngredientType BindableProperty
+        public override Type BindableProperty
         {
-            get { return null; }
-            set { _view.Show(value); }
+            get => null;
+            set => _view.Show(value);
         }
     }
 }

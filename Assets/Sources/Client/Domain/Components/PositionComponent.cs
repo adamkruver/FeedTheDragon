@@ -1,29 +1,21 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using Utils.LiveData;
 
 namespace Sources.Client.Domain.Components
 {
     public class PositionComponent : IComponent
     {
-        public PositionComponent(Vector3 value)
-        {
-            Value = value;
-        }
+        private readonly MutableLiveData<Vector3> _position;
 
-        public event Action Changed;
-        
-        public Vector3 Value { get; private set; }
+        public PositionComponent(Vector3 value) =>
+            _position = new MutableLiveData<Vector3>(value);
 
-        public void Set(Vector3 position)
-        {
-            Value = position;
-        }
+        public LiveData<Vector3> Position => _position;
 
-        public void Move(Vector3 signalMoveDelta)
-        {
-            Value += signalMoveDelta;
+        public void Set(Vector3 position) =>
+            _position.Value = position;
 
-            Changed?.Invoke();
-        }
+        public void Move(Vector3 signalMoveDelta) =>
+            _position.Value += signalMoveDelta;
     }
 }

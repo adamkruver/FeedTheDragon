@@ -1,5 +1,6 @@
 ﻿using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
+using Utils.LiveData;
 
 namespace Sources.Client.UseCases.Common.Components.Visibilities.Queries
 {
@@ -9,7 +10,7 @@ namespace Sources.Client.UseCases.Common.Components.Visibilities.Queries
         {
         }
 
-        public bool Handle(int id) =>
+        public LiveData<bool> Handle(int id) =>
             GetComponent(id).IsVisible;
     }
 }

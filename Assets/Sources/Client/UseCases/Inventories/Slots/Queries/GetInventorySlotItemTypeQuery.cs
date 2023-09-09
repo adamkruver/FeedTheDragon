@@ -2,6 +2,7 @@
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Inventories;
 using Sources.Client.InfrastructureInterfaces.Repositories;
+using Utils.LiveData;
 
 namespace Sources.Client.UseCases.Inventories.Slots.Queries
 {
@@ -14,7 +15,7 @@ namespace Sources.Client.UseCases.Inventories.Slots.Queries
             _repository = repository;
         }
 
-        public IIngredientType Handle(int id)
+        public LiveData<Type> Handle(int id)
         {
             if (_repository.Get(id) is not InventorySlot slot)
                 throw new InvalidCastException();

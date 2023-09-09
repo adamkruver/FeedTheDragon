@@ -5,6 +5,7 @@ using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using UnityEngine;
+using Utils.LiveData;
 
 namespace Sources.Client.Characters
 {
@@ -12,10 +13,10 @@ namespace Sources.Client.Characters
     {
         private CharacterController _characterController;
 
-        private readonly GetPositionQuery _getPositionQuery;
-        private readonly GetSpeedQuery _getSpeedQuery;
-        private readonly ICurrentPlayerService _currentPlayerService;
         private readonly ISignalBus _signalBus;
+        private readonly LiveData<Vector3> _position;
+        private readonly LiveData<float> _animationSpeed;
+
         private readonly int _layer;
         private readonly PointerUIService _pointerUIService = new PointerUIService();
 
@@ -35,19 +36,15 @@ namespace Sources.Client.Characters
         )
         {
             _camera = camera;
-            _getPositionQuery = getPositionQuery;
-            _getSpeedQuery = getSpeedQuery;
-            _currentPlayerService = currentPlayerService;
+            _position = getPositionQuery.Handle(currentPlayerService.CharacterId);
+            _animationSpeed = getSpeedQuery.Handle(currentPlayerService.CharacterId);
             _signalBus = signalBus;
 
             _layer = 1 << LayerMask.NameToLayer("Terrain"); //todo Move to constans
         }
 
-
         public void Update()
         {
-//            Debug.Log(_speed);
-
             if (Input.GetMouseButton(0) == false)
             {
                 _speed -= _speedDelta * Time.deltaTime;
@@ -56,7 +53,7 @@ namespace Sources.Client.Characters
 
                 return;
             }
-            
+
             if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit,
                     Mathf.Infinity, _layer) == false || _pointerUIService.IsPointerOverUI)
             {
@@ -67,12 +64,10 @@ namespace Sources.Client.Characters
                 return;
             }
 
-            int characterId = _currentPlayerService.CharacterId;
-
-            _direction = raycastHit.point - _getPositionQuery.Handle(characterId);
+            _direction = raycastHit.point - _position.Value;
             _direction.y = 0;
 
-            Vector3 moveDelta = _getSpeedQuery.Handle(characterId) * Time.deltaTime * _direction.normalized;
+            Vector3 moveDelta = _animationSpeed.Value * Time.deltaTime * _direction.normalized;
 
             _signalBus.Handle(new CharacterRotateSignal(moveDelta));
             _signalBus.Handle(new CharacterMoveSignal(moveDelta));

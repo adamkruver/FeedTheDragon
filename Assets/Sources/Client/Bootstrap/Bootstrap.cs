@@ -16,7 +16,6 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
-using Sources.Client.Infrastructure.Providers;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
@@ -28,14 +27,13 @@ using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.UseCases.Characters.Queries;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
-using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
+using Sources.Client.UseCases.Common.Components.LookDirection.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
 using Sources.Client.UseCases.Inventories.Commands;
 using Sources.Client.UseCases.Inventories.Listeners;
 using Sources.Client.UseCases.Inventories.Queries;
-using Sources.Client.UseCases.Inventories.Slots.Listeners;
 using Sources.Client.UseCases.Inventories.Slots.Queries;
 using UnityEngine;
 
@@ -49,12 +47,12 @@ namespace Sources.Client.Bootstrap
         private SpawnService<Chanterelle> _mushroomSpawnService;
         private SpawnService<ToxicFrog> _frogSpawnService;
         private CurrentPlayerService _currentPlayerService;
+        private GetPositionQuery _getPositionQuery;
+        private GetSpeedQuery _getSpeedQuery;
 
         private void Awake()
         {
             Camera mainCamera = Camera.main;
-
-            ResourceLoader resourceLoader = new ResourceLoader();
 
             Binder binder = new Binder();
             PrefabFactory prefabFactory = new PrefabFactory();
@@ -102,8 +100,8 @@ namespace Sources.Client.Bootstrap
             SetLookDirectionCommand setLookDirectionCommand = new SetLookDirectionCommand(entityRepository);
             SetAnimationSpeedCommand setAnimationSpeedCommand = new SetAnimationSpeedCommand(entityRepository);
 
-            GetPositionQuery getPositionQuery = new GetPositionQuery(entityRepository);
-            GetSpeedQuery getSpeedQuery = new GetSpeedQuery(entityRepository);
+            _getPositionQuery = new GetPositionQuery(entityRepository);
+            _getSpeedQuery = new GetSpeedQuery(entityRepository);
 
             HideCommand hideCommand = new HideCommand(entityRepository);
 
@@ -119,8 +117,6 @@ namespace Sources.Client.Bootstrap
             CreateInventorySlotQuery createInventorySlotQuery =
                 new CreateInventorySlotQuery(entityRepository, idGenerator);
 
-            AddInventorySlotListener addInventorySlotListener = new AddInventorySlotListener(entityRepository);
-            RemoveInventorySlotListener removeInventorySlotListener = new RemoveInventorySlotListener(entityRepository);
             GetInventorySlotItemTypeQuery getInventorySlotItemTypeQuery =
                 new GetInventorySlotItemTypeQuery(entityRepository);
 
@@ -129,7 +125,6 @@ namespace Sources.Client.Bootstrap
             CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
 
             #endregion
-
 
             #region ViewModelFactories
 
@@ -177,13 +172,10 @@ namespace Sources.Client.Bootstrap
 
             InventorySlotViewModelFactory inventorySlotViewModelFactory = new InventorySlotViewModelFactory(
                 visibilityViewModelComponentFactory,
-                addInventorySlotListener,
-                removeInventorySlotListener,
                 getInventorySlotItemTypeQuery
             );
 
             #endregion
-
 
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
@@ -213,10 +205,6 @@ namespace Sources.Client.Bootstrap
                     characterSpeedSignalAction,
                 }
             );
-
-            _characterMovementService =
-                new CharacterMovementService(_currentPlayerService, _signalBus, mainCamera, getPositionQuery,
-                    getSpeedQuery);
 
             IngredientFactory ingredientFactory = new IngredientFactory();
 
@@ -282,7 +270,9 @@ namespace Sources.Client.Bootstrap
         private void Start()
         {
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
-
+            _characterMovementService =
+                new CharacterMovementService(_currentPlayerService, _signalBus, Camera.main, _getPositionQuery,
+                    _getSpeedQuery);
 
             _mushroomSpawnService.Spawn();
             _frogSpawnService.Spawn();

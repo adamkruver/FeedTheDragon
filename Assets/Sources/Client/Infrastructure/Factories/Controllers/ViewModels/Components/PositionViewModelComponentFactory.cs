@@ -1,7 +1,6 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
-using Sources.Client.UseCases.Common.Components.Positions.Listeners;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components
@@ -17,22 +16,9 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Compone
 
         public IViewModelComponent Create(int id)
         {
-            AddPositionListener addPositionListener =
-                new AddPositionListener(_entityRepository);
+            GetPositionQuery getPositionQuery = new GetPositionQuery(_entityRepository);
 
-            RemovePositionListener removePositionListener =
-                new RemovePositionListener(_entityRepository);
-
-            GetPositionQuery getPositionQuery =
-                new GetPositionQuery(_entityRepository);
-
-            return new PositionViewModelComponent
-            (
-                id,
-                addPositionListener,
-                removePositionListener,
-                getPositionQuery
-            );
+            return new PositionViewModelComponent(id, getPositionQuery);
         }
     }
 }

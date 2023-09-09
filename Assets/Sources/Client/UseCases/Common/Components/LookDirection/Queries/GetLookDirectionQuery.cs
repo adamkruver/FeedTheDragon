@@ -1,8 +1,9 @@
 ﻿using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using UnityEngine;
+using Utils.LiveData;
 
-namespace Sources.Client.UseCases.Common.Components.LookDirections.Queries
+namespace Sources.Client.UseCases.Common.Components.LookDirection.Queries
 {
     public class GetLookDirectionQuery : ComponentUseCaseBase<LookDirectionComponent>
     {
@@ -10,7 +11,7 @@ namespace Sources.Client.UseCases.Common.Components.LookDirections.Queries
         {
         }
 
-        public Vector3 Handle(int id) =>
-            GetComponent(id).Value;
+        public LiveData<Vector3> Handle(int id) =>
+            GetComponent(id).Direction;
     }
 }

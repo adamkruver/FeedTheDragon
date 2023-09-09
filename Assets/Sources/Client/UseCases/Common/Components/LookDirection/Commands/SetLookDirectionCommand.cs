@@ -2,7 +2,7 @@
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using UnityEngine;
 
-namespace Sources.Client.UseCases.Common.Components.LookDirections.Commands
+namespace Sources.Client.UseCases.Common.Components.LookDirection.Commands
 {
     public class SetLookDirectionCommand : ComponentUseCaseBase<LookDirectionComponent>
     {

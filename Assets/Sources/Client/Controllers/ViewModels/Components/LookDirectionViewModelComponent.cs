@@ -1,54 +1,30 @@
-﻿using System;
-using Domain.Frameworks.Mvvm.Attributes;
+﻿using Domain.Frameworks.Mvvm.Attributes;
 using DomainInterfaces.Frameworks.Mvvm.Properties;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
-using Sources.Client.Domain;
-using Sources.Client.Domain.Components;
 using Sources.Client.PresentationInterfaces.Binds.Rotations;
-using Sources.Client.UseCases.Common.Components.LookDirections.Listeners;
-using Sources.Client.UseCases.Common.Components.LookDirections.Queries;
+using Sources.Client.UseCases.Common.Components.LookDirection.Queries;
+using Utils.LiveData;
 using UnityEngine;
 
 namespace Sources.Client.Controllers.ViewModels.Components
 {
     public class LookDirectionViewModelComponent : IViewModelComponent
     {
-        private readonly int _id;
-        private readonly AddLookDirectionListner _addLookDirectionListner;
-        private readonly RemoveLookDirectionListner _removeLookDirectionListner;
-        private readonly GetLookDirectionQuery _getLookDirectionQuery;
+        private LiveData<Vector3> _lookDirection;
 
         [PropertyBinding(typeof(ILookDirectionPropertyBind))]
         private IBindableProperty<Vector3> _worldRotation;
 
-        public LookDirectionViewModelComponent
-        (
-            int id,
-            AddLookDirectionListner addLookDirectionListner,
-            RemoveLookDirectionListner removeLookDirectionListner,
-            GetLookDirectionQuery getLookDirectionQuery
-        )
-        {
-            _id = id;
-            _addLookDirectionListner = addLookDirectionListner;
-            _removeLookDirectionListner = removeLookDirectionListner;
-            _getLookDirectionQuery = getLookDirectionQuery;
-        }
+        public LookDirectionViewModelComponent(int id, GetLookDirectionQuery getLookDirectionQuery) =>
+            _lookDirection = getLookDirectionQuery.Handle(id);
 
-        public void Enable()
-        {
-            _addLookDirectionListner.Handle(_id, OnLookDirectionChanged);
-            OnLookDirectionChanged();
-        }
+        public void Enable() =>
+            _lookDirection.Observe(OnLookDirectionChanged);
 
-        public void Disable()
-        {
-            _removeLookDirectionListner.Handle(_id, OnLookDirectionChanged);
-        }
+        public void Disable() =>
+            _lookDirection.Unobserve(OnLookDirectionChanged);
 
-        private void OnLookDirectionChanged()
-        {
-            _worldRotation.Value = _getLookDirectionQuery.Handle(_id);
-        }
+        private void OnLookDirectionChanged(Vector3 directoin) =>
+            _worldRotation.Value = directoin;
     }
 }

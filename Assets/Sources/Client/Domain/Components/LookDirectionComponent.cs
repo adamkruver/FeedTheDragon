@@ -1,24 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using Utils.LiveData;
 
 namespace Sources.Client.Domain.Components
 {
     public class LookDirectionComponent : IComponent
     {
-        public LookDirectionComponent(Vector3 initialValue)
-        {
-            Value = initialValue;
-        }
+        private readonly MutableLiveData<Vector3> _direction;
 
-        public event Action Changed;
+        public LookDirectionComponent(Vector3 direction) =>
+            _direction = new MutableLiveData<Vector3>(direction);
 
-        public Vector3 Value { get; private set; }
-
-        public void Set(Vector3 direction)
-        {
-            Value = direction;
-            
-            Changed?.Invoke();
-        }
+        public LiveData<Vector3> Direction => _direction;
+        
+        public void Set(Vector3 direction) =>
+            _direction.Value = direction;
     }
 }

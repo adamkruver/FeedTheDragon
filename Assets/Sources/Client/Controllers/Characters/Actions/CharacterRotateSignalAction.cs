@@ -3,7 +3,7 @@ using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
-using Sources.Client.UseCases.Common.Components.LookDirections.Commands;
+using Sources.Client.UseCases.Common.Components.LookDirection.Commands;
 
 namespace Sources.Client.Controllers.Characters.Actions
 {

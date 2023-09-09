@@ -1,6 +1,7 @@
 ﻿using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using UnityEngine;
+using Utils.LiveData;
 
 namespace Sources.Client.UseCases.Common.Components.Positions.Queries
 {
@@ -10,7 +11,7 @@ namespace Sources.Client.UseCases.Common.Components.Positions.Queries
         {
         }
 
-        public Vector3 Handle(int id) =>
-            GetComponent(id).Value;
+        public LiveData<Vector3> Handle(int id) =>
+            GetComponent(id).Position;
     }
 }

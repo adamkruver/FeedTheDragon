@@ -1,5 +1,6 @@
 ﻿using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
+using Utils.LiveData;
 
 namespace Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries
 {
@@ -9,7 +10,7 @@ namespace Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries
         {
         }
         
-        public float Handle(int id) =>
-            GetComponent(id).Value;
+        public LiveData<float> Handle(int id) =>
+            GetComponent(id).AnimationSpeed;
     }
 }

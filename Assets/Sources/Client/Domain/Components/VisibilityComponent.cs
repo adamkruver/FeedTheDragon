@@ -1,34 +1,20 @@
-﻿using System;
+﻿using Utils.LiveData;
 
 namespace Sources.Client.Domain.Components
 {
     public class VisibilityComponent : IComponent
     {
-        public VisibilityComponent(bool isVisible)
-        {
-            IsVisible = isVisible;
-        }
+        private MutableLiveData<bool> _isVisible;
 
-        public event Action Changed;
+        public VisibilityComponent(bool isVisible) =>
+            _isVisible = new MutableLiveData<bool>(isVisible);
 
-        public bool IsVisible { get; private set; }
+        public LiveData<bool> IsVisible => _isVisible;
 
-        public void Show()
-        {
-            if (IsVisible)
-                return;
+        public void Show() =>
+            _isVisible.Value = true;
 
-            IsVisible = true;
-            Changed?.Invoke();
-        }
-
-        public void Hide()
-        {
-            if (IsVisible == false)
-                return;
-
-            IsVisible = false;
-            Changed?.Invoke();
-        }
+        public void Hide() =>
+            _isVisible.Value = false;
     }
 }

@@ -23,18 +23,11 @@ namespace Sources.Client.Presentation.Views.Inventories
             ingredientView.SetParent(_collectionParent);
         }
 
-        public void Show(IIngredientType ingredient)
+        public void Show(Type ingredient)
         {
-            if (ingredient is null)
-            {
-                Hide();
-                
-                return;
-            }
-            
             foreach (Type ingredientType in _ingredients.Keys)
             {
-                if (ingredientType == ingredient.GetType())
+                if (ingredientType == ingredient)
                     _ingredients[ingredientType].Show();
                 else
                     _ingredients[ingredientType].Hide();
