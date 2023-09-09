@@ -7,16 +7,20 @@ using Sources.Client.UseCases.Common.Components;
 
 namespace Sources.Client.UseCases.Inventories.Queries
 {
-    public class InventoryPopItemQuery : ComponentUseCaseBase<Inventory>
+    public class InventoryPopItemQuery
     {
-        public InventoryPopItemQuery(IEntityRepository entityRepository) : base(entityRepository)
+        private readonly IEntityRepository _repository;
+
+        public InventoryPopItemQuery(IEntityRepository repository)
         {
+            _repository = repository;
         }
 
         public int Handle(int inventoryId)
         {
-            Inventory inventory = GetComponent(inventoryId);
-
+            if (_repository.Get(inventoryId) is not Inventory inventory)
+                throw new InvalidCastException();
+            
             if (inventory.Count == 0)
                 throw new InvalidOperationException(); // TODO: Add CantPopItemException
 

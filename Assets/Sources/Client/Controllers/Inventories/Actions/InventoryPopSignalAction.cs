@@ -28,8 +28,6 @@ namespace Sources.Client.Controllers.Inventories.Actions
         {
             int inventoryId = _getInventoryIdQuery.Handle(_currentPlayerService.CharacterId);
             int itemId = _inventoryPopItemQuery.Handle(inventoryId);
-
-            throw new NotImplementedException();
         }
     }
 }

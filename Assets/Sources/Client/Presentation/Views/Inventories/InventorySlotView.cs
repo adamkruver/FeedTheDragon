@@ -25,6 +25,13 @@ namespace Sources.Client.Presentation.Views.Inventories
 
         public void Show(IIngredientType ingredient)
         {
+            if (ingredient is null)
+            {
+                Hide();
+                
+                return;
+            }
+            
             foreach (Type ingredientType in _ingredients.Keys)
             {
                 if (ingredientType == ingredient.GetType())

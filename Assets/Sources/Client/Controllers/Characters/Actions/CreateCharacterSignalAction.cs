@@ -50,7 +50,7 @@ namespace Sources.Client.Controllers.Characters.Actions
         public void Handle(CreateCharacterSignal signal)
         {
             int characterId = _createCurrentCharacterQuery.Handle(signal.SpawnPosition);
-            _signalBus.Handle(new CreateInventorySignal(characterId, 2));
+            _signalBus.Handle(new CreateInventorySignal(characterId, 3));
             
             IViewModel viewModel = _characterViewModelFactory.Create(characterId);
             IBindableView view = _bindableViewFactory.Create("", "Peasant"); //todo: Make constant path
