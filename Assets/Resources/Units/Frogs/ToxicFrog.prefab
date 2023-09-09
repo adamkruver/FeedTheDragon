@@ -6491,11 +6491,14 @@ GameObject:
   m_Component:
   - component: {fileID: 8313307529750461111}
   - component: {fileID: 3685380579277328780}
+  - component: {fileID: 2574039343560629309}
   - component: {fileID: 8085715057609745929}
   - component: {fileID: 405494816172064}
   - component: {fileID: 9112778075372920214}
   - component: {fileID: 3685380579277328781}
   - component: {fileID: 158914508243028642}
+  - component: {fileID: 8959383965622666773}
+  - component: {fileID: 2555669016552178088}
   m_Layer: 7
   m_Name: ToxicFrog
   m_TagString: Untagged
@@ -6533,6 +6536,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.4
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2574039343560629309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8951403922069171425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3126c23c154317b57ea78af0575b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8085715057609745929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6594,3 +6609,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3a1490c9a14dfeb49aefb0566c12a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8959383965622666773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8951403922069171425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aad115aca74ce3c4891b3f6de0b4aae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: 
+  _boundGraphObjectReferences: []
+  _boundGraphSource:
+    _version: 0
+    _category: 
+    _comments: 
+    _translation: {x: 0, y: 0}
+    _zoomFactor: 1
+  _firstActivation: 0
+  _enableAction: 0
+  _disableAction: 0
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 11400000, guid: 528cc96b4347b114493bedee5ce45b3c, type: 2}
+  _blackboard: {fileID: 2555669016552178088}
+--- !u!114 &2555669016552178088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8951403922069171425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"frogAnimator":{"_value":1,"_name":"frogAnimator","_id":"99df681a-a438-4e1d-8948-8a9da28970e0","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Animator,
+    UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"IsSeeCharacter":{"_propertyPath":"Sources.Client.Presentation.Views.CharacterTrigger.IsSeeCharacter","_name":"IsSeeCharacter","_id":"9d3bb879-ff0e-46dd-86e9-410ca8d9a3af","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
+  _objectReferences:
+  - {fileID: 0}
+  - {fileID: 1042687722907817507}
+  _serializedVariables:
+  - _json: '{"_value":1,"_name":"frogAnimator","_id":"99df681a-a438-4e1d-8948-8a9da28970e0","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Animator,
+      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 1042687722907817507}
+  - _json: '{"_propertyPath":"Sources.Client.Presentation.Views.CharacterTrigger.IsSeeCharacter","_name":"IsSeeCharacter","_id":"9d3bb879-ff0e-46dd-86e9-410ca8d9a3af","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []

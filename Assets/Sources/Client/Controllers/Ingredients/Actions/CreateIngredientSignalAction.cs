@@ -3,6 +3,7 @@ using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Domain.Ingredients;
+using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.Ingredients;
 using Sources.Client.InfrastructureInterfaces.Repositories;
@@ -44,7 +45,16 @@ namespace Sources.Client.Controllers.Ingredients.Actions
             Ingredient ingredient = _ingredientFactory.Create(id, type, spawnInfo);
             _entityRepository.Add(ingredient);
 
-            IBindableView view = _bindableViewFactory.Create("", type.GetType().Name); //todo: Make constant path
+            string viewPath = "";
+            
+            switch (signal.Type) // TODO: Move in Config
+            {
+                case ToxicFrog:
+                    viewPath = "Units/Frogs/";
+                    break;
+            }
+            
+            IBindableView view = _bindableViewFactory.Create(viewPath, type.GetType().Name); //todo: Make constant path
 
             IViewModel viewModel = _ingredientViewModelFactory.Create(id);
 
