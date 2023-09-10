@@ -1,5 +1,6 @@
 using Presentation.Frameworks.Mvvm.Binders;
 using Presentation.Frameworks.Mvvm.Factories;
+using Sources.Client.App.Configs;
 using Sources.Client.Characters;
 using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Characters.Actions;
@@ -11,10 +12,12 @@ using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Controllers.Inventories.Signals;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
+using Sources.Client.Infrastructure.Data.Providers;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
+using Sources.Client.Infrastructure.Factories.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
@@ -31,6 +34,7 @@ using Sources.Client.UseCases.Common.Components.LookDirection.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
+using Sources.Client.UseCases.Ingredients.Queries;
 using Sources.Client.UseCases.Inventories.Commands;
 using Sources.Client.UseCases.Inventories.Listeners;
 using Sources.Client.UseCases.Inventories.Queries;
@@ -52,6 +56,7 @@ namespace Sources.Client.Bootstrap
 
         private void Awake()
         {
+            Environment environment = new EnvironmentDataProvider().Load();
             Camera mainCamera = Camera.main;
 
             Binder binder = new Binder();
@@ -60,6 +65,8 @@ namespace Sources.Client.Bootstrap
             ViewProvider viewProvider = new ViewProvider();
 
             EntityRepository entityRepository = new EntityRepository();
+
+            AbstractIngredientFactory ingredientFactory = new AbstractIngredientFactory();
 
             _currentPlayerService = new CurrentPlayerService();
             IdGenerator idGenerator = new IdGenerator(10);
@@ -123,6 +130,9 @@ namespace Sources.Client.Bootstrap
             AddInventoryListener addInventoryListener = new AddInventoryListener(entityRepository);
             RemoveInventoryListener removeInventoryListener = new RemoveInventoryListener(entityRepository);
             CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
+
+            CreateIngredientQuery createIngredientQuery =
+                new CreateIngredientQuery(entityRepository, ingredientFactory, idGenerator);
 
             #endregion
 
@@ -206,14 +216,14 @@ namespace Sources.Client.Bootstrap
                 }
             );
 
-            IngredientFactory ingredientFactory = new IngredientFactory();
+
+            IngredientBindableViewFactory ingredientBindableViewFactory =
+                new IngredientBindableViewFactory(bindableViewFactory, environment);
 
             CreateIngredientSignalAction createIngredientSignalAction = new CreateIngredientSignalAction(
-                entityRepository,
-                ingredientFactory,
-                idGenerator,
-                bindableViewFactory,
-                ingredientViewModelFactory
+                ingredientBindableViewFactory,
+                ingredientViewModelFactory,
+                createIngredientQuery
             );
 
             IngredientSignalController ingredientSignalController = new IngredientSignalController(

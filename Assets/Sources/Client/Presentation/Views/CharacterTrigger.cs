@@ -8,24 +8,14 @@ namespace Sources.Client.Presentation.Views
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("Enter");
-
             if (other.TryGetComponent(out CharacterController _))
-            {
-                Debug.Log("IsSee");
                 IsSeeCharacter = true;
-            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            Debug.Log("Exit");
-
             if (other.TryGetComponent(out CharacterController _))
-            {
-                Debug.Log("NoSee");
                 IsSeeCharacter = false;
-            }
         }
     }
 }
