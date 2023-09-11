@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &38930588196612690
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6852571382749703066}
+  - component: {fileID: 8706829131113939694}
+  - component: {fileID: 7789606806236285060}
+  m_Layer: 7
+  m_Name: CharacterObserver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6852571382749703066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38930588196612690}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8313307529750461111}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8706829131113939694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38930588196612690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13764a98611455689ea387923018de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &7789606806236285060
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38930588196612690}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 8
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &324204880034783427
 GameObject:
   m_ObjectHideFlags: 0
@@ -6400,7 +6458,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8313307529750461111}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2297237308061139758
 MonoBehaviour:
@@ -6547,7 +6605,6 @@ GameObject:
   - component: {fileID: 8085715057609745929}
   - component: {fileID: 3685380579277328781}
   - component: {fileID: 158914508243028642}
-  - component: {fileID: 2203546085573753663}
   - component: {fileID: 1369359172090274014}
   m_Layer: 7
   m_Name: ToxicFrog
@@ -6570,6 +6627,7 @@ Transform:
   m_Children:
   - {fileID: 5812177106211433528}
   - {fileID: 5812177107231437299}
+  - {fileID: 6852571382749703066}
   - {fileID: 5968960977016865824}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -6646,18 +6704,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa3a1490c9a14dfeb49aefb0566c12a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2203546085573753663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8951403922069171425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e13764a98611455689ea387923018de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1369359172090274014
