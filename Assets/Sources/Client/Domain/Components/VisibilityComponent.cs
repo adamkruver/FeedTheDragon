@@ -1,4 +1,4 @@
-﻿using Utils.LiveData;
+﻿using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Domain.Components
 {

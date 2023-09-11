@@ -2,7 +2,7 @@
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Inventories;
 using Sources.Client.InfrastructureInterfaces.Repositories;
-using Utils.LiveData;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.UseCases.Inventories.Slots.Queries
 {

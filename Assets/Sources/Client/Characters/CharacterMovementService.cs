@@ -5,7 +5,7 @@ using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using UnityEngine;
-using Utils.LiveData;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Characters
 {

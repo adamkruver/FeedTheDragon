@@ -1,6 +1,8 @@
 ﻿using System;
 using Sources.Client.Domain;
+using Sources.Client.Domain.Entities;
 using Sources.Client.InfrastructureInterfaces.Repositories;
+using UnityEngine;
 
 namespace Sources.Client.UseCases.Common.Components
 {
@@ -15,7 +17,9 @@ namespace Sources.Client.UseCases.Common.Components
 
         protected T GetComponent(int id)
         {
-            if (_entityRepository.Get(id) is not Composite composite)
+            IEntity entity = _entityRepository.Get(id);
+            
+            if (entity is not Composite composite)
                 throw new NullReferenceException();
 
             if (composite.TryGetComponent(out T component) == false)

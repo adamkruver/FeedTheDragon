@@ -3,6 +3,7 @@ using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients;
 using Sources.Client.Infrastructure.Factories.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.Ingredients;
 using Sources.Client.InfrastructureInterfaces.Repositories;
@@ -33,8 +34,8 @@ namespace Sources.Client.Controllers.Ingredients.Actions
         public void Handle(CreateIngredientSignal signal)
         {
             int id = _createIngredientQuery.Handle(signal.Type, signal.Position);
-            IViewModel viewModel = _ingredientViewModelFactory.Create(id);
             IBindableView view = _ingredientBindableViewFactory.Create(signal.Type);
+            IViewModel viewModel = _ingredientViewModelFactory.Create(id, signal.Type);
 
             view.Bind(viewModel);
         }

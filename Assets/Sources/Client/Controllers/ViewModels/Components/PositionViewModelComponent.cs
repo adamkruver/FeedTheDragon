@@ -4,7 +4,7 @@ using PresentationInterfaces.Frameworks.Mvvm.Binds.Transforms;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using UnityEngine;
-using Utils.LiveData;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Controllers.ViewModels.Components
 {

@@ -1,7 +1,7 @@
 ﻿using Sources.Client.Domain.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using UnityEngine;
-using Utils.LiveData;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.UseCases.Common.Components.Positions.Queries
 {

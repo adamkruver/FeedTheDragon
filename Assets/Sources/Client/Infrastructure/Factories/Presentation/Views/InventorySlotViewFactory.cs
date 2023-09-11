@@ -1,6 +1,4 @@
-﻿using Presentation.Frameworks.Mvvm.Factories;
-using PresentationInterfaces.Frameworks.Mvvm.Factories;
-using PresentationInterfaces.Frameworks.Mvvm.Views;
+﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.Presentation.Views;
 using Sources.Client.Presentation.Views.Inventories;

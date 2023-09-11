@@ -6,7 +6,7 @@ using Sources.Client.PresentationInterfaces.Binds.CharacterController;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using UnityEngine;
-using Utils.LiveData;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Controllers.ViewModels.Components
 {

@@ -1,6 +1,6 @@
 {
-    "name": "01_Utils.LiveData",
-    "rootNamespace": "Utils.LiveData",
+    "name": "01_Utils.LiveDatas",
+    "rootNamespace": "Utils.LiveDatas",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -3,8 +3,8 @@ using DomainInterfaces.Frameworks.Mvvm.Properties;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.PresentationInterfaces.Binds.Rotations;
 using Sources.Client.UseCases.Common.Components.LookDirection.Queries;
-using Utils.LiveData;
 using UnityEngine;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Controllers.ViewModels.Components
 {

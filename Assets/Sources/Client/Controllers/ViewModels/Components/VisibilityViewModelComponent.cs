@@ -3,7 +3,7 @@ using DomainInterfaces.Frameworks.Mvvm.Properties;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.BindableViews;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.UseCases.Common.Components.Visibilities.Queries;
-using Utils.LiveData;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Controllers.ViewModels.Components
 {

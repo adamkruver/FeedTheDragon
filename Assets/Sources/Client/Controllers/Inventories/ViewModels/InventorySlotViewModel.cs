@@ -5,7 +5,7 @@ using DomainInterfaces.Frameworks.Mvvm.Properties;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.PresentationInterfaces.Binds.Ingredients;
 using Sources.Client.UseCases.Inventories.Slots.Queries;
-using Utils.LiveData;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Controllers.Inventories.ViewModels
 {

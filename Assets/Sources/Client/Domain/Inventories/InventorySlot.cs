@@ -1,7 +1,7 @@
 ﻿using System;
 using Sources.Client.Domain.Entities;
 using Sources.Client.Domain.Ingredients;
-using Utils.LiveData;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Domain.Inventories
 {

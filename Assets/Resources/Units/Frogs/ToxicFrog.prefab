@@ -6653,7 +6653,8 @@ MonoBehaviour:
   _parentBlackboard: {fileID: 0}
   _serializedBlackboard: '{"_variables":{"frogAnimator":{"_value":1,"_name":"frogAnimator","_id":"99df681a-a438-4e1d-8948-8a9da28970e0","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Animator,
     UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"IsSeeCharacter":{"_propertyPath":"Sources.Client.Presentation.Views.CharacterTrigger.IsSeeCharacter","_name":"IsSeeCharacter","_id":"9d3bb879-ff0e-46dd-86e9-410ca8d9a3af","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
-    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"isReached":{"_name":"isReached","_id":"0f9fcb18-1e8f-4b81-be0f-0333740d86fc","$type":"NodeCanvas.Framework.Variable`1[[Utils.LiveDatas.Sources.Frameworks.LiveDatas.BoolLiveData,
+    01_Utils.LiveDatas, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
   _objectReferences:
   - {fileID: 0}
   - {fileID: 1042687722907817507}
@@ -6665,4 +6666,7 @@ MonoBehaviour:
     - {fileID: 1042687722907817507}
   - _json: '{"_propertyPath":"Sources.Client.Presentation.Views.CharacterTrigger.IsSeeCharacter","_name":"IsSeeCharacter","_id":"9d3bb879-ff0e-46dd-86e9-410ca8d9a3af","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_name":"isReached","_id":"0f9fcb18-1e8f-4b81-be0f-0333740d86fc","$type":"NodeCanvas.Framework.Variable`1[[Utils.LiveDatas.Sources.Frameworks.LiveDatas.BoolLiveData,
+      01_Utils.LiveDatas, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
     _references: []

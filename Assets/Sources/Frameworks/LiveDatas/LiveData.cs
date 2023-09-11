@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Utils.LiveData
+namespace Utils.LiveDatas.Sources.Frameworks.LiveDatas
 {
     public class LiveData<T> : IDisposable
     {

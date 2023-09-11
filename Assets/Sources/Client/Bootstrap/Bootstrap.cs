@@ -1,12 +1,14 @@
+using System;
+using System.Collections.Generic;
 using Presentation.Frameworks.Mvvm.Binders;
 using Presentation.Frameworks.Mvvm.Factories;
-using Sources.Client.App.Configs;
 using Sources.Client.Characters;
 using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Characters.Actions;
 using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Ingredients;
 using Sources.Client.Controllers.Ingredients.Actions;
+using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Controllers.Inventories.Signals;
@@ -15,6 +17,7 @@ using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Infrastructure.Data.Providers;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Presentation.BindableViews;
@@ -22,17 +25,20 @@ using Sources.Client.Infrastructure.Factories.Presentation.Views;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
+using Sources.Client.Infrastructure.Services.GameUpdate;
 using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.Infrastructure.ViewProviders;
+using Sources.Client.InfrastructureInterfaces.Factories.Controllers;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.UseCases.Characters.Queries;
-using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Commands;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
+using Sources.Client.UseCases.Common.Components.Destinations.Commands;
 using Sources.Client.UseCases.Common.Components.LookDirection.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
+using Sources.Client.UseCases.Common.Components.Speeds.Commands;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
 using Sources.Client.UseCases.Ingredients.Queries;
 using Sources.Client.UseCases.Inventories.Commands;
@@ -40,6 +46,7 @@ using Sources.Client.UseCases.Inventories.Listeners;
 using Sources.Client.UseCases.Inventories.Queries;
 using Sources.Client.UseCases.Inventories.Slots.Queries;
 using UnityEngine;
+using Environment = Sources.Client.App.Configs.Environment;
 
 namespace Sources.Client.Bootstrap
 {
@@ -54,6 +61,9 @@ namespace Sources.Client.Bootstrap
         private GetPositionQuery _getPositionQuery;
         private GetSpeedQuery _getSpeedQuery;
 
+        private GameUpdateService _gameUpdateService = new GameUpdateService();
+        private EntityRepository _entityRepository;
+
         private void Awake()
         {
             Environment environment = new EnvironmentDataProvider().Load();
@@ -64,7 +74,7 @@ namespace Sources.Client.Bootstrap
             BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
             ViewProvider viewProvider = new ViewProvider();
 
-            EntityRepository entityRepository = new EntityRepository();
+            _entityRepository = new EntityRepository();
 
             AbstractIngredientFactory ingredientFactory = new AbstractIngredientFactory();
 
@@ -98,41 +108,41 @@ namespace Sources.Client.Bootstrap
             PeasantFactory peasantFactory = new PeasantFactory();
 
             CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery(
-                entityRepository,
+                _entityRepository,
                 peasantFactory,
                 idGenerator
             );
 
-            MovePositionCommand movePositionCommand = new MovePositionCommand(entityRepository);
-            SetLookDirectionCommand setLookDirectionCommand = new SetLookDirectionCommand(entityRepository);
-            SetAnimationSpeedCommand setAnimationSpeedCommand = new SetAnimationSpeedCommand(entityRepository);
+            MovePositionCommand movePositionCommand = new MovePositionCommand(_entityRepository);
+            SetLookDirectionCommand setLookDirectionCommand = new SetLookDirectionCommand(_entityRepository);
+            SetSpeedCommand setSpeedCommand = new SetSpeedCommand(_entityRepository);
 
-            _getPositionQuery = new GetPositionQuery(entityRepository);
-            _getSpeedQuery = new GetSpeedQuery(entityRepository);
+            _getPositionQuery = new GetPositionQuery(_entityRepository);
+            _getSpeedQuery = new GetSpeedQuery(_entityRepository);
 
-            HideCommand hideCommand = new HideCommand(entityRepository);
+            HideCommand hideCommand = new HideCommand(_entityRepository);
 
             InventoryPushItemCommand inventoryPushItemCommand =
-                new InventoryPushItemCommand(entityRepository);
+                new InventoryPushItemCommand(_entityRepository);
 
             InventoryPopItemQuery inventoryPopItemQuery =
-                new InventoryPopItemQuery(entityRepository);
+                new InventoryPopItemQuery(_entityRepository);
 
-            GetInventoryIdQuery getInventoryIdQuery = new GetInventoryIdQuery(entityRepository);
+            GetInventoryIdQuery getInventoryIdQuery = new GetInventoryIdQuery(_entityRepository);
 
-            CreateInventoryQuery createInventoryQuery = new CreateInventoryQuery(entityRepository, idGenerator);
+            CreateInventoryQuery createInventoryQuery = new CreateInventoryQuery(_entityRepository, idGenerator);
             CreateInventorySlotQuery createInventorySlotQuery =
-                new CreateInventorySlotQuery(entityRepository, idGenerator);
+                new CreateInventorySlotQuery(_entityRepository, idGenerator);
 
             GetInventorySlotItemTypeQuery getInventorySlotItemTypeQuery =
-                new GetInventorySlotItemTypeQuery(entityRepository);
+                new GetInventorySlotItemTypeQuery(_entityRepository);
 
-            AddInventoryListener addInventoryListener = new AddInventoryListener(entityRepository);
-            RemoveInventoryListener removeInventoryListener = new RemoveInventoryListener(entityRepository);
-            CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(entityRepository);
+            AddInventoryListener addInventoryListener = new AddInventoryListener(_entityRepository);
+            RemoveInventoryListener removeInventoryListener = new RemoveInventoryListener(_entityRepository);
+            CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(_entityRepository);
 
             CreateIngredientQuery createIngredientQuery =
-                new CreateIngredientQuery(entityRepository, ingredientFactory, idGenerator);
+                new CreateIngredientQuery(_entityRepository, ingredientFactory, idGenerator);
 
             #endregion
 
@@ -146,19 +156,19 @@ namespace Sources.Client.Bootstrap
                 );
 
             VisibilityViewModelComponentFactory visibilityViewModelComponentFactory =
-                new VisibilityViewModelComponentFactory(entityRepository);
+                new VisibilityViewModelComponentFactory(_entityRepository);
 
             AnimationSpeedViewModelComponentFactory animationSpeedViewModelComponentFactory =
-                new AnimationSpeedViewModelComponentFactory(entityRepository);
+                new AnimationSpeedViewModelComponentFactory(_entityRepository);
 
             LookDirectionViewModelComponentFactory lookDirectionViewModelComponentFactory =
-                new LookDirectionViewModelComponentFactory(entityRepository);
+                new LookDirectionViewModelComponentFactory(_entityRepository);
 
             CharacterControllerMovementViewModelComponentFactory characterControllerMovementViewModelComponentFactory =
-                new CharacterControllerMovementViewModelComponentFactory(entityRepository);
+                new CharacterControllerMovementViewModelComponentFactory(_entityRepository);
 
             PositionViewModelComponentFactory positionViewModelComponentFactory =
-                new PositionViewModelComponentFactory(entityRepository);
+                new PositionViewModelComponentFactory(_entityRepository);
 
             IngredientClickViewModelComponentFactory ingredientClickViewModelComponentFactory =
                 new IngredientClickViewModelComponentFactory(_signalBus);
@@ -171,10 +181,28 @@ namespace Sources.Client.Bootstrap
                 ingredientInteractorViewModelComponentFactory
             );
 
-            IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory(
+            IngredientViewModelFactoryBase ingredientViewModelFactoryBase = new IngredientViewModelFactoryBase(
                 visibilityViewModelComponentFactory,
                 positionViewModelComponentFactory,
                 ingredientClickViewModelComponentFactory
+            );
+
+            MoveToDestinationViewModelComponentFactory moveToDestinationViewModelComponentFactory =
+                new MoveToDestinationViewModelComponentFactory(_gameUpdateService, _entityRepository);
+
+            ToxicFrogViewModelFactory toxicFrogViewModelFactory = new ToxicFrogViewModelFactory(
+                visibilityViewModelComponentFactory,
+                positionViewModelComponentFactory,
+                ingredientClickViewModelComponentFactory,
+                moveToDestinationViewModelComponentFactory
+            );
+
+            IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory(
+                ingredientViewModelFactoryBase,
+                new Dictionary<Type, IIngredientViewModelFactory>()
+                {
+                    [typeof(ToxicFrog)] = toxicFrogViewModelFactory
+                }
             );
 
             InventoryViewModelFactory inventoryViewModelFactory =
@@ -194,9 +222,7 @@ namespace Sources.Client.Bootstrap
                     _currentPlayerService,
                     _cameraFollowService,
                     characterViewModelFactory,
-                    createCurrentCharacterQuery,
-                    inventoryViewModelFactory,
-                    inventoryViewFactory
+                    createCurrentCharacterQuery
                 );
 
             CharacterMoveSignalAction characterMoveSignalAction =
@@ -204,9 +230,10 @@ namespace Sources.Client.Bootstrap
             CharacterRotateSignalAction characterRotateSignalAction =
                 new CharacterRotateSignalAction(_currentPlayerService, setLookDirectionCommand);
             CharacterSpeedSignalAction characterSpeedSignalAction =
-                new CharacterSpeedSignalAction(_currentPlayerService, setAnimationSpeedCommand);
+                new CharacterSpeedSignalAction(_currentPlayerService, setSpeedCommand);
 
-            CharacterSignalController characterSignalController = new CharacterSignalController(
+            CharacterSignalController characterSignalController = new CharacterSignalController
+            (
                 new ISignalAction[]
                 {
                     createCharacterSignalAction,
@@ -215,7 +242,6 @@ namespace Sources.Client.Bootstrap
                     characterSpeedSignalAction,
                 }
             );
-
 
             IngredientBindableViewFactory ingredientBindableViewFactory =
                 new IngredientBindableViewFactory(bindableViewFactory, environment);
@@ -226,10 +252,15 @@ namespace Sources.Client.Bootstrap
                 createIngredientQuery
             );
 
+            SetDestinationCommand setDestinationCommand = new SetDestinationCommand(_entityRepository);
+            
+            ToxicFrogJumpSignalAction toxicFrogJumpSignalAction = new ToxicFrogJumpSignalAction(setDestinationCommand, setSpeedCommand);
+
             IngredientSignalController ingredientSignalController = new IngredientSignalController(
                 new ISignalAction[]
                 {
-                    createIngredientSignalAction
+                    createIngredientSignalAction,
+                    toxicFrogJumpSignalAction
                 });
 
             InventoryPushSignalAction inventoryPushSignalAction = new InventoryPushSignalAction(
@@ -292,8 +323,12 @@ namespace Sources.Client.Bootstrap
         {
             _characterMovementService.Update();
 
+            _gameUpdateService.Update(Time.deltaTime);
+
             if (Input.GetKeyDown(KeyCode.Space))
-                _signalBus.Handle(new PopInventorySignal());
+            {
+                _signalBus.Handle(new ToxicFrogJumpSignal(24, Vector3.zero, 1));
+            }
         }
 
         private void LateUpdate()
