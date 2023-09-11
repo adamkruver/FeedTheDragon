@@ -6,7 +6,7 @@ namespace Sources.Client.Domain.Components
 {
     public class DestinationComponent : IComponent, IDisposable
     {
-        private static readonly float MinEpsilon = 0.01f; // todo: to constants
+        private static readonly float MinEpsilon = 0.1f; // todo: to constants
         
         private readonly PositionComponent _positionComponent;
         private readonly SpeedComponent _speedComponent;

@@ -14,9 +14,6 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
         [PropertyBinding(typeof(IGameObjectEnableWithScaleFadePropertyBind))]
         private IBindableProperty<bool> _isProximityEnabled;
 
-        [PropertyBinding(typeof(IBindableViewEnabledPropertyBind))]
-        private IBindableProperty<bool> _isEnabled;
-
         public IngredientViewModel(IViewModelComponent[] components) : base(components)
         {
         }

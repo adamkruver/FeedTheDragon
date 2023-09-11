@@ -11,13 +11,13 @@ using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
-using Sources.Client.Controllers.Inventories.Signals;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Infrastructure.Data.Providers;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Presentation.BindableViews;
@@ -190,11 +190,16 @@ namespace Sources.Client.Bootstrap
             MoveToDestinationViewModelComponentFactory moveToDestinationViewModelComponentFactory =
                 new MoveToDestinationViewModelComponentFactory(_gameUpdateService, _entityRepository);
 
+            ToxicFrogBehaviourTreeViewModelComponentFactory toxicFrogBehaviourTreeViewModelComponentFactory =
+                new ToxicFrogBehaviourTreeViewModelComponentFactory(_signalBus, _entityRepository);
+
             ToxicFrogViewModelFactory toxicFrogViewModelFactory = new ToxicFrogViewModelFactory(
                 visibilityViewModelComponentFactory,
                 positionViewModelComponentFactory,
                 ingredientClickViewModelComponentFactory,
-                moveToDestinationViewModelComponentFactory
+                moveToDestinationViewModelComponentFactory,
+                toxicFrogBehaviourTreeViewModelComponentFactory,
+                lookDirectionViewModelComponentFactory
             );
 
             IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory(
@@ -253,8 +258,9 @@ namespace Sources.Client.Bootstrap
             );
 
             SetDestinationCommand setDestinationCommand = new SetDestinationCommand(_entityRepository);
-            
-            ToxicFrogJumpSignalAction toxicFrogJumpSignalAction = new ToxicFrogJumpSignalAction(setDestinationCommand, setSpeedCommand);
+
+            ToxicFrogJumpSignalAction toxicFrogJumpSignalAction =
+                new ToxicFrogJumpSignalAction(setDestinationCommand, setSpeedCommand);
 
             IngredientSignalController ingredientSignalController = new IngredientSignalController(
                 new ISignalAction[]
