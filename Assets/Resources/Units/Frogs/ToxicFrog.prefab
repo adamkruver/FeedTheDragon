@@ -6504,7 +6504,7 @@ MonoBehaviour:
   _parentBlackboard: {fileID: 0}
   _serializedBlackboard: '{"_variables":{"frogAnimator":{"_value":1,"_name":"frogAnimator","_id":"99df681a-a438-4e1d-8948-8a9da28970e0","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Animator,
     UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"isReached":{"_name":"isReached","_id":"a046eabc-e2d9-4bcd-b499-4843fc83e5c7","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
-    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"jumpDelay":{"_value":3.0,"_name":"jumpDelay","_id":"5795952a-fc0e-4323-a106-0cc04f3e9477","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"jumpDelay":{"_value":1.0,"_name":"jumpDelay","_id":"5795952a-fc0e-4323-a106-0cc04f3e9477","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
   _objectReferences:
   - {fileID: 0}
@@ -6518,7 +6518,7 @@ MonoBehaviour:
   - _json: '{"_name":"isReached","_id":"a046eabc-e2d9-4bcd-b499-4843fc83e5c7","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
     _references: []
-  - _json: '{"_value":3.0,"_name":"jumpDelay","_id":"5795952a-fc0e-4323-a106-0cc04f3e9477","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+  - _json: '{"_value":1.0,"_name":"jumpDelay","_id":"5795952a-fc0e-4323-a106-0cc04f3e9477","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
     _references: []
 --- !u!114 &3482892015428644840

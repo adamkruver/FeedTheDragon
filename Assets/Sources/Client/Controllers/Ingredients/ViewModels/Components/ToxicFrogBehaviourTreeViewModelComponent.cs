@@ -80,6 +80,9 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels.Components
         [MethodBinding(typeof(ITriggerStayMethodBind))]
         private void OnTriggerStay(Component component)
         {
+            if(_isReached.Value == false)
+                return;
+            
             if (component.TryGetComponent(out CharacterController character) == false)
                 return;
 
