@@ -15,7 +15,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredi
         private readonly GetDestinationReachedQuery _getDestinationReachedQuery;
         private readonly SetLookDirectionCommand _setLookDirectionCommand;
         private readonly GetLookDirectionQuery _getLookDirectionQuery;
-        private readonly GetSpeedQuery _getSpeedQuery;
         private readonly SetSpeedCommand _setSpeedCommand;
 
         public ToxicFrogBehaviourTreeViewModelComponentFactory(
@@ -27,7 +26,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredi
             _setLookDirectionCommand = new SetLookDirectionCommand(entityRepository);
             _getLookDirectionQuery = new GetLookDirectionQuery(entityRepository);
             _getDestinationReachedQuery = new GetDestinationReachedQuery(entityRepository);
-            _getSpeedQuery = new GetSpeedQuery(entityRepository);
         }
 
         public ToxicFrogBehaviourTreeViewModelComponent Create(int id) =>
@@ -36,7 +34,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredi
                 _signalBus,
                 _setLookDirectionCommand,
                 _getLookDirectionQuery,
-                _getSpeedQuery,
                 _getDestinationReachedQuery
             );
     }

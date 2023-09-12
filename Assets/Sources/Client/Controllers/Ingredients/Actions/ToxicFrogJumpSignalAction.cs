@@ -19,8 +19,6 @@ namespace Sources.Client.Controllers.Ingredients.Actions
         
         public void Handle(ToxicFrogJumpSignal signal)
         {
-            Debug.Log("Hopping!");
-            
             _setSpeedCommand.Handle(signal.Id, signal.MovementSpeed);
             _setDestinationCommand.Handle(signal.Id, signal.Destination);
         }

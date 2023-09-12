@@ -19,6 +19,9 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels.Components
 {
     public class ToxicFrogBehaviourTreeViewModelComponent : IViewModelComponent
     {
+        private const string JumpDelay = "JumpDelay";
+        private const string IsReached = "IsReached";
+
         private readonly int _id;
         private readonly ISignalBus _signalBus;
         private readonly SetLookDirectionCommand _setLookDirectionCommand;
@@ -32,7 +35,6 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels.Components
         private IBindableProperty<Vector3> _position;
 
         private readonly LiveData<bool> _isReached;
-        private readonly LiveData<float> _speed;
         private readonly LiveData<Vector3> _lookDirection;
 
         private float _jumpSpeed = 2f;
@@ -42,7 +44,6 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels.Components
             ISignalBus signalBus,
             SetLookDirectionCommand setLookDirectionCommand,
             GetLookDirectionQuery getLookDirectionQuery,
-            GetSpeedQuery getSpeedQuery,
             GetDestinationReachedQuery getDestinationReachedQuery
         )
         {
@@ -51,38 +52,30 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels.Components
             _setLookDirectionCommand = setLookDirectionCommand;
 
             _isReached = getDestinationReachedQuery.Handle(id);
-            _speed = getSpeedQuery.Handle(_id);
             _lookDirection = getLookDirectionQuery.Handle(_id);
         }
 
         Vector3 Destination => _position.Value + _lookDirection.Value.normalized * _jumpSpeed;
 
-        public void Enable()
-        {
+        public void Enable() =>
             _isReached.Observe(OnDestinationReached);
-        }
 
-        public void Disable()
-        {
+        public void Disable() =>
             _isReached.Unobserve(OnDestinationReached);
-        }
 
         [MethodBinding(typeof(IActionMethodBind))]
         private void Jump(bool _)
         {
-            _blackboard.Value.SetVariableValue("jumpDelay", Random.Range(1f, 3f));
-            Debug.Log(_position.Value);
-            Debug.Log(Destination);
-            Debug.Log(_speed.Value);
+            _blackboard.Value.SetVariableValue(JumpDelay, Random.Range(1f, 3f));
             _signalBus.Handle(new ToxicFrogJumpSignal(_id, Destination, _jumpSpeed));
         }
 
         [MethodBinding(typeof(ITriggerStayMethodBind))]
         private void OnTriggerStay(Component component)
         {
-            if(_isReached.Value == false)
+            if (_isReached.Value == false)
                 return;
-            
+
             if (component.TryGetComponent(out CharacterController character) == false)
                 return;
 
@@ -92,9 +85,7 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels.Components
             _setLookDirectionCommand.Handle(_id, direction);
         }
 
-        private void OnDestinationReached(bool isReached)
-        {
-            _blackboard.Value.SetVariableValue("isReached", isReached);
-        }
+        private void OnDestinationReached(bool isReached) =>
+            _blackboard.Value.SetVariableValue(IsReached, isReached);
     }
 }
