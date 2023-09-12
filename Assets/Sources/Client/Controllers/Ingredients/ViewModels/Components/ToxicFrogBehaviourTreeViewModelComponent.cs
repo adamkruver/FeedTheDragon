@@ -80,7 +80,7 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels.Components
                 return;
 
             var direction = _position.Value - character.transform.position;
-            direction.y = 0;
+            direction.y = 0; // todo: raycast
 
             _setLookDirectionCommand.Handle(_id, direction);
         }

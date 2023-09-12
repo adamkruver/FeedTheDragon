@@ -6,13 +6,11 @@ namespace Sources.Client.Presentation.Views
     {
         private Transform _transform;
         private Transform _cameraTransform;
-        private Camera _camera;
 
         private void Awake()
         {
             _transform = GetComponent<Transform>();
-            _camera = Camera.main;
-            _cameraTransform = _camera.GetComponent<Transform>();
+            _cameraTransform = Camera.main.GetComponent<Transform>();
         }
 
         private void Update()

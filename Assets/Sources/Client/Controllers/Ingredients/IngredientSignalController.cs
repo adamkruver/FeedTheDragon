@@ -3,7 +3,7 @@ using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 
 namespace Sources.Client.Controllers.Ingredients
 {
-    public class IngredientSignalController : BaseSignalController
+    public class IngredientSignalController : SignalControllerBase
     {
         public IngredientSignalController(IEnumerable<ISignalAction> signalActions) : base(signalActions)
         {

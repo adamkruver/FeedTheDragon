@@ -8,7 +8,23 @@
         },
         {
           "Key": "ToxicFrog",
-          "Value": "Units/Frogs/"
+          "Value": "Ingredients/Frogs/"
+        }
+      ]
+    },
+    "NPCs": {
+      "KeyValues": [
+        {
+          "Key": "Ogre",
+          "Value": "NPCs/Ogres/"
+        }
+      ]
+    },
+    "Quests": {
+      "KeyValues": [
+        {
+          "Key": "Quest",
+          "Value": "Views/Quests/"
         }
       ]
     }

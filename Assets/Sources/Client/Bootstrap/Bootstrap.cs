@@ -11,15 +11,23 @@ using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
+using Sources.Client.Controllers.NPCs.Common;
+using Sources.Client.Controllers.NPCs.Common.Actions;
+using Sources.Client.Controllers.NPCs.Ogres;
+using Sources.Client.Controllers.NPCs.Ogres.Actions;
+using Sources.Client.Controllers.NPCs.Ogres.Signals;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
+using Sources.Client.Domain.NPCs;
 using Sources.Client.Infrastructure.Data.Providers;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients.Components;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
+using Sources.Client.Infrastructure.Factories.Domain.NPCs;
 using Sources.Client.Infrastructure.Factories.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
 using Sources.Client.Infrastructure.Repositories;
@@ -32,6 +40,8 @@ using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.Infrastructure.ViewProviders;
 using Sources.Client.InfrastructureInterfaces.Factories.Controllers;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
+using Sources.Client.Presentation.Views.SpawnPoints.Ingredients;
+using Sources.Client.Presentation.Views.SpawnPoints.NPCs;
 using Sources.Client.UseCases.Characters.Queries;
 using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.Destinations.Commands;
@@ -45,6 +55,9 @@ using Sources.Client.UseCases.Inventories.Commands;
 using Sources.Client.UseCases.Inventories.Listeners;
 using Sources.Client.UseCases.Inventories.Queries;
 using Sources.Client.UseCases.Inventories.Slots.Queries;
+using Sources.Client.UseCases.NPCs.Common.Commands;
+using Sources.Client.UseCases.NPCs.Common.Queries;
+using Sources.Client.UseCases.NPCs.Ogres.Queries;
 using UnityEngine;
 using Environment = Sources.Client.App.Configs.Environment;
 
@@ -55,8 +68,9 @@ namespace Sources.Client.Bootstrap
         private CharacterMovementService _characterMovementService;
         private CameraFollowService _cameraFollowService;
         private SignalBus _signalBus;
-        private SpawnService<Chanterelle> _mushroomSpawnService;
-        private SpawnService<ToxicFrog> _frogSpawnService;
+        private SpawnService<IIngredientType, ChanterelleSpawnPoint> _mushroomSpawnService;
+        private SpawnService<IIngredientType, ToxicFrogSpawnPoint> _frogSpawnService;
+        private SpawnService<Ogre, OgreSpawnPoint> _ogreSpawnService;
         private CurrentPlayerService _currentPlayerService;
         private GetPositionQuery _getPositionQuery;
         private GetSpeedQuery _getSpeedQuery;
@@ -306,12 +320,69 @@ namespace Sources.Client.Bootstrap
                     inventoryPopSignalAction
                 });
 
+            CreateOgreQuery createOgreQuery = new CreateOgreQuery(_entityRepository, idGenerator);
+
+            OgreViewModelFactory ogreViewModelFactory =
+                new OgreViewModelFactory(visibilityViewModelComponentFactory, positionViewModelComponentFactory);
+
+            CreateOgreSignalAction createOgreSignalAction =
+                new CreateOgreSignalAction(_signalBus, bindableViewFactory, environment, createOgreQuery,
+                    ogreViewModelFactory);
+
+            OgreSignalController ogreSignalController = new OgreSignalController(
+                new ISignalAction[]
+                {
+                    createOgreSignalAction
+                });
+
+            QuestFactory questFactory = new QuestFactory();
+            QuestViewModelFactory questViewModelFactory =
+                new QuestViewModelFactory(visibilityViewModelComponentFactory);
+            CreateQuestQuery createQuestQuery = new CreateQuestQuery(idGenerator, questFactory, _entityRepository);
+            AddQuestCommand addQuestCommand = new AddQuestCommand(_entityRepository);
+
+            CreateQuestSignalAction createQuestSignalAction = new CreateQuestSignalAction
+            (
+                _signalBus,
+                bindableViewFactory,
+                questViewModelFactory,
+                createQuestQuery,
+                addQuestCommand,
+                environment
+            );
+
+            QuestSlotViewModelFactory questSlotViewModelFactory = 
+                new QuestSlotViewModelFactory(visibilityViewModelComponentFactory);
+            QuestSlotFactory questSlotFactory = new QuestSlotFactory();
+            CreateQuestSlotQuery createQuestSlotQuery = 
+                new CreateQuestSlotQuery(idGenerator, _entityRepository, questSlotFactory);
+            AddQuestSlotCommand addQuestSlotCommand = new AddQuestSlotCommand(_entityRepository);
+
+            CreateQuestSlotSignalAction createQuestSlotSignalAction = new CreateQuestSlotSignalAction
+            (
+                bindableViewFactory,
+                questSlotViewModelFactory,
+                createQuestSlotQuery,
+                addQuestSlotCommand,
+                environment
+            );
+
+            QuestSignalController questSignalController = new QuestSignalController(
+                new ISignalAction[]
+                {
+                    createQuestSignalAction,
+                    createQuestSlotSignalAction
+                });
+
             signalHandler.Register(characterSignalController);
             signalHandler.Register(ingredientSignalController);
             signalHandler.Register(inventorySignalController);
+            signalHandler.Register(ogreSignalController);
+            signalHandler.Register(questSignalController);
 
-            _mushroomSpawnService = new SpawnService<Chanterelle>(_signalBus);
-            _frogSpawnService = new SpawnService<ToxicFrog>(_signalBus);
+            _mushroomSpawnService = new SpawnService<IIngredientType, ChanterelleSpawnPoint>(_signalBus);
+            _frogSpawnService = new SpawnService<IIngredientType, ToxicFrogSpawnPoint>(_signalBus);
+            _ogreSpawnService = new SpawnService<Ogre, OgreSpawnPoint>(_signalBus);
         }
 
         private void Start()
@@ -323,6 +394,7 @@ namespace Sources.Client.Bootstrap
 
             _mushroomSpawnService.Spawn();
             _frogSpawnService.Spawn();
+            _ogreSpawnService.Spawn();
         }
 
         private void Update()

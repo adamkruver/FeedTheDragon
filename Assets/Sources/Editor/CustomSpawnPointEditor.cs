@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace Sources.Editor
 {
-    [CustomEditor(typeof(SpawnerBase))]
+    [CustomEditor(typeof(SpawnPointBase))]
     public class CustomSpawnPointEditor : UnityEditor.Editor
     {
         public class SpawnPointEditor
         {
             [DrawGizmo(GizmoType.Active | GizmoType.Pickable | GizmoType.NonSelected)]
-            public static void RemderCustomGizmo(SpawnerBase spawner, GizmoType gizmo)
+            public static void RemderCustomGizmo(SpawnPointBase spawnPoint, GizmoType gizmo)
             {
-                Gizmos.color = spawner.Color;
-                Gizmos.DrawSphere(spawner.Position, spawner.Size);
+                Gizmos.color = spawnPoint.Color;
+                Gizmos.DrawSphere(spawnPoint.Position, spawnPoint.Size);
             }
         }
     }
