@@ -1,5 +1,6 @@
 ﻿{
   "View": {
+    "Character": "Characters/",
     "Ingredient": "Ingredients/",
     "NPC": "NPCs/",
     "Quest": "Quests/"

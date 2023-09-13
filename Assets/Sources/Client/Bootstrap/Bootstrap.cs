@@ -6,6 +6,7 @@ using Sources.Client.Characters;
 using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Characters.Actions;
 using Sources.Client.Controllers.Characters.Signals;
+using Sources.Client.Controllers.Characters.ViewModels;
 using Sources.Client.Controllers.Ingredients;
 using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.Signals;
@@ -16,10 +17,8 @@ using Sources.Client.Controllers.NPCs.Common;
 using Sources.Client.Controllers.NPCs.Common.Actions;
 using Sources.Client.Controllers.NPCs.Ogres;
 using Sources.Client.Controllers.NPCs.Ogres.Actions;
-using Sources.Client.Controllers.NPCs.Ogres.Signals;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
-using Sources.Client.Domain.NPCs;
 using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Data.Providers;
@@ -41,7 +40,6 @@ using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.Infrastructure.ViewProviders;
-using Sources.Client.InfrastructureInterfaces.Factories.Controllers;
 using Sources.Client.InfrastructureInterfaces.Factories.Controllers.ViewModels;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.Presentation.Views.SpawnPoints.Ingredients;
@@ -122,11 +120,11 @@ namespace Sources.Client.Bootstrap
             #endregion
 
             PeasantFactory peasantFactory = new PeasantFactory();
-            
+
             #region UseCases
 
             GetIngredientTypeQuery getIngredientTypeQuery = new GetIngredientTypeQuery(_entityRepository);
-            
+
             CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery(
                 _entityRepository,
                 peasantFactory,
@@ -241,13 +239,18 @@ namespace Sources.Client.Bootstrap
 
             #endregion
 
+            BindableViewBuilder<CharacterViewModel> characterViewBuilder = new BindableViewBuilder<CharacterViewModel>(
+                bindableViewFactory,
+                characterViewModelFactory,
+                environment.View["Character"]
+            );
+
             CreateCharacterSignalAction createCharacterSignalAction =
                 new CreateCharacterSignalAction(
                     _signalBus,
-                    bindableViewFactory,
+                    characterViewBuilder,
                     _currentPlayerService,
                     _cameraFollowService,
-                    characterViewModelFactory,
                     createCurrentCharacterQuery
                 );
 
@@ -277,7 +280,7 @@ namespace Sources.Client.Bootstrap
                     bindableViewFactory,
                     ingredientViewModelFactory,
                     environment.View["Ingredient"]
-                ); 
+                );
 
 
             CreateIngredientSignalAction createIngredientSignalAction = new CreateIngredientSignalAction(
@@ -365,10 +368,10 @@ namespace Sources.Client.Bootstrap
                 environment
             );
 
-            QuestSlotViewModelFactory questSlotViewModelFactory = 
+            QuestSlotViewModelFactory questSlotViewModelFactory =
                 new QuestSlotViewModelFactory(visibilityViewModelComponentFactory);
             QuestSlotFactory questSlotFactory = new QuestSlotFactory();
-            CreateQuestSlotQuery createQuestSlotQuery = 
+            CreateQuestSlotQuery createQuestSlotQuery =
                 new CreateQuestSlotQuery(idGenerator, _entityRepository, questSlotFactory);
             AddQuestSlotCommand addQuestSlotCommand = new AddQuestSlotCommand(_entityRepository);
 

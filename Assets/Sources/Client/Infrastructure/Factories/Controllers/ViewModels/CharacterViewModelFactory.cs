@@ -3,10 +3,11 @@ using Sources.Client.Controllers.Characters.ViewModels;
 using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
+using Sources.Client.InfrastructureInterfaces.Factories.Controllers.ViewModels;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
 {
-    public class CharacterViewModelFactory
+    public class CharacterViewModelFactory : IViewModelFactory<CharacterViewModel>
     {
         private readonly VisibilityViewModelComponentFactory _visibilityViewModelComponentFactory;
         private readonly AnimationSpeedViewModelComponentFactory _animationSpeedViewModelComponentFactory;
@@ -15,7 +16,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels
 
         private readonly CharacterControllerMovementViewModelComponentFactory
             _characterControllerMovementViewModelComponentFactory;
-
 
         public CharacterViewModelFactory
         (

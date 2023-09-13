@@ -2,10 +2,12 @@
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Controllers.Characters.Signals;
+using Sources.Client.Controllers.Characters.ViewModels;
 using Sources.Client.Controllers.Inventories.Signals;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
+using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 using Sources.Client.UseCases.Characters.Queries;
@@ -16,27 +18,24 @@ namespace Sources.Client.Controllers.Characters.Actions
     public class CreateCharacterSignalAction : ISignalAction<CreateCharacterSignal>
     {
         private readonly ISignalBus _signalBus;
-        private readonly IBindableViewFactory _bindableViewFactory;
+        private readonly IBindableViewBuilder<CharacterViewModel> _viewBuilder;
         private readonly CurrentPlayerService _currentPlayerService;
         private readonly CameraFollowService _cameraFollowService;
-        private readonly CharacterViewModelFactory _characterViewModelFactory;
         private readonly CreateCurrentCharacterQuery _createCurrentCharacterQuery;
 
         public CreateCharacterSignalAction
         (
             ISignalBus signalBus,
-            IBindableViewFactory bindableViewFactory,
+            IBindableViewBuilder<CharacterViewModel> viewBuilder,
             CurrentPlayerService currentPlayerService,
             CameraFollowService cameraFollowService,
-            CharacterViewModelFactory characterViewModelFactory,
             CreateCurrentCharacterQuery createCurrentCharacterQuery
         )
         {
             _signalBus = signalBus;
-            _bindableViewFactory = bindableViewFactory;
+            _viewBuilder = viewBuilder;
             _currentPlayerService = currentPlayerService;
             _cameraFollowService = cameraFollowService;
-            _characterViewModelFactory = characterViewModelFactory;
             _createCurrentCharacterQuery = createCurrentCharacterQuery;
         }
 
@@ -44,14 +43,12 @@ namespace Sources.Client.Controllers.Characters.Actions
         {
             int characterId = _createCurrentCharacterQuery.Handle(signal.SpawnPosition);
             _signalBus.Handle(new CreateInventorySignal(characterId, 3)); //todo: to config
-            
-            IViewModel viewModel = _characterViewModelFactory.Create(characterId);
-            IBindableView view = _bindableViewFactory.Create("", "Peasant"); //todo: Make constant path
 
+            IBindableView view = _viewBuilder.Build(characterId, "Peasant");
+            
             _currentPlayerService.CharacterId = characterId;
             _cameraFollowService.Follow(((MonoBehaviour)view).transform);
 
-            view.Bind(viewModel);
         }
     }
 }
