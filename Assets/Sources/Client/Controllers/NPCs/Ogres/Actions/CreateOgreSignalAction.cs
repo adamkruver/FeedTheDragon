@@ -5,6 +5,7 @@ using Sources.Client.App.Configs;
 using Sources.Client.Controllers.NPCs.Common.Signals;
 using Sources.Client.Controllers.NPCs.Ogres.Signals;
 using Sources.Client.Domain.NPCs;
+using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
@@ -39,7 +40,7 @@ namespace Sources.Client.Controllers.NPCs.Ogres.Actions
         {
             int id = _createOgreQuery.Handle(signal.Position);
 
-            IBindableView view = _bindableViewFactory.Create(_environment.View.NPCs[nameof(Ogre)], nameof(Ogre));
+            IBindableView view = _bindableViewFactory.Create(_environment.View["NPC"], nameof(Ogre));
             IViewModel viewModel = _ogreViewModelFactory.Create(id);
             
             view.Bind(viewModel);

@@ -7,7 +7,6 @@ using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.PresentationInterfaces.Binds.BehaviourTrees;
-using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.Destinations.Queries;
 using Sources.Client.UseCases.Common.Components.LookDirection.Commands;
 using Sources.Client.UseCases.Common.Components.LookDirection.Queries;

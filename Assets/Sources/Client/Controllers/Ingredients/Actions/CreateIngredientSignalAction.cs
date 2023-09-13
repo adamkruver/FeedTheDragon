@@ -1,13 +1,8 @@
-﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
-using PresentationInterfaces.Frameworks.Mvvm.Views;
-using Sources.Client.Controllers.Ingredients.Signals;
-using Sources.Client.Domain.Ingredients;
-using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
+﻿using Sources.Client.Controllers.Ingredients.Signals;
+using Sources.Client.Controllers.Ingredients.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients;
 using Sources.Client.Infrastructure.Factories.Presentation.BindableViews;
-using Sources.Client.InfrastructureInterfaces.Factories.Domain.Ingredients;
-using Sources.Client.InfrastructureInterfaces.Repositories;
-using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
+using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 using Sources.Client.UseCases.Ingredients.Queries;
 
@@ -17,27 +12,23 @@ namespace Sources.Client.Controllers.Ingredients.Actions
     {
         private readonly IngredientBindableViewFactory _ingredientBindableViewFactory;
         private readonly IngredientViewModelFactory _ingredientViewModelFactory;
+        private readonly IBindableViewBuilder<IngredientViewModel> _viewBuilder;
         private readonly CreateIngredientQuery _createIngredientQuery;
 
         public CreateIngredientSignalAction
         (
-            IngredientBindableViewFactory ingredientBindableViewFactory,
-            IngredientViewModelFactory ingredientViewModelFactory,
+            IBindableViewBuilder<IngredientViewModel> viewBuilder,
             CreateIngredientQuery createIngredientQuery
         )
         {
-            _ingredientBindableViewFactory = ingredientBindableViewFactory;
-            _ingredientViewModelFactory = ingredientViewModelFactory;
+            _viewBuilder = viewBuilder;
             _createIngredientQuery = createIngredientQuery;
         }
 
         public void Handle(CreateIngredientSignal signal)
         {
             int id = _createIngredientQuery.Handle(signal.Type, signal.Position);
-            IBindableView view = _ingredientBindableViewFactory.Create(signal.Type);
-            IViewModel viewModel = _ingredientViewModelFactory.Create(id, signal.Type);
-
-            view.Bind(viewModel);
+            _viewBuilder.Build(id, signal.Type.GetType().Name);
         }
     }
 }

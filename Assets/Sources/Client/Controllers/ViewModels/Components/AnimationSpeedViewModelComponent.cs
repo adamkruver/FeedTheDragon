@@ -2,7 +2,7 @@
 using DomainInterfaces.Frameworks.Mvvm.Properties;
 using PresentationInterfaces.Frameworks.Mvvm.Binds.Animators;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
-using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
+using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Controllers.ViewModels.Components

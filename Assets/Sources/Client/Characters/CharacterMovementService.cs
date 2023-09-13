@@ -2,8 +2,8 @@ using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
-using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
+using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using UnityEngine;
 using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 

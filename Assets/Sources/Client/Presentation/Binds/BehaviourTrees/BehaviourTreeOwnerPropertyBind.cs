@@ -3,13 +3,16 @@ using NodeCanvas.BehaviourTrees;
 using Sources.Client.PresentationInterfaces.Binds.BehaviourTrees;
 using UnityEngine;
 
-public class BehaviourTreeOwnerPropertyBind : BindableViewProperty<BehaviourTreeOwner>, IBehaviourTreeOwnerPropertyBind
+namespace Sources.Client.Presentation.Binds.BehaviourTrees
 {
-    [SerializeField] private BehaviourTreeOwner _behaviourTree;
-
-    public override BehaviourTreeOwner BindableProperty
+    public class BehaviourTreeOwnerPropertyBind : BindableViewProperty<BehaviourTreeOwner>, IBehaviourTreeOwnerPropertyBind
     {
-        get => _behaviourTree;
-        set { return; }
+        [SerializeField] private BehaviourTreeOwner _behaviourTree;
+
+        public override BehaviourTreeOwner BindableProperty
+        {
+            get => _behaviourTree;
+            set { return; }
+        }
     }
 }

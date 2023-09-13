@@ -19,7 +19,7 @@ namespace Sources.Client.Infrastructure.Factories.Presentation.BindableViews
         public IBindableView Create(IIngredientType type)
         {
             string typeName = type.GetType().Name;
-            string prefabPath = _environment.View.Ingredients[typeName];
+            string prefabPath = _environment.View["Ingredient"];
 
             return _bindableViewFactory.Create(prefabPath, typeName);
         }

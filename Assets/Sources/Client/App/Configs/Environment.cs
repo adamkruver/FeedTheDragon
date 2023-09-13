@@ -1,11 +1,12 @@
 ﻿using System;
-using Sources.Client.App.Configs.Presentation;
+using System.Collections.Generic;
 
 namespace Sources.Client.App.Configs
 {
     [Serializable]
     public class Environment
     {
-        public ViewConfig View;
+        public Dictionary<string, string> View;
+        public Dictionary<string, string> Ui;
     }
 }

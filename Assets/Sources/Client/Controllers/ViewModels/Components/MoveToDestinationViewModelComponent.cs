@@ -1,5 +1,5 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
-using Sources.Client.InfrastructureInterfaces.Services.GameUpdateService;
+using Sources.Client.InfrastructureInterfaces.Services.GameUpdate;
 using Sources.Client.UseCases.Common.Components.Destinations.Queries;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Utils.LiveDatas.Sources.Frameworks.LiveDatas;

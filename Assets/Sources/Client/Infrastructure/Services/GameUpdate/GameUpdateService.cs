@@ -1,5 +1,5 @@
 ﻿using System;
-using Sources.Client.InfrastructureInterfaces.Services.GameUpdateService;
+using Sources.Client.InfrastructureInterfaces.Services.GameUpdate;
 
 namespace Sources.Client.Infrastructure.Services.GameUpdate
 {

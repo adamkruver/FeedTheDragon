@@ -3,10 +3,11 @@ using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.Ingredients.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.InfrastructureInterfaces.Factories.Controllers;
+using Sources.Client.InfrastructureInterfaces.Factories.Controllers.ViewModels;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients
 {
-    public class IngredientViewModelFactoryBase : IIngredientViewModelFactory
+    public class IngredientViewModelFactoryBase : IViewModelFactory<IngredientViewModel>
     {
         private readonly VisibilityViewModelComponentFactory _visibilityViewModelComponentFactory;
         private readonly PositionViewModelComponentFactory _positionViewModelComponentFactory;

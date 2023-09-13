@@ -1,7 +1,7 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
-using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
+using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components
 {

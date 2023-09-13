@@ -46,7 +46,7 @@ namespace Sources.Client.Controllers.NPCs.Common.Actions
             throw new NotImplementedException("Тут должны быть другие пути к файлам");
             
             string ingredientTypeName = ingredientType.GetType().Name;
-            string path = _environment.View.Ingredients[ingredientTypeName];
+            string path = _environment.View["Ingredient"];
             
             IViewModel viewModel = _questViewModelFactory.Create(id);
             IBindableView view = _bindableViewFactory.Create(path, ingredientTypeName);

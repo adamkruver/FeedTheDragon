@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sources.Client.InfrastructureInterfaces.Services.GameUpdateService
+namespace Sources.Client.InfrastructureInterfaces.Services.GameUpdate
 {
     public interface IUpdateService
     {

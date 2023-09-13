@@ -4,6 +4,7 @@ using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Controllers.NPCs.Ogres.Signals;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.NPCs;
+using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Signals;
 using Sources.Client.Presentation.Views.SpawnPoints;

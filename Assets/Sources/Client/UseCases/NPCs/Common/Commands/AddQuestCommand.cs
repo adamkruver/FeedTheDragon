@@ -1,6 +1,7 @@
 ﻿using System;
 using Sources.Client.Domain.NPCs;
 using Sources.Client.Domain.NPCs.Components;
+using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 
 namespace Sources.Client.UseCases.NPCs.Common.Commands

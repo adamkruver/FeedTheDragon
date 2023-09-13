@@ -36,5 +36,16 @@ namespace Presentation.Frameworks.Mvvm.Views
 
         public void Construct(IBinder binder) =>
             Binder = binder;
+
+        public void SetParent(IBindableView parent)
+        {
+            if(parent is null)
+                return;
+            
+            if(parent is not MonoBehaviour monoBehaviour)
+                throw new InvalidCastException();
+            
+            monoBehaviour.transform.SetParent(transform, false);
+        }
     }
 }

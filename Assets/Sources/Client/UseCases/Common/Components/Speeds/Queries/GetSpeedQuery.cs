@@ -2,7 +2,7 @@
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
-namespace Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries
+namespace Sources.Client.UseCases.Common.Components.Speeds.Queries
 {
     public class GetSpeedQuery : ComponentUseCaseBase<SpeedComponent>
     {

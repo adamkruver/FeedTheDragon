@@ -1,32 +1,10 @@
 ﻿{
   "View": {
-    "Ingredients": {
-      "KeyValues": [
-        {
-          "Key": "Chanterelle",
-          "Value": ""
-        },
-        {
-          "Key": "ToxicFrog",
-          "Value": "Ingredients/Frogs/"
-        }
-      ]
-    },
-    "NPCs": {
-      "KeyValues": [
-        {
-          "Key": "Ogre",
-          "Value": "NPCs/Ogres/"
-        }
-      ]
-    },
-    "Quests": {
-      "KeyValues": [
-        {
-          "Key": "Quest",
-          "Value": "Views/Quests/"
-        }
-      ]
-    }
+    "Ingredient": "Ingredients/",
+    "NPC": "NPCs/",
+    "Quest": "Quests/"
+  },
+  "Ui": {
+    
   }
 }

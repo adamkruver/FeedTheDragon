@@ -53,7 +53,7 @@ namespace Sources.Client.Controllers.NPCs.Common.Actions
             int id = _createQuestQuery.Handle();
 
             IViewModel viewModel = _questViewModelFactory.Create(id);
-            IBindableView view = _bindableViewFactory.Create(_environment.View.Quests[nameof(Quest)], nameof(Quest));
+            IBindableView view = _bindableViewFactory.Create(_environment.View["Quest"], nameof(Quest));
 
             view.Bind(viewModel);
 

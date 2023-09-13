@@ -19,11 +19,13 @@ namespace Presentation.Frameworks.Mvvm.Factories
         public BindableViewFactory(IBinder binder) =>
             _binder = binder;
 
-        public IBindableView Create(string viewPath, string name)
+        public IBindableView Create(string viewPath, string name, IBindableView parent = null)
         {
             BindableView view = _prefabFactory.Create<BindableView>(viewPath + name);
             Construct(view);
 
+            view.SetParent(parent);
+            
             return view;
         }
 

@@ -1,6 +1,6 @@
 ﻿using Sources.Client.Domain.Entities;
 
-namespace Sources.Client.Domain.NPCs
+namespace Sources.Client.Domain.NPCs.Ogres
 {
     public class Ogre : Composite, IEntity
     {

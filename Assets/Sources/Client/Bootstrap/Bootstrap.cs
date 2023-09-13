@@ -9,6 +9,7 @@ using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Ingredients;
 using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.Signals;
+using Sources.Client.Controllers.Ingredients.ViewModels;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Controllers.NPCs.Common;
@@ -19,6 +20,8 @@ using Sources.Client.Controllers.NPCs.Ogres.Signals;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Domain.NPCs;
+using Sources.Client.Domain.NPCs.Ogres;
+using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Data.Providers;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
@@ -39,16 +42,17 @@ using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.SignalBus;
 using Sources.Client.Infrastructure.ViewProviders;
 using Sources.Client.InfrastructureInterfaces.Factories.Controllers;
+using Sources.Client.InfrastructureInterfaces.Factories.Controllers.ViewModels;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.Presentation.Views.SpawnPoints.Ingredients;
 using Sources.Client.Presentation.Views.SpawnPoints.NPCs;
 using Sources.Client.UseCases.Characters.Queries;
-using Sources.Client.UseCases.Common.Components.AnimationSpeeds.Queries;
 using Sources.Client.UseCases.Common.Components.Destinations.Commands;
 using Sources.Client.UseCases.Common.Components.LookDirection.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Speeds.Commands;
+using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
 using Sources.Client.UseCases.Ingredients.Queries;
 using Sources.Client.UseCases.Inventories.Commands;
@@ -117,10 +121,12 @@ namespace Sources.Client.Bootstrap
 
             #endregion
 
+            PeasantFactory peasantFactory = new PeasantFactory();
+            
             #region UseCases
 
-            PeasantFactory peasantFactory = new PeasantFactory();
-
+            GetIngredientTypeQuery getIngredientTypeQuery = new GetIngredientTypeQuery(_entityRepository);
+            
             CreateCurrentCharacterQuery createCurrentCharacterQuery = new CreateCurrentCharacterQuery(
                 _entityRepository,
                 peasantFactory,
@@ -216,9 +222,10 @@ namespace Sources.Client.Bootstrap
                 lookDirectionViewModelComponentFactory
             );
 
-            IngredientViewModelFactory ingredientViewModelFactory = new IngredientViewModelFactory(
+            IViewModelFactory<IngredientViewModel> ingredientViewModelFactory = new IngredientViewModelFactory(
                 ingredientViewModelFactoryBase,
-                new Dictionary<Type, IIngredientViewModelFactory>()
+                getIngredientTypeQuery,
+                new Dictionary<Type, IViewModelFactory<IngredientViewModel>>()
                 {
                     [typeof(ToxicFrog)] = toxicFrogViewModelFactory
                 }
@@ -265,9 +272,16 @@ namespace Sources.Client.Bootstrap
             IngredientBindableViewFactory ingredientBindableViewFactory =
                 new IngredientBindableViewFactory(bindableViewFactory, environment);
 
+            BindableViewBuilder<IngredientViewModel> ingredientViewBuilder =
+                new BindableViewBuilder<IngredientViewModel>(
+                    bindableViewFactory,
+                    ingredientViewModelFactory,
+                    environment.View["Ingredient"]
+                ); 
+
+
             CreateIngredientSignalAction createIngredientSignalAction = new CreateIngredientSignalAction(
-                ingredientBindableViewFactory,
-                ingredientViewModelFactory,
+                ingredientViewBuilder,
                 createIngredientQuery
             );
 

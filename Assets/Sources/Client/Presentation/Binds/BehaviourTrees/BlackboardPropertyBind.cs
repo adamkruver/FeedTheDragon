@@ -3,13 +3,16 @@ using NodeCanvas.Framework;
 using Sources.Client.PresentationInterfaces.Binds.BehaviourTrees;
 using UnityEngine;
 
-public class BlackboardPropertyBind : BindableViewProperty<Blackboard>, IBlackboardPropertyBind
+namespace Sources.Client.Presentation.Binds.BehaviourTrees
 {
-    [SerializeField] private Blackboard _blackboard;
-
-    public override Blackboard BindableProperty
+    public class BlackboardPropertyBind : BindableViewProperty<Blackboard>, IBlackboardPropertyBind
     {
-        get => _blackboard;
-        set { return; }
+        [SerializeField] private Blackboard _blackboard;
+
+        public override Blackboard BindableProperty
+        {
+            get => _blackboard;
+            set { return; }
+        }
     }
 }

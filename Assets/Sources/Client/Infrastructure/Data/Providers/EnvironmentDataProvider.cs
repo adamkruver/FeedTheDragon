@@ -1,4 +1,5 @@
 ﻿using Sources.Client.App.Configs;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace Sources.Client.Infrastructure.Data.Providers
@@ -8,6 +9,6 @@ namespace Sources.Client.Infrastructure.Data.Providers
         private readonly string _environmentConfigPath = "Environment";
 
         public Environment Load() =>
-            JsonUtility.FromJson<Environment>(Resources.Load<TextAsset>(_environmentConfigPath).text);
+            JsonConvert.DeserializeObject<Environment>(Resources.Load<TextAsset>(_environmentConfigPath).text);
     }
 }
