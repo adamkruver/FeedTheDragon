@@ -1,34 +1,39 @@
-﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
+﻿using System;
+using PresentationInterfaces.Frameworks.Mvvm.Factories;
+using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Domain.Ingredients;
-using Sources.Client.InfrastructureInterfaces.Factories.Domain.Presentation.Views;
 using Sources.Client.Presentation.Views.Inventories;
 using Sources.Client.PresentationInterfaces.Views;
 
 namespace Sources.Client.Infrastructure.Factories.Presentation.Views
 {
-    public class InventorySlotViewFactory : ViewFactoryBase<InventorySlotView>, IInventorySlotViewFactory
+    public class InventorySlotViewFactory : IBindableViewFactory
     {
-        private static readonly string s_inventoryCellViewPath = "Views/Inventories/";
-
+        private readonly IBindableViewFactory _bindableViewFactory;
         private readonly IngredientViewFactory _ingredientViewFactory;
         private readonly IIngredientType[] _availableTypes;
-        
+
         public InventorySlotViewFactory(
             IBindableViewFactory bindableViewFactory,
             IngredientViewFactory ingredientViewFactory,
-            IIngredientType[] availableTypes) : base(bindableViewFactory, s_inventoryCellViewPath)
+            IIngredientType[] availableTypes
+        )
         {
+            _bindableViewFactory = bindableViewFactory;
             _ingredientViewFactory = ingredientViewFactory;
             _availableTypes = availableTypes;
         }
 
-        public IInventorySlotView Create()
+        public IBindableView Create(string viewPath, string name, IBindableView parent = null)
         {
-            InventorySlotView slotView = Create(nameof(InventorySlotView));
+            IBindableView view = _bindableViewFactory.Create(viewPath, name);
 
+            if (view is not InventorySlotView slotView)
+                throw new InvalidCastException();
+            
             foreach (IIngredientType ingredientType in _availableTypes)
                 slotView.Add(ingredientType, _ingredientViewFactory.Create(ingredientType.GetType()));
-            
+
             slotView.Hide();
 
             return slotView;

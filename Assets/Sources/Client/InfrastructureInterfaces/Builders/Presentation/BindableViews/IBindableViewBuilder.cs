@@ -5,6 +5,6 @@ namespace Sources.Client.InfrastructureInterfaces.Builders.Presentation.Bindable
 {
     public interface IBindableViewBuilder<TViewModel> where TViewModel : IViewModel
     {
-        IBindableView Build(int entityId, string prefabName);
+        IBindableView Build(int entityId, string prefabName, IBindableView parent = null);
     }
 }

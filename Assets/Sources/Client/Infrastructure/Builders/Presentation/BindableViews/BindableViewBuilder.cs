@@ -11,25 +11,22 @@ namespace Sources.Client.Infrastructure.Builders.Presentation.BindableViews
         private readonly IBindableViewFactory _bindableViewFactory;
         private readonly IViewModelFactory<TViewModel> _viewModelFactory;
         private readonly string _viewPath;
-        private readonly IBindableView _parentView;
 
         public BindableViewBuilder(
             IBindableViewFactory bindableViewFactory,
             IViewModelFactory<TViewModel> viewModelFactory,
-            string viewPath,
-            IBindableView parentView = null
+            string viewPath
         )
         {
             _bindableViewFactory = bindableViewFactory;
             _viewModelFactory = viewModelFactory;
             _viewPath = viewPath;
-            _parentView = parentView;
         }
 
-        public IBindableView Build(int entityId, string prefabName)
+        public IBindableView Build(int entityId, string prefabName, IBindableView parentView = null)
         {
             IViewModel viewModel = _viewModelFactory.Create(entityId);
-            IBindableView view = _bindableViewFactory.Create(_viewPath, prefabName, _parentView);
+            IBindableView view = _bindableViewFactory.Create(_viewPath, prefabName, parentView);
             
             view.Bind(viewModel);
 

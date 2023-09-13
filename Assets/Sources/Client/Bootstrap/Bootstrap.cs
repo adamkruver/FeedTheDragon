@@ -27,6 +27,7 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients.Components;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Inventories;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
@@ -54,7 +55,6 @@ using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using Sources.Client.UseCases.Common.Components.Visibilities.Commands;
 using Sources.Client.UseCases.Ingredients.Queries;
 using Sources.Client.UseCases.Inventories.Commands;
-using Sources.Client.UseCases.Inventories.Listeners;
 using Sources.Client.UseCases.Inventories.Queries;
 using Sources.Client.UseCases.Inventories.Slots.Queries;
 using Sources.Client.UseCases.NPCs.Common.Commands;
@@ -114,9 +114,6 @@ namespace Sources.Client.Bootstrap
             InventorySlotViewFactory inventorySlotViewFactory =
                 new InventorySlotViewFactory(bindableViewFactory, ingredientViewFactory, ingredientTypes);
 
-            InventoryViewFactory inventoryViewFactory =
-                new InventoryViewFactory(bindableViewFactory);
-
             #endregion
 
             PeasantFactory peasantFactory = new PeasantFactory();
@@ -155,8 +152,7 @@ namespace Sources.Client.Bootstrap
             GetInventorySlotItemTypeQuery getInventorySlotItemTypeQuery =
                 new GetInventorySlotItemTypeQuery(_entityRepository);
 
-            AddInventoryListener addInventoryListener = new AddInventoryListener(_entityRepository);
-            RemoveInventoryListener removeInventoryListener = new RemoveInventoryListener(_entityRepository);
+            GetInventoryIdsQuery getInventoryIdsQuery = new GetInventoryIdsQuery(_entityRepository);
             CanPushInventoryQuery canPushInventoryQuery = new CanPushInventoryQuery(_entityRepository);
 
             CreateIngredientQuery createIngredientQuery =
@@ -168,8 +164,6 @@ namespace Sources.Client.Bootstrap
 
             IngredientInteractorViewModelComponentFactory ingredientInteractorViewModelComponentFactory =
                 new IngredientInteractorViewModelComponentFactory(
-                    addInventoryListener,
-                    removeInventoryListener,
                     canPushInventoryQuery
                 );
 
@@ -229,12 +223,24 @@ namespace Sources.Client.Bootstrap
                 }
             );
 
-            InventoryViewModelFactory inventoryViewModelFactory =
-                new InventoryViewModelFactory(visibilityViewModelComponentFactory);
-
             InventorySlotViewModelFactory inventorySlotViewModelFactory = new InventorySlotViewModelFactory(
                 visibilityViewModelComponentFactory,
                 getInventorySlotItemTypeQuery
+            );
+
+            BindableViewBuilder<InventorySlotViewModel> inventorySlotViewBuilder =
+                new BindableViewBuilder<InventorySlotViewModel>(
+                    inventorySlotViewFactory,
+                    inventorySlotViewModelFactory,
+                    environment.View["Inventory"]
+                );
+
+            InventorySlotObserverViewModelComponentFactory inventorySlotObserverViewModelComponentFactory =
+                new InventorySlotObserverViewModelComponentFactory(inventorySlotViewBuilder, getInventoryIdsQuery);
+
+            InventoryViewModelFactory inventoryViewModelFactory = new InventoryViewModelFactory(
+                visibilityViewModelComponentFactory,
+                inventorySlotObserverViewModelComponentFactory
             );
 
             #endregion
@@ -283,7 +289,7 @@ namespace Sources.Client.Bootstrap
                 bindableViewFactory,
                 inventoryViewModelFactory,
                 environment.View["Inventory"]
-                );
+            );
 
 
             CreateIngredientSignalAction createIngredientSignalAction = new CreateIngredientSignalAction(
@@ -319,14 +325,10 @@ namespace Sources.Client.Bootstrap
             CreateInventorySignalAction createInventorySignalAction = new CreateInventorySignalAction(
                 _signalBus,
                 inventoryViewBuilder,
-                viewProvider,
                 createInventoryQuery
             );
 
             CreateInventorySlotSignalAction createInventorySlotSignalAction = new CreateInventorySlotSignalAction(
-                viewProvider,
-                inventorySlotViewFactory,
-                inventorySlotViewModelFactory,
                 createInventorySlotQuery
             );
 

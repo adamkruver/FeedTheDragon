@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 3353732421071589518}
   - component: {fileID: 3353732421071589505}
   - component: {fileID: 3353732421071589504}
-  - component: {fileID: 5813697570116179450}
+  - component: {fileID: 7756363817646818273}
   - component: {fileID: -1809848785538141712}
   m_Layer: 5
   m_Name: Inventory
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5813697570116179450
+--- !u!114 &7756363817646818273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -288,10 +288,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3353732421071589507}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 532602b6d30e4462ae4153b72f549f0d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2975345a99026ea40a6a7ac51fe52cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slotParent: {fileID: 3984446377117736284}
 --- !u!114 &-1809848785538141712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,7 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b05792b0a074a06a7f7954f3c81d62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 5813697570116179450}
+  _view: {fileID: 7756363817646818273}
 --- !u!1 &3353732421348168393
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +877,7 @@ GameObject:
   - component: {fileID: 9062482548617584133}
   - component: {fileID: 5163820798687628307}
   - component: {fileID: 1993047315384036287}
+  - component: {fileID: 6719521585679210285}
   m_Layer: 5
   m_Name: InventoryPanel
   m_TagString: Untagged
@@ -983,3 +983,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1.5
+--- !u!114 &6719521585679210285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997804841503437705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ddd512ee244c25b3a17d33a4dfbfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

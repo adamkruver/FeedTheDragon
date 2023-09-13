@@ -29,8 +29,8 @@ namespace Sources.Client.UseCases.Inventories.Slots.Queries
             int id = _idGenerator.GetId();
             InventorySlot slot = _inventorySlotFactory.Create(id);
             
-            inventory.Add(slot);
             _repository.Add(slot);
+            inventory.Add(slot);
 
             return id;
         }
