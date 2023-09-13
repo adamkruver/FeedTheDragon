@@ -8,7 +8,7 @@ namespace Sources.Client.Presentation.Binds.Ingredients
 {
     public class IngredientTypePropertyBind : BindableViewProperty<Type>, IIngredientTypePropertyBind
     {
-        [SerializeField] private InventorySlotView _view;
+        [SerializeField] private SlotView _view;
 
         public override Type BindableProperty
         {

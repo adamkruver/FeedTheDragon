@@ -5,13 +5,13 @@ namespace Sources.Client.Controllers.NPCs.Common.Signals
 {
     public class CreateQuestSlotSignal : ISignal
     {
-        public CreateQuestSlotSignal(int ownerId, IIngredientType type)
+        public CreateQuestSlotSignal(int questId, IIngredientType type)
         {
-            OwnerId = ownerId;
+            QuestId = questId;
             Type = type;
         }
 
-        public int OwnerId { get; }
+        public int QuestId { get; }
         public IIngredientType Type { get; }
     }
 }

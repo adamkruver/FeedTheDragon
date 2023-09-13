@@ -6,7 +6,7 @@ namespace Sources.Client.Extensions
 {
     public static partial class Extensions
     {
-        public static (IEnumerable<T> Added, IEnumerable<T> Removed) Diff<T>(this IEnumerable<T> sourceCollection,
+        public static (IEnumerable<T> added, IEnumerable<T> removed) Diff<T>(this IEnumerable<T> sourceCollection,
             IEnumerable<T> changedCollection, Func<T, T, bool> comparer)
         {
             List<T> removed = new List<T>();
@@ -14,7 +14,7 @@ namespace Sources.Client.Extensions
 
             foreach (T item in sourceCollection)
             {
-                T sameItem = targets.FirstOrDefault(targetItem => comparer.Invoke(targetItem, item));
+                T? sameItem = targets.FirstOrDefault(targetItem => comparer.Invoke(targetItem, item));
 
                 if (sameItem == null)
                     removed.Add(item);

@@ -1,11 +1,11 @@
-﻿using Sources.Client.Domain;
+﻿using System;
+using Sources.Client.Domain;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Domain.NPCs.Components;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.NPCs;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
-using UnityEngine;
 
 namespace Sources.Client.UseCases.NPCs.Common.Queries
 {
@@ -27,12 +27,17 @@ namespace Sources.Client.UseCases.NPCs.Common.Queries
             _entityRepository = entityRepository;
         }
 
-        public int Handle()
+        public int Handle(int ownerId)
         {
+            if (_entityRepository.Get(ownerId) is not Composite owner)
+                throw new InvalidCastException();
+
             int id = _idGenerator.GetId();
 
             Quest quest = _questFactory.Create(id);
             _entityRepository.Add(quest);
+
+            owner.AddComponent(quest);
 
             return id;
         }

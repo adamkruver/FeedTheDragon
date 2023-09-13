@@ -21,7 +21,7 @@ namespace Sources.Client.UseCases.NPCs.Common.Commands
             if (_entityRepository.Get(questSlotId) is not QuestSlot questSlot)
                 throw new InvalidCastException();
 
-            quest.AddComponent(questSlot);
+            quest.Add(questSlot);
         }
     }
 }

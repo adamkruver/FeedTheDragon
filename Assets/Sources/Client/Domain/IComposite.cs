@@ -9,5 +9,6 @@ namespace Sources.Client.Domain
 
         bool TryGetComponent(Type type, out IComponent component);
         bool TryGetComponent<T>(out T component) where T : IComponent;
+        bool TryGetComponents<T>(out T[] components) where T : IComponent;
     }
 }

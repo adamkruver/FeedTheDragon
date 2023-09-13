@@ -1,6 +1,6 @@
-﻿using Sources.Client.Domain.Ingredients;
+﻿using System;
+using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.NPCs.Components;
-using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.Infrastructure.Factories.Domain.NPCs;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
@@ -21,13 +21,18 @@ namespace Sources.Client.UseCases.NPCs.Common.Queries
             _questSlotFactory = questSlotFactory;
         }
 
-        public int Handle(IIngredientType requiredType)
+        public int Handle(IIngredientType requiredType, int questId)
         {
+            if (_entityRepository.Get(questId) is not Quest quest)
+                throw new InvalidCastException();
+
             int id = _idGenerator.GetId();
-            
+
             QuestSlot questSlot = _questSlotFactory.Create(id, requiredType);
             _entityRepository.Add(questSlot);
             
+            quest.Add(questSlot);
+
             return id;
         }
     }

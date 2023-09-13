@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Sources.Client.Presentation.Views.Inventories
 {
-    public class InventorySlotView : BindableView, IInventorySlotView
+    public class SlotView : BindableView, IInventorySlotView
     {
         [SerializeField] private Transform _collectionParent;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sources.Client.Domain
 {
@@ -12,23 +13,13 @@ namespace Sources.Client.Domain
 
         public bool TryGetComponent(Type type, out IComponent component)
         {
-            foreach (IComponent currentComponent in _components)
-            {
-                if (currentComponent.GetType() == type)
-                {
-                    component = currentComponent;
+            component = _components.FirstOrDefault(currentComponent => currentComponent.GetType() == type);
 
-                    return true;
-                }
-            }
-
-            component = default;
-
-            return false;
+            return component != null;
         }
 
         public bool TryGetComponent<T>(out T component) where T : IComponent
-        {
+        {//todo refactor
             foreach (IComponent currentComponent in _components)
             {
                 if (currentComponent.GetType() == typeof(T))
@@ -52,6 +43,13 @@ namespace Sources.Client.Domain
             component = default;
 
             return false;
+        }
+
+        public bool TryGetComponents<T>(out T[] components) where T : IComponent
+        {
+            components = _components.OfType<T>().ToArray();
+            
+            return components.Length != 0;
         }
 
         public void AddComponent(IComponent component)

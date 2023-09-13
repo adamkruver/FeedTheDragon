@@ -7,13 +7,13 @@ using Sources.Client.PresentationInterfaces.Views;
 
 namespace Sources.Client.Infrastructure.Factories.Presentation.Views
 {
-    public class InventorySlotViewFactory : IBindableViewFactory
+    public class SlotViewFactory : IBindableViewFactory
     {
         private readonly IBindableViewFactory _bindableViewFactory;
         private readonly IngredientViewFactory _ingredientViewFactory;
         private readonly IIngredientType[] _availableTypes;
 
-        public InventorySlotViewFactory(
+        public SlotViewFactory(
             IBindableViewFactory bindableViewFactory,
             IngredientViewFactory ingredientViewFactory,
             IIngredientType[] availableTypes
@@ -28,7 +28,7 @@ namespace Sources.Client.Infrastructure.Factories.Presentation.Views
         {
             IBindableView view = _bindableViewFactory.Create(viewPath, name);
 
-            if (view is not InventorySlotView slotView)
+            if (view is not SlotView slotView)
                 throw new InvalidCastException();
             
             foreach (IIngredientType ingredientType in _availableTypes)

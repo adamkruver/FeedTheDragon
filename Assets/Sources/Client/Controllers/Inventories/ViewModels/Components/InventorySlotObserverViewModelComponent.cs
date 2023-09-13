@@ -5,8 +5,10 @@ using PresentationInterfaces.Frameworks.Mvvm.Sources.Frameworks.Mvvm.Presentatio
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Domain.Inventories;
+using Sources.Client.Extensions;
 using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
 using Sources.Client.UseCases.Inventories.Queries;
+using UnityEngine;
 using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Controllers.Inventories.ViewModels.Components
@@ -19,7 +21,7 @@ namespace Sources.Client.Controllers.Inventories.ViewModels.Components
         [PropertyBinding(typeof(IAttachableViewPropertyBind))]
         private IBindableProperty<IAttachableView> _view;
 
-        private List<int> _slots = new List<int>();
+        private int[] _slots = new int[] { };
 
         public InventorySlotObserverViewModelComponent(
             int id,
@@ -43,15 +45,20 @@ namespace Sources.Client.Controllers.Inventories.ViewModels.Components
 
         private void OnSlotsChanged(int[] slotIds)
         {
-            foreach (int slotId in slotIds)
+            (IEnumerable<int> added, IEnumerable<int> removed) = _slots.Diff(slotIds, Compare);
+
+            foreach (int slotId in added)
             {
-                if (_slots.Contains(slotId) == false)
-                {
-                    IBindableView view = _slotViewBuilder.Build(slotId, nameof(InventorySlot));
-                    _view.Value.Attach(view);
-                    _slots.Add(slotId);
-                }
+                IBindableView view = _slotViewBuilder.Build(slotId, nameof(InventorySlot));
+                _view.Value.Attach(view);
             }
+            
+            //todo: remove slots Removed
+            
+            _slots = slotIds;
         }
+
+        private bool Compare(int id1, int id2) =>
+            id1 == id2;
     }
 }

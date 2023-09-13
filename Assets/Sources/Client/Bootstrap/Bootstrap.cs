@@ -16,6 +16,7 @@ using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Controllers.Inventories.ViewModels;
 using Sources.Client.Controllers.NPCs.Common;
 using Sources.Client.Controllers.NPCs.Common.Actions;
+using Sources.Client.Controllers.NPCs.Common.ViewModels;
 using Sources.Client.Controllers.NPCs.Ogres;
 using Sources.Client.Controllers.NPCs.Ogres.Actions;
 using Sources.Client.Domain.Ingredients;
@@ -29,6 +30,7 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Inventories;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Domain.NPCs;
@@ -46,6 +48,7 @@ using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.Presentation.Views.SpawnPoints.Ingredients;
 using Sources.Client.Presentation.Views.SpawnPoints.NPCs;
 using Sources.Client.UseCases.Characters.Queries;
+using Sources.Client.UseCases.Common.Components.ComponentsListenets;
 using Sources.Client.UseCases.Common.Components.Destinations.Commands;
 using Sources.Client.UseCases.Common.Components.LookDirection.Commands;
 using Sources.Client.UseCases.Common.Components.Positions.Commands;
@@ -59,6 +62,7 @@ using Sources.Client.UseCases.Inventories.Queries;
 using Sources.Client.UseCases.Inventories.Slots.Queries;
 using Sources.Client.UseCases.NPCs.Common.Commands;
 using Sources.Client.UseCases.NPCs.Common.Queries;
+using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 using Sources.Client.UseCases.NPCs.Ogres.Queries;
 using UnityEngine;
 using Environment = Sources.Client.App.Configs.Environment;
@@ -111,8 +115,8 @@ namespace Sources.Client.Bootstrap
 
             IngredientViewFactory ingredientViewFactory = new IngredientViewFactory(prefabFactory);
 
-            InventorySlotViewFactory inventorySlotViewFactory =
-                new InventorySlotViewFactory(bindableViewFactory, ingredientViewFactory, ingredientTypes);
+            SlotViewFactory slotViewFactory =
+                new SlotViewFactory(bindableViewFactory, ingredientViewFactory, ingredientTypes);
 
             #endregion
 
@@ -230,7 +234,7 @@ namespace Sources.Client.Bootstrap
 
             BindableViewBuilder<InventorySlotViewModel> inventorySlotViewBuilder =
                 new BindableViewBuilder<InventorySlotViewModel>(
-                    inventorySlotViewFactory,
+                    slotViewFactory,
                     inventorySlotViewModelFactory,
                     environment.View["Inventory"]
                 );
@@ -291,7 +295,6 @@ namespace Sources.Client.Bootstrap
                 environment.View["Inventory"]
             );
 
-
             CreateIngredientSignalAction createIngredientSignalAction = new CreateIngredientSignalAction(
                 ingredientViewBuilder,
                 createIngredientQuery
@@ -343,8 +346,55 @@ namespace Sources.Client.Bootstrap
 
             CreateOgreQuery createOgreQuery = new CreateOgreQuery(_entityRepository, idGenerator);
 
-            OgreViewModelFactory ogreViewModelFactory =
-                new OgreViewModelFactory(visibilityViewModelComponentFactory, positionViewModelComponentFactory);
+            QuestSlotViewModelFactory questSlotViewModelFactory =
+                new QuestSlotViewModelFactory(visibilityViewModelComponentFactory, _entityRepository);
+
+            BindableViewBuilder<QuestSlotViewModel> questSlotViewBuilder =
+                new BindableViewBuilder<QuestSlotViewModel>(
+                    slotViewFactory,
+                    questSlotViewModelFactory,
+                    environment.View["QuestSlot"]
+                );
+            
+            GetQuestSlotsIdsQuery getQuestSlotsIdsQuery = new GetQuestSlotsIdsQuery(_entityRepository);
+
+            QuestSlotObserverViewModelComponentFactory questSlotObserverViewModelComponentFactory =
+                new QuestSlotObserverViewModelComponentFactory(getQuestSlotsIdsQuery, questSlotViewBuilder);
+            
+            QuestViewModelFactory questViewModelFactory =
+                new QuestViewModelFactory(visibilityViewModelComponentFactory,
+                    questSlotObserverViewModelComponentFactory);
+
+            BindableViewBuilder<QuestViewModel> questViewBuilder =
+                new BindableViewBuilder<QuestViewModel>(
+                    bindableViewFactory,
+                    questViewModelFactory,
+                    environment.View["QuestSlot"]
+                );
+
+            AddAfterComponentsChangedListnerCommand addAfterComponentsChangedListnerCommand =
+                new AddAfterComponentsChangedListnerCommand(_entityRepository);
+            
+            RemoveAfterComponentsChangedListnerCommand removeAfterComponentsChangedListnerCommand =
+                new RemoveAfterComponentsChangedListnerCommand(_entityRepository);
+            
+            GetQuestsIdsQuery getQuestsIdsQuery = new GetQuestsIdsQuery(_entityRepository);
+
+            QuestObserverViewModelComponentFactory questObserverViewModelComponentFactory =
+                new QuestObserverViewModelComponentFactory
+                (
+                    questViewBuilder,
+                    addAfterComponentsChangedListnerCommand,
+                    removeAfterComponentsChangedListnerCommand,
+                    getQuestsIdsQuery
+                );
+
+            OgreViewModelFactory ogreViewModelFactory = new OgreViewModelFactory
+            (
+                visibilityViewModelComponentFactory,
+                positionViewModelComponentFactory,
+                questObserverViewModelComponentFactory
+            );
 
             CreateOgreSignalAction createOgreSignalAction =
                 new CreateOgreSignalAction(_signalBus, bindableViewFactory, environment, createOgreQuery,
@@ -357,23 +407,14 @@ namespace Sources.Client.Bootstrap
                 });
 
             QuestFactory questFactory = new QuestFactory();
-            QuestViewModelFactory questViewModelFactory =
-                new QuestViewModelFactory(visibilityViewModelComponentFactory);
             CreateQuestQuery createQuestQuery = new CreateQuestQuery(idGenerator, questFactory, _entityRepository);
-            AddQuestCommand addQuestCommand = new AddQuestCommand(_entityRepository);
 
             CreateQuestSignalAction createQuestSignalAction = new CreateQuestSignalAction
             (
                 _signalBus,
-                bindableViewFactory,
-                questViewModelFactory,
-                createQuestQuery,
-                addQuestCommand,
-                environment
+                createQuestQuery
             );
 
-            QuestSlotViewModelFactory questSlotViewModelFactory =
-                new QuestSlotViewModelFactory(visibilityViewModelComponentFactory);
             QuestSlotFactory questSlotFactory = new QuestSlotFactory();
             CreateQuestSlotQuery createQuestSlotQuery =
                 new CreateQuestSlotQuery(idGenerator, _entityRepository, questSlotFactory);
@@ -381,11 +422,7 @@ namespace Sources.Client.Bootstrap
 
             CreateQuestSlotSignalAction createQuestSlotSignalAction = new CreateQuestSlotSignalAction
             (
-                bindableViewFactory,
-                questSlotViewModelFactory,
-                createQuestSlotQuery,
-                addQuestSlotCommand,
-                environment
+                createQuestSlotQuery
             );
 
             QuestSignalController questSignalController = new QuestSignalController(

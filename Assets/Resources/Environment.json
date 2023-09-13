@@ -4,7 +4,8 @@
     "Ingredient": "Views/Ingredients/",
     "NPC": "Views/NPCs/",
     "Quest": "Views/Quests/",
-    "Inventory" : "Views/Inventories/"
+    "Inventory" : "Views/Inventories/",
+    "QuestSlot": "Views/Quests/"
   },
   "UI": {
     

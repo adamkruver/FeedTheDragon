@@ -40,7 +40,7 @@ namespace Sources.Client.Controllers.NPCs.Ogres.Actions
         {
             int id = _createOgreQuery.Handle(signal.Position);
 
-            IBindableView view = _bindableViewFactory.Create(_environment.View["NPC"], nameof(Ogre));
+            IBindableView view = _bindableViewFactory.Create(_environment.View["NPC"], "Ogres/Ogre");
             IViewModel viewModel = _ogreViewModelFactory.Create(id);
             
             view.Bind(viewModel);
