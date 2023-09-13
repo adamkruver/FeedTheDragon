@@ -7,6 +7,6 @@ namespace Sources.Client.App.Configs
     public class Environment
     {
         public Dictionary<string, string> View;
-        public Dictionary<string, string> Ui;
+        public Dictionary<string, string> UI;
     }
 }

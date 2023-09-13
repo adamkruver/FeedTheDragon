@@ -8,7 +8,7 @@ namespace Sources.Client.Infrastructure.Factories.Presentation.Views
 {
     public class InventorySlotViewFactory : ViewFactoryBase<InventorySlotView>, IInventorySlotViewFactory
     {
-        private static readonly string s_inventoryCellViewPath = "Views/Inventory/";
+        private static readonly string s_inventoryCellViewPath = "Views/Inventories/";
 
         private readonly IngredientViewFactory _ingredientViewFactory;
         private readonly IIngredientType[] _availableTypes;

@@ -12,17 +12,24 @@ namespace Presentation.Frameworks.Mvvm.Factories
 
         public T Create<T>(string prefabPath = "") where T : MonoBehaviour
         {
-            T @object = Object.Instantiate((T)GetResource(prefabPath, typeof(T)));
-            MeshFilter[] prefabMeshes = ((T)_resources[prefabPath]).GetComponentsInChildren<MeshFilter>(true);
-            MeshFilter[] objectMeshes = @object.GetComponentsInChildren<MeshFilter>(true);
-
-            for (int i = 0; i < objectMeshes.Length; i++)
+            try
             {
-                objectMeshes[i].mesh = prefabMeshes[i].sharedMesh;
-                objectMeshes[i].sharedMesh = prefabMeshes[i].sharedMesh;
-            }
+                T @object = Object.Instantiate((T)GetResource(prefabPath, typeof(T)));
+                MeshFilter[] prefabMeshes = ((T)_resources[prefabPath]).GetComponentsInChildren<MeshFilter>(true);
+                MeshFilter[] objectMeshes = @object.GetComponentsInChildren<MeshFilter>(true);
 
-            return @object;
+                for (int i = 0; i < objectMeshes.Length; i++)
+                {
+                    objectMeshes[i].mesh = prefabMeshes[i].sharedMesh;
+                    objectMeshes[i].sharedMesh = prefabMeshes[i].sharedMesh;
+                }
+
+                return @object;
+            }
+            catch(ArgumentException exception)
+            {
+                throw new NullReferenceException($"Type: {typeof(T)}, prefabPath: {prefabPath}");
+            }
         }
 
         public T Create<T>(Type viewType, string prefabPath = "") where T : Object =>

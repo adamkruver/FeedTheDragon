@@ -1,7 +1,11 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
+using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Controllers.Inventories.Signals;
+using Sources.Client.Controllers.Inventories.ViewModels;
+using Sources.Client.Domain.Inventories;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.ViewProviders;
+using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.Presentation.Views;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
@@ -13,22 +17,19 @@ namespace Sources.Client.Controllers.Inventories.Actions
     public class CreateInventorySignalAction : ISignalAction<CreateInventorySignal>
     {
         private readonly ISignalBus _signalBus;
-        private readonly IInventoryViewFactory _inventoryViewFactory;
-        private readonly InventoryViewModelFactory _inventoryViewModelFactory;
+        private readonly IBindableViewBuilder<InventoryViewModel> _viewBuilder;
         private readonly ViewProvider _viewProvider;
         private readonly CreateInventoryQuery _createInventoryQuery;
 
         public CreateInventorySignalAction(
             ISignalBus signalBus,
-            IInventoryViewFactory inventoryViewFactory,
-            InventoryViewModelFactory inventoryViewModelFactory,
+            IBindableViewBuilder<InventoryViewModel> viewBuilder,
             ViewProvider viewProvider,
             CreateInventoryQuery createInventoryQuery
         )
         {
             _signalBus = signalBus;
-            _inventoryViewFactory = inventoryViewFactory;
-            _inventoryViewModelFactory = inventoryViewModelFactory;
+            _viewBuilder = viewBuilder;
             _viewProvider = viewProvider;
             _createInventoryQuery = createInventoryQuery;
         }
@@ -36,12 +37,9 @@ namespace Sources.Client.Controllers.Inventories.Actions
         public void Handle(CreateInventorySignal signal)
         {
             int inventoryId = _createInventoryQuery.Handle(signal.OwnerId);
-            IViewModel viewModel = _inventoryViewModelFactory.Create(inventoryId);
-            IInventoryView view = _inventoryViewFactory.Create();
+            IBindableView view = _viewBuilder.Build(inventoryId, nameof(Inventory));
 
-            _viewProvider.InventoryView = view;
-
-            view.Bind(viewModel);
+            _viewProvider.InventoryView = (IInventoryView)view;
 
             CreateInventoryCells(inventoryId, signal.Capacity);
         }

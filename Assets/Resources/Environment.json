@@ -1,11 +1,12 @@
 ﻿{
   "View": {
-    "Character": "Characters/",
-    "Ingredient": "Ingredients/",
-    "NPC": "NPCs/",
-    "Quest": "Quests/"
+    "Character": "Views/Characters/",
+    "Ingredient": "Views/Ingredients/",
+    "NPC": "Views/NPCs/",
+    "Quest": "Views/Quests/",
+    "Inventory" : "Views/Inventories/"
   },
-  "Ui": {
+  "UI": {
     
   }
 }

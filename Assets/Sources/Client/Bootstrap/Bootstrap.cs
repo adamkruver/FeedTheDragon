@@ -13,6 +13,7 @@ using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Controllers.Ingredients.ViewModels;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
+using Sources.Client.Controllers.Inventories.ViewModels;
 using Sources.Client.Controllers.NPCs.Common;
 using Sources.Client.Controllers.NPCs.Common.Actions;
 using Sources.Client.Controllers.NPCs.Ogres;
@@ -30,7 +31,6 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Domain.NPCs;
-using Sources.Client.Infrastructure.Factories.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
@@ -272,14 +272,17 @@ namespace Sources.Client.Bootstrap
                 }
             );
 
-            IngredientBindableViewFactory ingredientBindableViewFactory =
-                new IngredientBindableViewFactory(bindableViewFactory, environment);
-
             BindableViewBuilder<IngredientViewModel> ingredientViewBuilder =
                 new BindableViewBuilder<IngredientViewModel>(
                     bindableViewFactory,
                     ingredientViewModelFactory,
                     environment.View["Ingredient"]
+                );
+
+            BindableViewBuilder<InventoryViewModel> inventoryViewBuilder = new BindableViewBuilder<InventoryViewModel>(
+                bindableViewFactory,
+                inventoryViewModelFactory,
+                environment.View["Inventory"]
                 );
 
 
@@ -315,8 +318,7 @@ namespace Sources.Client.Bootstrap
 
             CreateInventorySignalAction createInventorySignalAction = new CreateInventorySignalAction(
                 _signalBus,
-                inventoryViewFactory,
-                inventoryViewModelFactory,
+                inventoryViewBuilder,
                 viewProvider,
                 createInventoryQuery
             );
