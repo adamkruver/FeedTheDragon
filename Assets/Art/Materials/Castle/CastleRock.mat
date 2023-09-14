@@ -27,8 +27,9 @@ Material:
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -117,7 +118,7 @@ Material:
     m_Floats:
     - _Alpha: 0
     - _BumpScale: 1
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0
     - _DetailNormalMapScale: 1
     - _DirectIntensityOutline: 1
@@ -148,7 +149,7 @@ Material:
     - _OutlinePixelSizeType: 1
     - _OutlineTextureLOD: 5.09
     - _OutlineTextureType: 2
-    - _OutlineWidth: 0.78
+    - _OutlineWidth: 2
     - _Parallax: 0.02
     - _RampBands: 12
     - _RampBandsSmoothing: 0

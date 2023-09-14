@@ -145,7 +145,7 @@ Material:
     - _OutlinePixelSizeType: 1
     - _OutlineTextureLOD: 3.59
     - _OutlineTextureType: 2
-    - _OutlineWidth: 1.48
+    - _OutlineWidth: 1.8
     - _Parallax: 0.02
     - _RampBands: 5
     - _RampBandsSmoothing: 0
@@ -202,7 +202,7 @@ Material:
     - _OutlineColorVertex: {r: 0, g: 0.5034485, b: 1, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0.1509434, g: 0.06502177, b: 0, a: 0.5}
-    - _SColor: {r: 0.14326721, g: 0.8018868, b: 0.13238695, a: 1}
+    - _SColor: {r: 0.07830314, g: 0.4245283, b: 0, a: 1}
     - _ScanlinesTex_SC: {r: 0, g: -0.02, b: 0, a: 0}
     - _SpecularColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
   m_BuildTextureStacks: []
