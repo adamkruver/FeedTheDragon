@@ -6,7 +6,7 @@ using Sources.Client.InfrastructureInterfaces.SignalBus.Signals;
 
 namespace Sources.Client.Infrastructure.SignalBus
 {
-    public class SignalHandler : ISignalHandler
+    public class SignalHandler : ISignalHandler, ISignalHandlerRegisterer
     {
         private readonly List<ISignalController> _signalControllers = new List<ISignalController>();
 
@@ -24,6 +24,11 @@ namespace Sources.Client.Infrastructure.SignalBus
                 throw new AggregateException();
 
             _signalControllers.Add(signalController);
+        }
+
+        public void Unregister(ISignalController signalController)
+        {
+            _signalControllers.Remove(signalController);
         }
     }
 }

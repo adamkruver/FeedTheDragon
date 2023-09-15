@@ -1,15 +1,16 @@
 ﻿using System;
 using Presentation.Frameworks.Mvvm.Factories;
+using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.Presentation.Views.Ingredients;
 
 namespace Sources.Client.Infrastructure.Factories.Presentation.Views
 {
     public class IngredientViewFactory
     {
-        private readonly PrefabFactory _prefabFactory;
+        private readonly IPrefabFactory _prefabFactory;
         private static readonly string s_ingredientPrefabPath = "UIs/Ingredients/";
 
-        public IngredientViewFactory(PrefabFactory prefabFactory) =>
+        public IngredientViewFactory(IPrefabFactory prefabFactory) =>
             _prefabFactory = prefabFactory;
 
         public IngredientView Create(Type type) =>
