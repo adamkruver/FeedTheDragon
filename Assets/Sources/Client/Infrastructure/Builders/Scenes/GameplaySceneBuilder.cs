@@ -50,7 +50,9 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
             IIngredientType[] availableIngredientTypes =
             {
                 new ToxicFrog(),
-                new Chanterelle()
+                new Chanterelle(),
+                new EyeRoot(),
+                new DualTongue(),
             };
 
             EntityRepository entityRepository = new EntityRepository();
@@ -104,7 +106,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                     ingredientSignalControllerFactory.Create(),
                     inventorySignalControllerFactory.Create(),
                     ogreSignalControllerFactory.Create(),
-                    questSignalControllerFactory.Create(),
+                    questSignalControllerFactory.Create(availableIngredientTypes),
                 },
                 currentPlayerService,
                 new GetPositionQuery(entityRepository),

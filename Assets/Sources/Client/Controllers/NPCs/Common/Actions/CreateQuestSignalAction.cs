@@ -22,19 +22,17 @@ namespace Sources.Client.Controllers.NPCs.Common.Actions
         private readonly ISignalBus _signalBus;
         private readonly CreateQuestQuery _createQuestQuery;
 
-        private readonly IIngredientType[] _avaliableTypes = new IIngredientType[] // todo: move to config
-        {
-            new ToxicFrog(),
-            new Chanterelle()
-        };
+        private readonly IIngredientType[] _availableIngredientTypes;
 
         public CreateQuestSignalAction
         (
             ISignalBus signalBus,
+            IIngredientType[] availableIngredientTypes,
             CreateQuestQuery createQuestQuery
         )
         {
             _signalBus = signalBus;
+            _availableIngredientTypes = availableIngredientTypes;
             _createQuestQuery = createQuestQuery;
         }
 
@@ -44,7 +42,7 @@ namespace Sources.Client.Controllers.NPCs.Common.Actions
 
             for (int i = 0; i < signal.TasksAmount; i++)
             {
-                IIngredientType type = _avaliableTypes[Random.Range(0, _avaliableTypes.Length)];
+                IIngredientType type = _availableIngredientTypes[Random.Range(0, _availableIngredientTypes.Length)];
                 _signalBus.Handle(new CreateQuestSlotSignal(questId, type));
             }
         }

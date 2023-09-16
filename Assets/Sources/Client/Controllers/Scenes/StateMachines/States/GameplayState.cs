@@ -25,6 +25,8 @@ namespace Sources.Client.Controllers.Scenes.StateMachines.States
         private readonly CurrentPlayerService _currentPlayerService;
         private readonly SpawnService<IIngredientType, ChanterelleSpawnPoint> _mushroomSpawnService;
         private readonly SpawnService<IIngredientType, ToxicFrogSpawnPoint> _frogSpawnService;
+        private readonly SpawnService<IIngredientType, EyeRootSpawnPoint> _eyeRootSpawnService;
+        private readonly SpawnService<IIngredientType, DualTongueSpawnPoint> _dualTongueSpawnService;
         private readonly SpawnService<Ogre, OgreSpawnPoint> _ogreSpawnService;
         private CharacterMovementService _characterMovementService;
         private GetPositionQuery _getPositionQuery;
@@ -47,6 +49,8 @@ namespace Sources.Client.Controllers.Scenes.StateMachines.States
 
             _mushroomSpawnService = new SpawnService<IIngredientType, ChanterelleSpawnPoint>(_signalBus);
             _frogSpawnService = new SpawnService<IIngredientType, ToxicFrogSpawnPoint>(_signalBus);
+            _eyeRootSpawnService = new SpawnService<IIngredientType, EyeRootSpawnPoint>(_signalBus);
+            _dualTongueSpawnService = new SpawnService<IIngredientType, DualTongueSpawnPoint>(_signalBus);
             _ogreSpawnService = new SpawnService<Ogre, OgreSpawnPoint>(_signalBus);
         }
 
@@ -57,7 +61,9 @@ namespace Sources.Client.Controllers.Scenes.StateMachines.States
 
             _mushroomSpawnService.Spawn();
             _frogSpawnService.Spawn(); // todo переписать
+            _eyeRootSpawnService.Spawn();
             _ogreSpawnService.Spawn();
+            _dualTongueSpawnService.Spawn();
 
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
             _characterMovementService = new CharacterMovementService

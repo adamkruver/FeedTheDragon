@@ -1,5 +1,6 @@
 ﻿using Sources.Client.Controllers.NPCs.Common;
 using Sources.Client.Controllers.NPCs.Common.Actions;
+using Sources.Client.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Domain.NPCs;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
@@ -22,7 +23,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             _entityRepository = entityRepository;
         }
         
-        public QuestSignalController Create()
+        public QuestSignalController Create(IIngredientType[] availableIngredientTypes)
         {
             QuestFactory questFactory = new QuestFactory();
             
@@ -41,6 +42,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             CreateQuestSignalAction createQuestSignalAction = new CreateQuestSignalAction
             (
                 _signalBus,
+                availableIngredientTypes,
                 createQuestQuery
             );
 
