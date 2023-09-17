@@ -44,11 +44,11 @@ namespace Sources.Client.Infrastructure.Builders.Apps
                     [typeof(InitialPayload)] = initialSceneBuilder.Build,
                 };
 
-            SceneStateMachine appStateMachine = new SceneStateMachine(stateBuilders);
+            SceneStateMachineBase appStateMachineBase = new SceneStateMachineBase(stateBuilders);
 
             AppCore appCore = new GameObject(nameof(AppCore)).AddComponent<AppCore>();
 
-            appCore.Init(appStateMachine);
+            appCore.Init(appStateMachineBase);
 
             return appCore;
         }

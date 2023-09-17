@@ -7,18 +7,24 @@ namespace Sources.Client.Domain.Components
     public class DestinationComponent : IComponent, IDisposable
     {
         private static readonly float MinEpsilon = 0.1f; // todo: to constants
-        
+
         private readonly PositionComponent _positionComponent;
         private readonly SpeedComponent _speedComponent;
+        private readonly LookDirectionComponent _lookDirectionComponent;
 
         private MutableLiveData<Vector3> _destination;
         private MutableLiveData<bool> _isReached = new MutableLiveData<bool>();
 
-        public DestinationComponent(Vector3 destination, PositionComponent positionComponent,
-            SpeedComponent speedComponent)
+        public DestinationComponent(
+            Vector3 destination,
+            PositionComponent positionComponent,
+            SpeedComponent speedComponent,
+            LookDirectionComponent lookDirectionComponent
+        )
         {
             _positionComponent = positionComponent;
             _speedComponent = speedComponent;
+            _lookDirectionComponent = lookDirectionComponent;
             _destination = new MutableLiveData<Vector3>(destination);
 
             _positionComponent.Position.Observe(OnPositionChanged);
@@ -33,6 +39,12 @@ namespace Sources.Client.Domain.Components
         {
             _destination.Value = destination;
             _isReached.Value = false;
+        }
+
+        public void CalculateNext()
+        {
+            _destination.Value = _positionComponent.Position.Value +
+                                 _lookDirectionComponent.Direction.Value * _speedComponent.Speed.Value;
         }
 
         private void OnPositionChanged(Vector3 currentPosition)

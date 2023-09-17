@@ -13,7 +13,7 @@ namespace Sources.Client.App
             DontDestroyOnLoad(this);
 
         private void Start() =>
-            _sceneStateMachine.Run(new InitialPayload());
+            _sceneStateMachine.Run(new GameplayPayload());
 
         private void Update() =>
             _sceneStateMachine.Update(Time.deltaTime);

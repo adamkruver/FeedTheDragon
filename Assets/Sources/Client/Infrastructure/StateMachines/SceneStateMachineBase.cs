@@ -9,9 +9,9 @@ using UnityEngine.SceneManagement;
 
 namespace Sources.Client.Infrastructure.StateMachines
 {
-    public class SceneStateMachine : StateMachine<ISceneState, IScenePayload>, ISceneStateMachine<IScenePayload>
+    public class SceneStateMachineBase : StateMachineBase<ISceneState, IScenePayload>, ISceneStateMachine<IScenePayload>
     {
-        public SceneStateMachine(Dictionary<Type, Func<IStateMachine<IScenePayload>, IScenePayload, ISceneState>> stateBuilders)
+        public SceneStateMachineBase(IReadOnlyDictionary<Type, Func<IStateMachine<IScenePayload>, IScenePayload, ISceneState>> stateBuilders)
             : base(stateBuilders)
         {
         }

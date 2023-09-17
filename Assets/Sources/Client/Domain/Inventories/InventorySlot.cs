@@ -21,5 +21,16 @@ namespace Sources.Client.Domain.Inventories
             Item = ingredient;
             _type.Value = ingredient?.Type.GetType();
         }
+
+        public void Clear() =>
+            Set(null);
+
+        public bool HasSameType(IIngredientType ingredientType)
+        {
+            if (Item == null)
+                return false;
+
+            return Item.Type.GetType() == ingredientType.GetType();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.Ingredients.ViewModels;
+using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.InfrastructureInterfaces.Factories.Controllers;
 using Sources.Client.InfrastructureInterfaces.Factories.Controllers.ViewModels;
@@ -36,7 +37,8 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredi
             {
                 _visibilityViewModelComponentFactory.Create(id),
                 _positionViewModelComponentFactory.Create(id),
-                _ingredientClickViewModelComponentFactory.Create(id)
+                _ingredientClickViewModelComponentFactory.Create(id),
+                new CharacterTriggerVisibilitySwitchViewModelComponent(),
             };
 
         private IViewModelComponent[] CreateAllComponents(int id) =>

@@ -1,18 +1,13 @@
-﻿using Presentation.Frameworks.Mvvm.Factories;
-using PresentationInterfaces.Frameworks.Mvvm.Factories;
+﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.App.Configs;
-using Sources.Client.Controllers.NPCs.Common.ViewModels;
 using Sources.Client.Controllers.Scenes.Gameplay;
 using Sources.Client.Controllers.Scenes.StateMachines.States;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Domain.Scenes.Payloads;
 using Sources.Client.Frameworks.StateMachines;
-using Sources.Client.Frameworks.StateMachines.Payloads;
-using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.SignalControllers;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
-using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
 using Sources.Client.Infrastructure.Repositories;
@@ -23,7 +18,6 @@ using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Controllers;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Handlers;
-using Sources.Client.UseCases.Common.Components.ComponentsListenets;
 using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
@@ -82,7 +76,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
             CurrentPlayerService currentPlayerService = new CurrentPlayerService();
 
             #endregion
-            
+
             #region ViewFactories
 
             IngredientViewFactory ingredientViewFactory = new IngredientViewFactory(_prefabFactory);
@@ -107,45 +101,18 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
 
             #region Quests //Какая то фабрика для фабрики получилась
 
-            QuestSlotViewModelFactory questSlotViewModelFactory =
-                new QuestSlotViewModelFactory(visibilityViewModelComponentFactory, entityRepository);
-
-            BindableViewBuilder<QuestSlotViewModel> questSlotViewBuilder =
-                new BindableViewBuilder<QuestSlotViewModel>(
-                    slotViewFactory,
-                    questSlotViewModelFactory,
-                    _environment.View["QuestSlot"]
-                );
-
-            GetQuestSlotsIdsQuery getQuestSlotsIdsQuery = new GetQuestSlotsIdsQuery(entityRepository);
-
-            QuestSlotObserverViewModelComponentFactory questSlotObserverViewModelComponentFactory =
-                new QuestSlotObserverViewModelComponentFactory(getQuestSlotsIdsQuery, questSlotViewBuilder);
-
-            QuestViewModelFactory questViewModelFactory =
-                new QuestViewModelFactory(visibilityViewModelComponentFactory,
-                    questSlotObserverViewModelComponentFactory);
-
-            BindableViewBuilder<QuestViewModel> questViewBuilder =
-                new BindableViewBuilder<QuestViewModel>(
-                    _bindableViewFactory,
-                    questViewModelFactory,
-                    _environment.View["QuestSlot"]
-                );
             GetQuestsIdsQuery getQuestsIdsQuery = new GetQuestsIdsQuery(entityRepository);
 
-            AddAfterComponentsChangedListnerCommand addAfterComponentsChangedListnerCommand =
-                new AddAfterComponentsChangedListnerCommand(entityRepository);
-
-            RemoveAfterComponentsChangedListnerCommand removeAfterComponentsChangedListnerCommand =
-                new RemoveAfterComponentsChangedListnerCommand(entityRepository);
 
             QuestObserverViewModelComponentFactory questObserverViewModelComponentFactory =
                 new QuestObserverViewModelComponentFactory
                 (
-                    questViewBuilder,
-                    addAfterComponentsChangedListnerCommand,
-                    removeAfterComponentsChangedListnerCommand,
+                    entityRepository,
+                    _bindableViewFactory,
+                    _signalBus,
+                    slotViewFactory,
+                    visibilityViewModelComponentFactory,
+                    _environment,
                     getQuestsIdsQuery
                 );
 
@@ -172,7 +139,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                     questObserverViewModelComponentFactory);
 
             QuestSignalControllerFactory questSignalControllerFactory =
-                new QuestSignalControllerFactory(idGenerator, _signalBus, entityRepository);
+                new QuestSignalControllerFactory(idGenerator, _signalBus, entityRepository, currentPlayerService);
 
             #endregion
 

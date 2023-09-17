@@ -1,5 +1,6 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.NPCs.Ogres.ViewModels;
+using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components;
 
@@ -29,6 +30,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs
                 _visibilityViewModelComponentFactory.Create(id),
                 _positionViewModelComponentFactory.Create(id),
                 _questObserverViewModelComponentFactory.Create(id),
+                new CharacterTriggerVisibilitySwitchViewModelComponent(),
             });
     }
 }

@@ -11,12 +11,13 @@ namespace Sources.Client.Infrastructure.Factories.Domain.Ingredients
         {
             if (ingredient.TryGetComponent(out PositionComponent position) == false)
                 throw new Exception("Ingredient must have PositionComponent");
-            
+
             SpeedComponent speed = new SpeedComponent(2.5f); // TODO: move to config
-            
-            ingredient.AddComponent(new DestinationComponent(spawnInfo.Position, position, speed));
+            LookDirectionComponent lookDirection = new LookDirectionComponent(Vector3.right);
+
+            ingredient.AddComponent(new DestinationComponent(spawnInfo.Position, position, speed, lookDirection));
             ingredient.AddComponent(speed);
-            ingredient.AddComponent(new LookDirectionComponent(Vector3.right));
+            ingredient.AddComponent(lookDirection);
         }
     }
 }

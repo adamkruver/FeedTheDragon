@@ -3,12 +3,10 @@ using Sources.Client.App.Configs;
 using Sources.Client.Controllers.Inventories;
 using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Controllers.Inventories.ViewModels;
-using Sources.Client.Domain.Ingredients;
 using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Inventories;
-using Sources.Client.Infrastructure.Factories.Presentation.Views;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
@@ -36,9 +34,9 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             IEntityRepository entityRepository,
             IIdGenerator idGenerator,
             ISignalBus signalBus,
-            ICurrentPlayerService currentPlayerService, 
+            ICurrentPlayerService currentPlayerService,
             IBindableViewFactory bindableViewFactory,
-            Environment environment, 
+            Environment environment,
             VisibilityViewModelComponentFactory visibilityViewModelComponentFactory,
             IBindableViewFactory slotViewFactory)
         {
@@ -59,6 +57,8 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             InventoryPopItemQuery inventoryPopItemQuery = new InventoryPopItemQuery(_entityRepository);
             GetInventoryIdQuery getInventoryIdQuery = new GetInventoryIdQuery(_entityRepository);
             CreateInventoryQuery createInventoryQuery = new CreateInventoryQuery(_entityRepository, _idGenerator);
+            DropInventoryItemCommand dropInventoryItemCommand =
+                new DropInventoryItemCommand(_entityRepository, _currentPlayerService);
 
             CreateInventorySlotQuery createInventorySlotQuery =
                 new CreateInventorySlotQuery(_entityRepository, _idGenerator);
@@ -69,6 +69,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             GetInventoryIdsQuery getInventoryIdsQuery = new GetInventoryIdsQuery(_entityRepository);
 
             InventorySlotViewModelFactory inventorySlotViewModelFactory = new InventorySlotViewModelFactory(
+                _signalBus,
                 _visibilityViewModelComponentFactory,
                 getInventorySlotItemTypeQuery
             );
@@ -117,13 +118,17 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
                 createInventorySlotQuery
             );
 
+            DropInventoryItemSignalAction dropInventoryItemSignalAction =
+                new DropInventoryItemSignalAction(dropInventoryItemCommand);
+
             return new InventorySignalController(
                 new ISignalAction[]
                 {
                     createInventorySignalAction,
                     createInventorySlotSignalAction,
                     inventoryPushSignalAction,
-                    inventoryPopSignalAction
+                    inventoryPopSignalAction,
+                    dropInventoryItemSignalAction,
                 });
         }
     }

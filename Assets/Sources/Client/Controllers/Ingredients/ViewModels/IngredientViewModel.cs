@@ -11,8 +11,6 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
 {
     public class IngredientViewModel : ViewModelBase
     {
-        [PropertyBinding(typeof(IGameObjectEnableWithScaleFadePropertyBind))]
-        private IBindableProperty<bool> _isProximityEnabled;
 
         public IngredientViewModel(IViewModelComponent[] components) : base(components)
         {
@@ -26,18 +24,6 @@ namespace Sources.Client.Controllers.Ingredients.ViewModels
         {
         }
 
-        [MethodBinding(typeof(ITriggerEnterMethodBind))]
-        private void OnTriggerEnter(Component other) // todo: вынести в компоненты
-        {
-            if (other.TryGetComponent<CharacterController>(out _))
-                _isProximityEnabled.Value = true;
-        }
 
-        [MethodBinding(typeof(ITriggerExitMethodBind))]
-        private void OnTriggerExit(Component other)
-        {
-            if (other.TryGetComponent<CharacterController>(out _))
-                _isProximityEnabled.Value = false;
-        }
     }
 }

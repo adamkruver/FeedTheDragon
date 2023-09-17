@@ -5,15 +5,15 @@ using Sources.Client.Frameworks.StateMachines.States;
 
 namespace Sources.Client.Frameworks.StateMachines
 {
-    public abstract class StateMachine<TState, TPayload> : IStateMachine<TPayload>
+    public abstract class StateMachineBase<TState, TPayload> : IStateMachine<TPayload>
         where TState : IState
         where TPayload : IPayload
     {
-        private readonly Dictionary<Type, Func<IStateMachine<TPayload>, TPayload, TState>> _stateBuilders;
+        private readonly IReadOnlyDictionary<Type, Func<IStateMachine<TPayload>, TPayload, TState>> _stateBuilders;
 
         protected TState CurrentState;
 
-        protected StateMachine(Dictionary<Type, Func<IStateMachine<TPayload>, TPayload, TState>> stateBuilders)
+        protected StateMachineBase(IReadOnlyDictionary<Type, Func<IStateMachine<TPayload>, TPayload, TState>> stateBuilders)
         {
             _stateBuilders = stateBuilders;
         }
