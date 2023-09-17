@@ -45,7 +45,9 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Co
                 new QuestSlotObserverViewModelComponentFactory(entityRepository, questSlotViewBuilder);
 
             QuestViewModelFactory questViewModelFactory =
-                new QuestViewModelFactory(visibilityViewModelComponentFactory,
+                new QuestViewModelFactory(
+                    entityRepository,
+                    visibilityViewModelComponentFactory,
                     questSlotObserverViewModelComponentFactory);
 
             _questViewBuilder =
@@ -53,8 +55,8 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Co
                     bindableViewFactory,
                     questViewModelFactory,
                     environment.View["QuestSlot"]
-                );            
-            
+                );
+
             _addAfterComponentsChangedListnerCommand =
                 new AddAfterComponentsChangedListnerCommand(entityRepository);
             _removeAfterComponentsChangedListnerCommand =
