@@ -2,7 +2,7 @@
 using Sources.Client.InfrastructureInterfaces.SignalBus.Handlers;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Signals;
 
-namespace Sources.Client.Infrastructure.SignalBus
+namespace Sources.Client.Infrastructure.SignalBuses
 {
     public class SignalBus : ISignalBus
     {

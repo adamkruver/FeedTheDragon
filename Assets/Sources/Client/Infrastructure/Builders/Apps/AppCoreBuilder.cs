@@ -8,7 +8,7 @@ using Sources.Client.Domain.AppStates.Payloads;
 using Sources.Client.Frameworks.StateMachines.Payloads;
 using Sources.Client.Infrastructure.Builders.Scenes;
 using Sources.Client.Infrastructure.Data.Providers;
-using Sources.Client.Infrastructure.SignalBus;
+using Sources.Client.Infrastructure.SignalBuses;
 using Sources.Client.Infrastructure.StateMachines;
 using UnityEngine;
 using Environment = Sources.Client.App.Configs.Environment;
@@ -19,12 +19,18 @@ namespace Sources.Client.Infrastructure.Builders.Apps
     {
         public AppCore Build()
         {
+            #region Common
+
             Environment environment = new EnvironmentDataProvider().Load();
-            Binder binder = new Binder();
-            SignalHandler signalHandler = new SignalHandler();
-            BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
             PrefabFactory prefabFactory = new PrefabFactory();
-            SignalBus.SignalBus signalBus = new SignalBus.SignalBus(signalHandler);
+            
+            Binder binder = new Binder();
+            BindableViewFactory bindableViewFactory = new BindableViewFactory(binder);
+            
+            SignalHandler signalHandler = new SignalHandler();
+            SignalBus signalBus = new SignalBus(signalHandler);
+            
+            #endregion
 
             GameplaySceneBuilder gameplaySceneBuilder =
                 new GameplaySceneBuilder(signalBus, signalHandler, bindableViewFactory, prefabFactory, environment);

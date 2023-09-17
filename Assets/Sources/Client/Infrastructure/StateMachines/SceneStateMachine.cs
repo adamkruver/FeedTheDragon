@@ -16,30 +16,20 @@ namespace Sources.Client.Infrastructure.StateMachines
         {
         }
         
-        public void Update(float deltaTime)
-        {
+        public void Update(float deltaTime) =>
             CurrentState?.Update(deltaTime);
-        }
 
-        public void LateUpdate(float deltaTime)
-        {
+        public void LateUpdate(float deltaTime) =>
             CurrentState?.LateUpdate(deltaTime);
-        }
 
-        public void FixedUpdate(float fixedDeltaTime)
-        {
+        public void FixedUpdate(float fixedDeltaTime) =>
             CurrentState?.FixedUpdate(fixedDeltaTime);
-        }
 
-        public void Run<T>(T payload) where T : class, IScenePayload
-        {
+        public void Run<T>(T payload) where T : class, IScenePayload =>
             ChangeState(payload);
-        }
 
-        public void Stop()
-        {
+        public void Stop() =>
             Exit();
-        }
 
         protected override void OnBeforeChange<T>(T payload)
         {

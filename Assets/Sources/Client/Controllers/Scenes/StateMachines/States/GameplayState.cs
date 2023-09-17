@@ -34,9 +34,16 @@ namespace Sources.Client.Controllers.Scenes.StateMachines.States
         private readonly GameUpdateService _gameUpdateService;
         private CameraFollowService _cameraFollowService;
 
-        public GameplayState(ISignalBus signalBus, ISignalHandlerRegisterer signalHandler,
-            ISignalController[] signalControllers, CurrentPlayerService currentPlayerService,
-            GetPositionQuery getPositionQuery, GetSpeedQuery getSpeedQuery, GameUpdateService gameUpdateService, CameraFollowService cameraFollowService)
+        public GameplayState
+        (
+            ISignalBus signalBus,
+            ISignalHandlerRegisterer signalHandler,
+            ISignalController[] signalControllers, 
+            CurrentPlayerService currentPlayerService,
+            GetPositionQuery getPositionQuery,
+            GetSpeedQuery getSpeedQuery,
+            GameUpdateService gameUpdateService,
+            CameraFollowService cameraFollowService)
         {
             _signalBus = signalBus;
             _signalHandler = signalHandler;
