@@ -1,5 +1,5 @@
 ﻿using Sources.Client.App.Configs;
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Sources.Client.Infrastructure.Data.Providers
