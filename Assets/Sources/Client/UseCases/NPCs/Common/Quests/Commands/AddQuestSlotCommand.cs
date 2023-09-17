@@ -2,7 +2,7 @@
 using Sources.Client.Domain.NPCs.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 
-namespace Sources.Client.UseCases.NPCs.Common.Commands
+namespace Sources.Client.UseCases.NPCs.Common.Quests.Commands
 {
     public class AddQuestSlotCommand
     {

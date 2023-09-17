@@ -5,7 +5,7 @@ using Sources.Client.Infrastructure.Factories.Domain.NPCs;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
 
-namespace Sources.Client.UseCases.NPCs.Common.Queries
+namespace Sources.Client.UseCases.NPCs.Common.Quests.Queries
 {
     public class CreateQuestSlotQuery
     {

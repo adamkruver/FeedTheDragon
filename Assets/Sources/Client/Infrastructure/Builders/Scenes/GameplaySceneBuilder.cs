@@ -2,9 +2,12 @@
 using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.App.Configs;
 using Sources.Client.Controllers.NPCs.Common.ViewModels;
+using Sources.Client.Controllers.Scenes.Gameplay;
 using Sources.Client.Controllers.Scenes.StateMachines.States;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
+using Sources.Client.Domain.Scenes.Payloads;
+using Sources.Client.Frameworks.StateMachines;
 using Sources.Client.Frameworks.StateMachines.Payloads;
 using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.SignalControllers;
@@ -50,7 +53,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
             _environment = environment;
         }
 
-        protected override ISceneState BuildState(GameplayPayload payload)
+        protected override ISceneState BuildState(IStateMachine<IScenePayload> stateMachine, GameplayPayload payload)
         {
             #region Configs
 
@@ -173,7 +176,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
 
             #endregion
 
-            return new GameplayState(
+            return new GameplayScene(
                 _signalBus,
                 _signalHandlerRegisterer,
                 new ISignalController[]

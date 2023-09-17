@@ -6,7 +6,7 @@ using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
-using Sources.Client.UseCases.NPCs.Common.Queries;
+using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
 {

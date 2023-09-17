@@ -1,4 +1,5 @@
-﻿using Sources.Client.Frameworks.StateMachines.Payloads;
+﻿using Sources.Client.Domain.Scenes.Payloads;
+using Sources.Client.Frameworks.StateMachines.Payloads;
 using Sources.Client.InfrastructureInterfaces.StateMachines;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace Sources.Client.App
             DontDestroyOnLoad(this);
 
         private void Start() =>
-            _sceneStateMachine.Run(new GameplayPayload());
+            _sceneStateMachine.Run(new InitialPayload());
 
         private void Update() =>
             _sceneStateMachine.Update(Time.deltaTime);

@@ -9,11 +9,11 @@ namespace Sources.Client.Frameworks.StateMachines
         where TState : IState
         where TPayload : IPayload
     {
-        private readonly Dictionary<Type, Func<TPayload, TState>> _stateBuilders;
+        private readonly Dictionary<Type, Func<IStateMachine<TPayload>, TPayload, TState>> _stateBuilders;
 
         protected TState CurrentState;
 
-        protected StateMachine(Dictionary<Type, Func<TPayload, TState>> stateBuilders)
+        protected StateMachine(Dictionary<Type, Func<IStateMachine<TPayload>, TPayload, TState>> stateBuilders)
         {
             _stateBuilders = stateBuilders;
         }
@@ -28,7 +28,7 @@ namespace Sources.Client.Frameworks.StateMachines
         {
             Type payloadType = payload.GetType();
 
-            TState state = _stateBuilders[payloadType].Invoke(payload);
+            TState state = _stateBuilders[payloadType].Invoke(this, payload);
 
             CurrentState?.Exit();
             CurrentState = state;

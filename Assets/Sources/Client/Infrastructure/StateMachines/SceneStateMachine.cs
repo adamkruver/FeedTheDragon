@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Sources.Client.Controllers.Scenes.StateMachines.States;
-using Sources.Client.Domain.AppStates.Payloads;
+using Sources.Client.Domain.Scenes.Payloads;
 using Sources.Client.Frameworks.StateMachines;
 using Sources.Client.InfrastructureInterfaces.StateMachines.Generic;
 using UnityEngine.SceneManagement;
@@ -11,7 +11,7 @@ namespace Sources.Client.Infrastructure.StateMachines
 {
     public class SceneStateMachine : StateMachine<ISceneState, IScenePayload>, ISceneStateMachine<IScenePayload>
     {
-        public SceneStateMachine(Dictionary<Type, Func<IScenePayload, ISceneState>> stateBuilders)
+        public SceneStateMachine(Dictionary<Type, Func<IStateMachine<IScenePayload>, IScenePayload, ISceneState>> stateBuilders)
             : base(stateBuilders)
         {
         }

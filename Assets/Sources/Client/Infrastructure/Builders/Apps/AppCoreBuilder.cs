@@ -4,7 +4,8 @@ using Presentation.Frameworks.Mvvm.Binders;
 using Presentation.Frameworks.Mvvm.Factories;
 using Sources.Client.App;
 using Sources.Client.Controllers.Scenes.StateMachines.States;
-using Sources.Client.Domain.AppStates.Payloads;
+using Sources.Client.Domain.Scenes.Payloads;
+using Sources.Client.Frameworks.StateMachines;
 using Sources.Client.Frameworks.StateMachines.Payloads;
 using Sources.Client.Infrastructure.Builders.Scenes;
 using Sources.Client.Infrastructure.Data.Providers;
@@ -34,11 +35,13 @@ namespace Sources.Client.Infrastructure.Builders.Apps
 
             GameplaySceneBuilder gameplaySceneBuilder =
                 new GameplaySceneBuilder(signalBus, signalHandler, bindableViewFactory, prefabFactory, environment);
+            InitialSceneBuilder initialSceneBuilder = new InitialSceneBuilder();
 
-            Dictionary<Type, Func<IScenePayload, ISceneState>> stateBuilders =
-                new Dictionary<Type, Func<IScenePayload, ISceneState>>
+            Dictionary<Type, Func<IStateMachine<IScenePayload>, IScenePayload, ISceneState>> stateBuilders =
+                new Dictionary<Type, Func<IStateMachine<IScenePayload>, IScenePayload, ISceneState>>
                 {
                     [typeof(GameplayPayload)] = gameplaySceneBuilder.Build,
+                    [typeof(InitialPayload)] = initialSceneBuilder.Build,
                 };
 
             SceneStateMachine appStateMachine = new SceneStateMachine(stateBuilders);

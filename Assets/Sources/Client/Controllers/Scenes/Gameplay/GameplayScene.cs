@@ -1,5 +1,6 @@
 ﻿using Sources.Client.Characters;
 using Sources.Client.Controllers.Characters.Signals;
+using Sources.Client.Controllers.Scenes.StateMachines.States;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
@@ -15,9 +16,9 @@ using Sources.Client.UseCases.Common.Components.Positions.Queries;
 using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using UnityEngine;
 
-namespace Sources.Client.Controllers.Scenes.StateMachines.States
+namespace Sources.Client.Controllers.Scenes.Gameplay
 {
-    public class GameplayState : ISceneState
+    public class GameplayScene : ISceneState
     {
         private readonly ISignalBus _signalBus;
         private readonly ISignalHandlerRegisterer _signalHandler;
@@ -34,7 +35,7 @@ namespace Sources.Client.Controllers.Scenes.StateMachines.States
         private readonly GameUpdateService _gameUpdateService;
         private CameraFollowService _cameraFollowService;
 
-        public GameplayState
+        public GameplayScene
         (
             ISignalBus signalBus,
             ISignalHandlerRegisterer signalHandler,

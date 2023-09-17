@@ -1,5 +1,5 @@
 ﻿using Sources.Client.Controllers.Scenes.StateMachines.States;
-using Sources.Client.Domain.AppStates.Payloads;
+using Sources.Client.Domain.Scenes.Payloads;
 
 namespace Sources.Client.InfrastructureInterfaces.Builders.Scenes
 {

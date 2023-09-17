@@ -11,8 +11,7 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
-using Sources.Client.UseCases.NPCs.Common.Commands;
-using Sources.Client.UseCases.NPCs.Common.Queries;
+using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Controllers.NPCs.Common.Actions

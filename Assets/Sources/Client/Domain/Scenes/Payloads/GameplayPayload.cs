@@ -1,6 +1,4 @@
-﻿using Sources.Client.Domain.AppStates.Payloads;
-
-namespace Sources.Client.Frameworks.StateMachines.Payloads
+﻿namespace Sources.Client.Domain.Scenes.Payloads
 {
     public class GameplayPayload : IScenePayload
     {

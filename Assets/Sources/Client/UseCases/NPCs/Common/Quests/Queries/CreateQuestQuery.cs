@@ -1,13 +1,11 @@
 ﻿using System;
 using Sources.Client.Domain;
-using Sources.Client.Domain.Ingredients;
-using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Domain.NPCs.Components;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.NPCs;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
 
-namespace Sources.Client.UseCases.NPCs.Common.Queries
+namespace Sources.Client.UseCases.NPCs.Common.Quests.Queries
 {
     public class CreateQuestQuery
     {

@@ -1,4 +1,4 @@
-﻿using Sources.Client.Domain.AppStates.Payloads;
+﻿using Sources.Client.Domain.Scenes.Payloads;
 using Sources.Client.Frameworks.StateMachines;
 
 namespace Sources.Client.InfrastructureInterfaces.StateMachines

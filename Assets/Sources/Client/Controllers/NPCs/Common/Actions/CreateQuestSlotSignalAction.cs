@@ -1,6 +1,6 @@
 ﻿using Sources.Client.Controllers.NPCs.Common.Signals;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
-using Sources.Client.UseCases.NPCs.Common.Queries;
+using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 
 namespace Sources.Client.Controllers.NPCs.Common.Actions
 {
