@@ -4,32 +4,27 @@ using Sources.Client.Domain.Enemies;
 
 namespace Sources.Client.Infrastructure.Factories.Domain.Enemies
 {
-    public abstract class EnemyFactoryBase<TEnemy, TSpawnInfo>
-        where TEnemy : Composite, IEnemy
-        where TSpawnInfo : IEnemySpawnInfo<TEnemy>
-
+    public abstract class EnemyFactoryBase
     {
-        public TEnemy Create(int id, TSpawnInfo spawnInfo)
+        public Enemy Create(int id, IEnemyType enemyType, EnemySpawnInfo spawnInfo)
         {
-            TEnemy enemy = CreateEntity(id);
+            Enemy enemy = new Enemy(id, enemyType);
             AddAllComponents(enemy, spawnInfo);
 
             return enemy;
         }
 
-        protected abstract TEnemy CreateEntity(int id);
-
-        protected virtual void AddComponents(TEnemy enemy, TSpawnInfo spawnInfo)
+        protected virtual void AddComponents(Enemy enemy, EnemySpawnInfo spawnInfo)
         {
         }
 
-        protected void AddAllComponents(TEnemy enemy, TSpawnInfo spawnInfo)
+        protected void AddAllComponents(Enemy enemy, EnemySpawnInfo spawnInfo)
         {
             AddBaseComponents(enemy, spawnInfo);
             AddComponents(enemy, spawnInfo);
         }
 
-        protected void AddBaseComponents(TEnemy enemy, TSpawnInfo spawnInfo)
+        protected void AddBaseComponents(Enemy enemy, EnemySpawnInfo spawnInfo)
         {
             enemy.AddComponent(new PositionComponent(spawnInfo.Position));
             enemy.AddComponent(new VisibilityComponent(true));

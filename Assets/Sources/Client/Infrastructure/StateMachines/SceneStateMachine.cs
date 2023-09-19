@@ -40,7 +40,7 @@ namespace Sources.Client.Infrastructure.StateMachines
         {
         }
 
-        private async void LoadScene<T>(T payload) where T : IScenePayload
+        private async UniTask LoadScene<T>(T payload) where T : IScenePayload
         {
             await SceneManager.LoadSceneAsync(payload.SceneName);
 

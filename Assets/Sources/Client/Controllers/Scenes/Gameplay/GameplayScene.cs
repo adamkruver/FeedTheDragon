@@ -2,7 +2,7 @@
 using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Scenes.StateMachines.States;
 using Sources.Client.Domain.Enemies;
-using Sources.Client.Domain.Enemies.Spiders;
+using Sources.Client.Domain.Enemies.Types;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.Infrastructure.Services.CameraFollowService;

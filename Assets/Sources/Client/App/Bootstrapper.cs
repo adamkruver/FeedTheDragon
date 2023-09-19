@@ -8,8 +8,6 @@ namespace Sources.Client.App
     {
         private void Awake()
         {
-            Debug.Log("Bootstrapper");
-            
             AppCore appCore = FindObjectOfType<AppCore>() ?? new AppCoreBuilder().Build();
         }
     }

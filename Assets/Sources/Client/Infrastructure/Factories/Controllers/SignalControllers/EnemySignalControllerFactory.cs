@@ -43,7 +43,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
         {
             CreateSpiderQuery createSpiderQuery = new CreateSpiderQuery(_entityRepository, _idGenerator);
 
-
             SpiderViewModelFactory spiderViewModelFactory = new SpiderViewModelFactory(
                 _positionViewModelComponentFactory,
                 _visibilityViewModelComponentFactory

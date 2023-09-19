@@ -1,4 +1,5 @@
-﻿using Sources.Client.Domain.Enemies.Spiders;
+﻿using Sources.Client.Domain.Enemies;
+using Sources.Client.Domain.Enemies.Types;
 using Sources.Client.Infrastructure.Factories.Domain.Enemies;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
@@ -25,8 +26,8 @@ namespace Sources.Client.UseCases.Enemies.Spiders.Queries
         {
             int id = _idGenerator.GetId();
 
-            SpiderSpawnInfo spawnInfo = new SpiderSpawnInfo(position);
-            Spider spider = _spiderFactory.Create(id, spawnInfo);
+            EnemySpawnInfo spawnInfo = new EnemySpawnInfo(position);
+            Enemy spider = _spiderFactory.Create(id, new Spider(), spawnInfo);
             _entityRepository.Add(spider);
 
             return id;

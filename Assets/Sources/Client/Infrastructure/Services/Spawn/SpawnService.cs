@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sources.Client.Controllers.Enemies.Spiders.Signals;
 using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Controllers.NPCs.Ogres.Signals;
-using Sources.Client.Domain.Enemies.Spiders;
+using Sources.Client.Domain.Enemies.Types;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.InfrastructureInterfaces.SignalBus;

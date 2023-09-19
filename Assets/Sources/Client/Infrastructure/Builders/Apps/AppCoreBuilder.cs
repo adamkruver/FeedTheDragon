@@ -48,7 +48,6 @@ namespace Sources.Client.Infrastructure.Builders.Apps
             
             SceneStateMachine appStateMachine = new SceneStateMachine(stateBuilders);
 
-
             appCore.Init(appStateMachine);
 
             return appCore;
