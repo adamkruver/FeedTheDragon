@@ -141,6 +141,10 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
             QuestSignalControllerFactory questSignalControllerFactory =
                 new QuestSignalControllerFactory(idGenerator, _signalBus, entityRepository, currentPlayerService);
 
+            EnemySignalControllerFactory enemySignalControllerFactory =
+                new EnemySignalControllerFactory(entityRepository, idGenerator, _bindableViewFactory, _environment,
+                    positionViewModelComponentFactory, visibilityViewModelComponentFactory);
+
             #endregion
 
             return new GameplayScene(
@@ -149,6 +153,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                 new ISignalController[]
                 {
                     characterSignalControllerFactory.Create(),
+                    enemySignalControllerFactory.Create(),
                     ingredientSignalControllerFactory.Create(),
                     inventorySignalControllerFactory.Create(),
                     ogreSignalControllerFactory.Create(),

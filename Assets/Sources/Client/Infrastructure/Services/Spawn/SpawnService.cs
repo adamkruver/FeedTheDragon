@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sources.Client.Controllers.Enemies.Spiders.Signals;
 using Sources.Client.Controllers.Ingredients.Signals;
 using Sources.Client.Controllers.NPCs.Ogres.Signals;
+using Sources.Client.Domain.Enemies.Spiders;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
@@ -26,6 +28,7 @@ namespace Sources.Client.Infrastructure.Services.Spawn
                     bus.Handle(new CreateIngredientSignal((IIngredientType)@object, spawnPoint)),
 
                 [typeof(Ogre)] = (bus, @object, spawnPoint) => bus.Handle(new CreateOgreSignal(spawnPoint)),
+                [typeof(Spider)] = (bus, @object, spawnPoint) => bus.Handle(new CreateSpiderSignal(spawnPoint)),
             };
         }
 

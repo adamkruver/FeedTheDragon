@@ -5,7 +5,8 @@
     "NPC": "Views/NPCs/",
     "Quest": "Views/Quests/",
     "Inventory" : "Views/Inventories/",
-    "QuestSlot": "Views/Quests/"
+    "QuestSlot": "Views/Quests/",
+    "Enemy": "Views/Enemies/"
   },
   "UI": {
     

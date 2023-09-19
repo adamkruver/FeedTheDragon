@@ -1,6 +1,6 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.App.Configs;
-using Sources.Client.Controllers.NPCs.Ogres;
+using Sources.Client.Controllers;
 using Sources.Client.Controllers.NPCs.Ogres.Actions;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
@@ -45,7 +45,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             _questObserverViewModelComponentFactory = questObserverViewModelComponentFactory;
         }
 
-        public OgreSignalController Create()
+        public SignalController Create()
         {
             CreateOgreQuery createOgreQuery = new CreateOgreQuery(_entityRepository, _idGenerator);
 
@@ -60,7 +60,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
                 new CreateOgreSignalAction(_signalBus, _bindableViewFactory, _environment, createOgreQuery,
                     ogreViewModelFactory);
 
-            return new OgreSignalController(
+            return new SignalController(
                 new ISignalAction[]
                 {
                     createOgreSignalAction

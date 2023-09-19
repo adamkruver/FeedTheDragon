@@ -1,5 +1,6 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.App.Configs;
+using Sources.Client.Controllers;
 using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Characters.Actions;
 using Sources.Client.Controllers.Characters.ViewModels;
@@ -44,7 +45,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             _idGenerator = idGenerator;
         }
 
-        public CharacterSignalController Create()
+        public SignalController Create()
         {
             PeasantFactory peasantFactory = new PeasantFactory();
 
@@ -107,7 +108,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             CharacterSpeedSignalAction characterSpeedSignalAction =
                 new CharacterSpeedSignalAction(_currentPlayerService, setSpeedCommand);
 
-            return new CharacterSignalController
+            return new SignalController
             (
                 new ISignalAction[]
                 {

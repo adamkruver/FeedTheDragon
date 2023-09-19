@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PresentationInterfaces.Frameworks.Mvvm.Factories;
-using Sources.Client.Controllers.Ingredients;
+using Sources.Client.Controllers;
 using Sources.Client.Controllers.Ingredients.Actions;
 using Sources.Client.Controllers.Ingredients.ViewModels;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
@@ -53,7 +53,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             _idGenerator = idGenerator;
         }
 
-        public IngredientSignalController Create()
+        public SignalController Create()
         {
             AbstractIngredientFactory ingredientFactory = new AbstractIngredientFactory();
 
@@ -114,7 +114,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             ToxicFrogJumpSignalAction toxicFrogJumpSignalAction =
                 new ToxicFrogJumpSignalAction(setDestinationCommand, setSpeedCommand);
 
-            return new IngredientSignalController(
+            return new SignalController(
                 new ISignalAction[]
                 {
                     createIngredientSignalAction,

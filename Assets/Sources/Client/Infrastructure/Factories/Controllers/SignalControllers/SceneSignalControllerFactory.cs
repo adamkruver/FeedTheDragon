@@ -1,13 +1,13 @@
-﻿using Sources.Client.Controllers.Scenes;
+﻿using Sources.Client.Controllers;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
 {
     public class SceneSignalControllerFactory
     {
-        public SceneSignalController Create()
+        public SignalController Create()
         {
-            return new SceneSignalController(new ISignalAction[]
+            return new SignalController(new ISignalAction[]
             {
             });
         }

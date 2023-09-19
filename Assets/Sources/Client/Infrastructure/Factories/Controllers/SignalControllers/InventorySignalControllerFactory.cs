@@ -1,6 +1,6 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.App.Configs;
-using Sources.Client.Controllers.Inventories;
+using Sources.Client.Controllers;
 using Sources.Client.Controllers.Inventories.Actions;
 using Sources.Client.Controllers.Inventories.ViewModels;
 using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
@@ -50,7 +50,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             _slotViewFactory = slotViewFactory;
         }
 
-        public InventorySignalController Create()
+        public SignalController Create()
         {
             HideCommand hideCommand = new HideCommand(_entityRepository);
             InventoryPushItemCommand inventoryPushItemCommand = new InventoryPushItemCommand(_entityRepository);
@@ -121,7 +121,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             DropInventoryItemSignalAction dropInventoryItemSignalAction =
                 new DropInventoryItemSignalAction(dropInventoryItemCommand);
 
-            return new InventorySignalController(
+            return new SignalController(
                 new ISignalAction[]
                 {
                     createInventorySignalAction,

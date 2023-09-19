@@ -7,11 +7,11 @@ using Sources.Client.InfrastructureInterfaces.SignalBus.Signals;
 
 namespace Sources.Client.Controllers
 {
-    public abstract class SignalControllerBase : ISignalController
+    public class SignalController : ISignalController
     {
-        private List<ISignalAction> _signalActions = new List<ISignalAction>();
+        private readonly List<ISignalAction> _signalActions = new List<ISignalAction>();
 
-        protected SignalControllerBase(IEnumerable<ISignalAction> signalActions)
+        public SignalController(IEnumerable<ISignalAction> signalActions)
         {
             Register(signalActions);
         }
@@ -43,7 +43,7 @@ namespace Sources.Client.Controllers
             foreach (ISignalAction signalAction in _signalActions)
                 if (signalAction is ISignalAction<T> concreteAction)
                     actions.Add(concreteAction);
-            
+
             return actions;
         }
     }

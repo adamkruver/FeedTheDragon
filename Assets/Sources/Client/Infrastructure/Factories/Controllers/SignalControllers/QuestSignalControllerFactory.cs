@@ -1,4 +1,4 @@
-﻿using Sources.Client.Controllers.NPCs.Common;
+﻿using Sources.Client.Controllers;
 using Sources.Client.Controllers.NPCs.Common.Actions;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Infrastructure.Factories.Domain.NPCs;
@@ -32,7 +32,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             _currentPlayerService = currentPlayerService;
         }
 
-        public QuestSignalController Create(IIngredientType[] availableIngredientTypes)
+        public SignalController Create(IIngredientType[] availableIngredientTypes)
         {
             QuestFactory questFactory = new QuestFactory();
 
@@ -61,7 +61,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             GiveQuestRequiredItemSignalAction giveQuestRequiredItemSignalAction =
                 new GiveQuestRequiredItemSignalAction(giveQuestRequiredItemCommand);
 
-            return new QuestSignalController(
+            return new SignalController(
                 new ISignalAction[]
                 {
                     createQuestSignalAction,
