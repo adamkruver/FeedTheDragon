@@ -4,6 +4,7 @@ using Sources.Client.Controllers.Scenes.StateMachines.States;
 using Sources.Client.Domain.Enemies;
 using Sources.Client.Domain.Enemies.Types;
 using Sources.Client.Domain.Ingredients;
+using Sources.Client.Domain.NPCs.Dragons;
 using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
@@ -33,6 +34,7 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
         private readonly SpawnService<IIngredientType, DualTongueSpawnPoint> _dualTongueSpawnService;
         private readonly SpawnService<Spider, SpiderSpawnPoint> _spiderSpawnService;
         private readonly SpawnService<Ogre, OgreSpawnPoint> _ogreSpawnService;
+        private readonly SpawnService<Dragon, DragonSpawnPoint> _dragonSpawnService;
         private CharacterMovementService _characterMovementService;
         private GetPositionQuery _getPositionQuery;
         private GetSpeedQuery _getSpeedQuery;
@@ -64,6 +66,7 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
             _eyeRootSpawnService = new SpawnService<IIngredientType, EyeRootSpawnPoint>(_signalBus);
             _dualTongueSpawnService = new SpawnService<IIngredientType, DualTongueSpawnPoint>(_signalBus);
             _ogreSpawnService = new SpawnService<Ogre, OgreSpawnPoint>(_signalBus);
+            _dragonSpawnService = new SpawnService<Dragon, DragonSpawnPoint>(_signalBus);
             _spiderSpawnService = new SpawnService<Spider, SpiderSpawnPoint>(_signalBus);
         }
 
@@ -76,6 +79,7 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
             _frogSpawnService.Spawn(); // todo переписать
             _eyeRootSpawnService.Spawn();
             _ogreSpawnService.Spawn();
+            _dragonSpawnService.Spawn();
             _dualTongueSpawnService.Spawn();
             _spiderSpawnService.Spawn();
 
