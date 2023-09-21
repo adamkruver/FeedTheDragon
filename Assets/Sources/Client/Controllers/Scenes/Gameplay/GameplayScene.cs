@@ -4,6 +4,7 @@ using Sources.Client.Controllers.Scenes.StateMachines.States;
 using Sources.Client.Domain.Enemies;
 using Sources.Client.Domain.Enemies.Types;
 using Sources.Client.Domain.Ingredients;
+using Sources.Client.Domain.NPCs.Bears;
 using Sources.Client.Domain.NPCs.Dragons;
 using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
@@ -33,6 +34,7 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
         private readonly SpawnService<IIngredientType, EyeRootSpawnPoint> _eyeRootSpawnService;
         private readonly SpawnService<IIngredientType, DualTongueSpawnPoint> _dualTongueSpawnService;
         private readonly SpawnService<Spider, SpiderSpawnPoint> _spiderSpawnService;
+        private readonly SpawnService<Bear, BearSpawnPoint> _bearSpawnService;
         private readonly SpawnService<Ogre, OgreSpawnPoint> _ogreSpawnService;
         private readonly SpawnService<Dragon, DragonSpawnPoint> _dragonSpawnService;
         private CharacterMovementService _characterMovementService;
@@ -68,6 +70,7 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
             _ogreSpawnService = new SpawnService<Ogre, OgreSpawnPoint>(_signalBus);
             _dragonSpawnService = new SpawnService<Dragon, DragonSpawnPoint>(_signalBus);
             _spiderSpawnService = new SpawnService<Spider, SpiderSpawnPoint>(_signalBus);
+            _bearSpawnService = new SpawnService<Bear, BearSpawnPoint>(_signalBus);
         }
 
         public void Enter()
@@ -82,6 +85,7 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
             _dragonSpawnService.Spawn();
             _dualTongueSpawnService.Spawn();
             _spiderSpawnService.Spawn();
+            _bearSpawnService.Spawn();
 
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
             _characterMovementService = new CharacterMovementService
