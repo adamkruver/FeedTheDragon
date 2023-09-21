@@ -2,6 +2,8 @@
 using Sources.Client.App.Configs;
 using Sources.Client.Controllers;
 using Sources.Client.Controllers.NPCs.Ogres.Actions;
+using Sources.Client.Controllers.NPCs.Ogres.ViewModels;
+using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components;
@@ -56,9 +58,12 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
                 _questObserverViewModelComponentFactory
             );
 
+            BindableViewBuilder<OgreViewModel> ogreViewBuilder =
+                new BindableViewBuilder<OgreViewModel>(_bindableViewFactory, ogreViewModelFactory,
+                    _environment.View["NPC"]);
+
             CreateOgreSignalAction createOgreSignalAction =
-                new CreateOgreSignalAction(_signalBus, _bindableViewFactory, _environment, createOgreQuery,
-                    ogreViewModelFactory);
+                new CreateOgreSignalAction(_signalBus, ogreViewBuilder, createOgreQuery);
 
             return new SignalController(
                 new ISignalAction[]

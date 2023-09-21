@@ -4,6 +4,8 @@ using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.App.Configs;
 using Sources.Client.Controllers.NPCs.Common.Signals;
 using Sources.Client.Controllers.NPCs.Dragons.Signals;
+using Sources.Client.Controllers.NPCs.Dragons.ViewModels;
+using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
@@ -13,32 +15,22 @@ namespace Sources.Client.Controllers.NPCs.Dragons.Actions
 {
     public class CreateDragonSignalAction : ISignalAction<CreateDragonSignal>
     {
+        private readonly BindableViewBuilder<DragonViewModel> _bindableViewBuilder;
         private readonly CreateDragonQuery _createDragonQuery;
-        private readonly IBindableViewFactory _bindableViewFactory;
-        private readonly DragonViewModelFactory _dragonViewModelFactory;
-        private readonly Environment _environment;
 
         public CreateDragonSignalAction(
-            IBindableViewFactory bindableViewFactory,
-            Environment environment,
-            CreateDragonQuery createDragonQuery,
-            DragonViewModelFactory dragonViewModelFactory
+            BindableViewBuilder<DragonViewModel> bindableViewBuilder,
+            CreateDragonQuery createDragonQuery 
         )
         {
+            _bindableViewBuilder = bindableViewBuilder;
             _createDragonQuery = createDragonQuery;
-            _bindableViewFactory = bindableViewFactory;
-            _dragonViewModelFactory = dragonViewModelFactory;
-            _environment = environment;
         }
 
         public void Handle(CreateDragonSignal signal)
         {
             int id = _createDragonQuery.Handle(signal.Position);
-
-            IBindableView view = _bindableViewFactory.Create(_environment.View["NPC"], "Dragons/Dragon"); // TODO change to dragon
-            IViewModel viewModel = _dragonViewModelFactory.Create(id);
-            
-            view.Bind(viewModel);
+            _bindableViewBuilder.Build(id, "Dragon");
         }
     }
 }
