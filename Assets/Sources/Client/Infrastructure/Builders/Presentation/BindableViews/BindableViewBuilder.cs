@@ -26,7 +26,7 @@ namespace Sources.Client.Infrastructure.Builders.Presentation.BindableViews
         public IBindableView Build(int entityId, string prefabName, IBindableView parentView = null)
         {
             IViewModel viewModel = _viewModelFactory.Create(entityId);
-            IBindableView view = _bindableViewFactory.Create(_viewPath, prefabName, parentView);
+            IBindableView view = _bindableViewFactory.Create(_viewPath, prefabName);
             
             view.Bind(viewModel);
 

@@ -138,6 +138,11 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                     _bindableViewFactory, positionViewModelComponentFactory, visibilityViewModelComponentFactory,
                     questObserverViewModelComponentFactory);
 
+            DragonSignalControllerFactory dragonSignalControllerFactory = 
+                new DragonSignalControllerFactory(idGenerator, _signalBus, entityRepository, _environment,
+                    _bindableViewFactory, positionViewModelComponentFactory, visibilityViewModelComponentFactory,
+                    questObserverViewModelComponentFactory);
+            
             QuestSignalControllerFactory questSignalControllerFactory =
                 new QuestSignalControllerFactory(idGenerator, _signalBus, entityRepository, currentPlayerService);
 
@@ -157,6 +162,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                     ingredientSignalControllerFactory.Create(),
                     inventorySignalControllerFactory.Create(),
                     ogreSignalControllerFactory.Create(),
+                    dragonSignalControllerFactory.Create(),
                     questSignalControllerFactory.Create(availableIngredientTypes),
                 },
                 currentPlayerService,
