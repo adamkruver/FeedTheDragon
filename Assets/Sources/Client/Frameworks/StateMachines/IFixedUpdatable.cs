@@ -1,9 +1,7 @@
 ﻿namespace Sources.Client.Frameworks.StateMachines
 {
-    public interface IUpdateable
+    public interface IFixedUpdatable
     {
-        void Update(float deltaTime);
-        void LateUpdate(float deltaTime);
         void FixedUpdate(float fixedDeltaTime);
     }
 }

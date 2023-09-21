@@ -1,15 +1,18 @@
 ﻿using Sources.Client.Characters;
+using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Scenes.StateMachines.States;
-using Sources.Client.Domain.Enemies;
 using Sources.Client.Domain.Enemies.Types;
 using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.NPCs.Bears;
 using Sources.Client.Domain.NPCs.Dragons;
 using Sources.Client.Domain.NPCs.Ogres;
+using Sources.Client.Infrastructure.Factories.Controllers;
+using Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
-using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.Infrastructure.Services.GameUpdate;
+using Sources.Client.Infrastructure.Services.Pointers;
+using Sources.Client.Infrastructure.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Controllers;
@@ -17,9 +20,8 @@ using Sources.Client.InfrastructureInterfaces.SignalBus.Handlers;
 using Sources.Client.Presentation.Views.SpawnPoints.Enemies;
 using Sources.Client.Presentation.Views.SpawnPoints.Ingredients;
 using Sources.Client.Presentation.Views.SpawnPoints.NPCs;
-using Sources.Client.UseCases.Common.Components.Positions.Queries;
-using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using UnityEngine;
+using CharacterController = Sources.Client.Controllers.Characters.CharacterController;
 
 namespace Sources.Client.Controllers.Scenes.Gameplay
 {
@@ -28,7 +30,9 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
         private readonly ISignalBus _signalBus;
         private readonly ISignalHandlerRegisterer _signalHandler;
         private readonly ISignalController[] _signalControllers;
-        private readonly CurrentPlayerService _currentPlayerService;
+        private readonly CharacterControllerFactory _characterControllerFactory;
+        private readonly CharacterPointerHandlerFactory _characterPointerHandlerFactory;
+        private readonly PointerService _pointerService;
         private readonly SpawnService<IIngredientType, ChanterelleSpawnPoint> _mushroomSpawnService;
         private readonly SpawnService<IIngredientType, ToxicFrogSpawnPoint> _frogSpawnService;
         private readonly SpawnService<IIngredientType, EyeRootSpawnPoint> _eyeRootSpawnService;
@@ -37,29 +41,27 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
         private readonly SpawnService<Bear, BearSpawnPoint> _bearSpawnService;
         private readonly SpawnService<Ogre, OgreSpawnPoint> _ogreSpawnService;
         private readonly SpawnService<Dragon, DragonSpawnPoint> _dragonSpawnService;
-        private CharacterMovementService _characterMovementService;
-        private GetPositionQuery _getPositionQuery;
-        private GetSpeedQuery _getSpeedQuery;
         private readonly GameUpdateService _gameUpdateService;
         private CameraFollowService _cameraFollowService;
+        private CharacterController _characterController;
 
         public GameplayScene
         (
             ISignalBus signalBus,
             ISignalHandlerRegisterer signalHandler,
-            ISignalController[] signalControllers, 
-            CurrentPlayerService currentPlayerService,
-            GetPositionQuery getPositionQuery,
-            GetSpeedQuery getSpeedQuery,
+            ISignalController[] signalControllers,
+            CharacterControllerFactory characterControllerFactory,
+            CharacterPointerHandlerFactory characterPointerHandlerFactory,
+            PointerService pointerService,
             GameUpdateService gameUpdateService,
             CameraFollowService cameraFollowService)
         {
             _signalBus = signalBus;
             _signalHandler = signalHandler;
             _signalControllers = signalControllers;
-            _currentPlayerService = currentPlayerService;
-            _getPositionQuery = getPositionQuery;
-            _getSpeedQuery = getSpeedQuery;
+            _characterControllerFactory = characterControllerFactory;
+            _characterPointerHandlerFactory = characterPointerHandlerFactory;
+            _pointerService = pointerService;
             _gameUpdateService = gameUpdateService;
             _cameraFollowService = cameraFollowService;
 
@@ -88,14 +90,15 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
             _bearSpawnService.Spawn();
 
             _signalBus.Handle(new CreateCharacterSignal(new Vector3(-20, 0, 10)));
-            _characterMovementService = new CharacterMovementService
-                (_currentPlayerService, _signalBus, Camera.main, _getPositionQuery, _getSpeedQuery);
+            _characterController = _characterControllerFactory.Create();
+            _pointerService.Register(_characterPointerHandlerFactory.Create(_characterController));
         }
 
         public void Update(float deltaTime)
         {
-            _characterMovementService.Update();
             _gameUpdateService.Update(Time.deltaTime);
+            _pointerService.Update(deltaTime);
+            _characterController.Update(deltaTime);
         }
 
         public void LateUpdate(float deltaTime)

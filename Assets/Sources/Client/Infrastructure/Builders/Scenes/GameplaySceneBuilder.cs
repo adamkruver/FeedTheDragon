@@ -6,15 +6,19 @@ using Sources.Client.Domain.Ingredients;
 using Sources.Client.Domain.Ingredients.IngredientTypes;
 using Sources.Client.Domain.Scenes.Payloads;
 using Sources.Client.Frameworks.StateMachines;
+using Sources.Client.Infrastructure.Factories.Controllers;
 using Sources.Client.Infrastructure.Factories.Controllers.SignalControllers;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
+using Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Repositories;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.Infrastructure.Services.GameUpdate;
 using Sources.Client.Infrastructure.Services.IdGenerators;
+using Sources.Client.Infrastructure.Services.Pointers;
+using Sources.Client.Infrastructure.Services.Terrains;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Controllers;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Handlers;
@@ -68,12 +72,17 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
 
             #endregion
 
+            Camera camera = Camera.main;
+            
             #region Services
 
             GameUpdateService gameUpdateService = new GameUpdateService();
             CameraFollowService cameraFollowService =
-                new CameraFollowService(Camera.main.transform.parent); //todo : to camera provider
+                new CameraFollowService(camera.transform.parent); //todo : to camera provider
             CurrentPlayerService currentPlayerService = new CurrentPlayerService();
+
+            PointerService pointerService = new PointerService();
+            CharacterPointerHandlerFactory characterPointerHandlerFactory = new CharacterPointerHandlerFactory(camera);
 
             #endregion
 
@@ -150,6 +159,9 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                 new EnemySignalControllerFactory(entityRepository, idGenerator, _bindableViewFactory, _environment,
                     positionViewModelComponentFactory, visibilityViewModelComponentFactory);
 
+            CharacterControllerFactory characterControllerFactory =
+                new CharacterControllerFactory(_signalBus, currentPlayerService, entityRepository);
+
             #endregion
 
             return new GameplayScene(
@@ -165,9 +177,9 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                     dragonSignalControllerFactory.Create(),
                     questSignalControllerFactory.Create(availableIngredientTypes),
                 },
-                currentPlayerService,
-                new GetPositionQuery(entityRepository),
-                new GetSpeedQuery(entityRepository),
+                characterControllerFactory,
+                characterPointerHandlerFactory,
+                pointerService,
                 gameUpdateService,
                 cameraFollowService);
         }

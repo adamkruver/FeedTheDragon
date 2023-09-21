@@ -10,6 +10,8 @@ using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.UseCases.NPCs.Ogres.Queries;
 using Sources.Client.App.Configs;
 using Sources.Client.Controllers.NPCs.Dragons.Actions;
+using Sources.Client.Controllers.NPCs.Dragons.ViewModels;
+using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.UseCases.NPCs.Dragons;
 
@@ -57,9 +59,12 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
                 _positionViewModelComponentFactory
             );
 
+            BindableViewBuilder<DragonViewModel> dragonViewBuilder =
+                new BindableViewBuilder<DragonViewModel>(_bindableViewFactory, dragonViewModelFactory,
+                    _environment.View["NPC"]);
+
             CreateDragonSignalAction createDragonSignalAction =
-                new CreateDragonSignalAction(_bindableViewFactory, _environment, createDragonQuery,
-                    dragonViewModelFactory);
+                new CreateDragonSignalAction(dragonViewBuilder, createDragonQuery);
 
             return new SignalController(
                 new ISignalAction[]
