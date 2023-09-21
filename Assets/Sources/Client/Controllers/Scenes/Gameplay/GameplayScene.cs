@@ -1,6 +1,4 @@
-﻿using Sources.Client.Characters;
-using Sources.Client.Controllers.Characters;
-using Sources.Client.Controllers.Characters.Signals;
+﻿using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Scenes.StateMachines.States;
 using Sources.Client.Domain.Enemies.Types;
 using Sources.Client.Domain.Ingredients;
@@ -12,7 +10,6 @@ using Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Services.CameraFollowService;
 using Sources.Client.Infrastructure.Services.GameUpdate;
 using Sources.Client.Infrastructure.Services.Pointers;
-using Sources.Client.Infrastructure.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Controllers;
