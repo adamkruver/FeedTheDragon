@@ -21,8 +21,12 @@ namespace Sources.Client.Infrastructure.Services.Pointers.Handlers
 
         public void OnMove(Vector3 position)
         {
-            if(_terrainService.TryGetRaycastHit(position, out Vector3 hitPoint) == false)
+            if (_terrainService.TryGetRaycastHit(position, out Vector3 hitPoint) == false)
+            {
+                OnFinish(position);
+                
                 return;
+            }
 
             _characterController.MoveTo(hitPoint);
         }
