@@ -12,6 +12,8 @@ namespace Sources.Client.Presentation.Binds.Scales
         [SerializeField] private bool _isEnabledOnStart = false;
         [SerializeField] private float _scaleSpeed = 1f;
 
+        private const float Epsilon = 0.01f;
+        
         private Transform _transform;
         private Coroutine _scaleJob;
         private float _scale = 0;
@@ -28,7 +30,7 @@ namespace Sources.Client.Presentation.Binds.Scales
         public override bool BindableProperty
         {
             get => _isEnabled;
-            set => SetScale(value == true ? 1 : 0);
+            set => SetScale(value ? 1 : 0);
         }
 
         private void Enable()
@@ -52,6 +54,7 @@ namespace Sources.Client.Presentation.Binds.Scales
         private void SetScale(float scale)
         {
             StopScale();
+            Enable();            
             RunScale(scale);
         }
 
@@ -62,7 +65,7 @@ namespace Sources.Client.Presentation.Binds.Scales
 
             StopCoroutine(_scaleJob);
 
-            if (_scale == 0)
+            if (Mathf.Abs(_scale) <= Epsilon)
                 Disable();
             else
                 Enable();
@@ -81,7 +84,7 @@ namespace Sources.Client.Presentation.Binds.Scales
                 Transform.localScale = _scale * Vector3.one;
                 
                 yield return null;
-            } while (Mathf.Abs(_scale - scale) > 0.01f);
+            } while (Mathf.Abs(_scale - scale) > Epsilon);
             
             StopScale();
         }

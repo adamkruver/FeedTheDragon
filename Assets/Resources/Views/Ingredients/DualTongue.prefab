@@ -122,7 +122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4867019407086581915}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinePoint (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5944703735013957214}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LineStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7461770783469668991}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6969537462102013446}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinePoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 3304466143018823084}
   - component: {fileID: 3304466143018823085}
   - component: {fileID: 8569455918595690478}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 3304466144337511176}
   - component: {fileID: 3403865555933456631}
   - component: {fileID: 4718653408962946782}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ImageMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 553f60b92a02b7848867190c35023297, type: 2}
   m_Color: {r: 0.5441781, g: 1, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -523,7 +523,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6069089864365572037}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinePoint (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -554,7 +554,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3424311171004947238}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: LineEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -590,7 +590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5159709252777389177}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinePoint (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -708,7 +708,7 @@ GameObject:
   - component: {fileID: 1781210266129985485}
   - component: {fileID: 8852032169435922018}
   - component: {fileID: 3132813155830166966}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -755,7 +755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 553f60b92a02b7848867190c35023297, type: 2}
   m_Color: {r: 0.76934564, g: 0.61960787, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -839,7 +839,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305436694456305737}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinePoint (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -872,7 +872,7 @@ GameObject:
   - component: {fileID: 7661749463765590803}
   - component: {fileID: 2349496458889736581}
   - component: {fileID: 2475123341261985228}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LineRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1044,7 +1044,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2496457648739729668}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinePoint (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1075,7 +1075,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8193826964718499575}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LinePoint (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1104,9 +1104,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3304466143018823075}
     m_Modifications:
+    - target: {fileID: 605296076576889932, guid: 5fca8115227d31243b4a09e2adf8fc61, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 553f60b92a02b7848867190c35023297, type: 2}
     - target: {fileID: 3705567079263447088, guid: 5fca8115227d31243b4a09e2adf8fc61, type: 3}
       propertyPath: m_Name
       value: Icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705567079263447088, guid: 5fca8115227d31243b4a09e2adf8fc61, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7470594218560150034, guid: 5fca8115227d31243b4a09e2adf8fc61, type: 3}
       propertyPath: m_Pivot.x
