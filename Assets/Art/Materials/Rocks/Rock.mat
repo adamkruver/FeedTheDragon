@@ -19,14 +19,12 @@ Material:
   - TCP2_RIM_LIGHTING_LIGHTMASK
   - TCP2_SHADOW_LIGHT_COLOR
   - TCP2_UV_NORMALS_FULL
-  - _ALPHATEST_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -172,7 +170,7 @@ Material:
     - _SpecularType: 0
     - _SrcBlend: 1
     - _UVSec: 0
-    - _UseAlphaTest: 1
+    - _UseAlphaTest: 0
     - _UseEmission: 0
     - _UseFresnelReflections: 1
     - _UseMatCap: 0
