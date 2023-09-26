@@ -18,12 +18,9 @@ using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.Infrastructure.Services.GameUpdate;
 using Sources.Client.Infrastructure.Services.IdGenerators;
 using Sources.Client.Infrastructure.Services.Pointers;
-using Sources.Client.Infrastructure.Services.Terrains;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Controllers;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Handlers;
-using Sources.Client.UseCases.Common.Components.Positions.Queries;
-using Sources.Client.UseCases.Common.Components.Speeds.Queries;
 using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 using UnityEngine;
 
@@ -105,13 +102,12 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
 
             MoveToDestinationViewModelComponentFactory moveToDestinationViewModelComponentFactory =
                 new MoveToDestinationViewModelComponentFactory(gameUpdateService, entityRepository);
-
+            
             #endregion
 
             #region Quests //Какая то фабрика для фабрики получилась
 
             GetQuestsIdsQuery getQuestsIdsQuery = new GetQuestsIdsQuery(entityRepository);
-
 
             QuestObserverViewModelComponentFactory questObserverViewModelComponentFactory =
                 new QuestObserverViewModelComponentFactory
@@ -126,7 +122,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                 );
 
             #endregion
-
+            
             #region SignalControllerFactories
 
             CharacterSignalControllerFactory characterSignalControllerFactory =
@@ -147,11 +143,11 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                     _bindableViewFactory, positionViewModelComponentFactory, visibilityViewModelComponentFactory,
                     questObserverViewModelComponentFactory);
 
-            DragonSignalControllerFactory dragonSignalControllerFactory = 
+            DragonSignalControllerFactory dragonSignalControllerFactory =
                 new DragonSignalControllerFactory(idGenerator, _signalBus, entityRepository, _environment,
                     _bindableViewFactory, positionViewModelComponentFactory, visibilityViewModelComponentFactory,
                     questObserverViewModelComponentFactory);
-            
+
             QuestSignalControllerFactory questSignalControllerFactory =
                 new QuestSignalControllerFactory(idGenerator, _signalBus, entityRepository, currentPlayerService);
 
@@ -161,6 +157,10 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
 
             CharacterControllerFactory characterControllerFactory =
                 new CharacterControllerFactory(_signalBus, currentPlayerService, entityRepository);
+
+            MissionSignalControllerFactory missionSignalControllerFactory =
+                new MissionSignalControllerFactory(_signalBus, entityRepository, idGenerator, _bindableViewFactory,
+                    visibilityViewModelComponentFactory, questObserverViewModelComponentFactory, _environment);
 
             #endregion
 
@@ -176,6 +176,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                     ogreSignalControllerFactory.Create(),
                     dragonSignalControllerFactory.Create(),
                     questSignalControllerFactory.Create(availableIngredientTypes),
+                    missionSignalControllerFactory.Create()
                 },
                 characterControllerFactory,
                 characterPointerHandlerFactory,

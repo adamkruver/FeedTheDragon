@@ -22,6 +22,12 @@ namespace Sources.Client.Infrastructure.Services.CameraFollowService
         {
             if (_target == null)
                 return;
+
+            if (_camera == null)
+            {
+                Debug.Log("Camera null");
+                return;
+            }
             
             _camera.transform.position = _target.position;
         }
