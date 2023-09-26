@@ -8,18 +8,15 @@ using PresentationInterfaces.Frameworks.Mvvm.Views;
 using Sources.Client.Controllers.NPCs.Common.ViewModels;
 using Sources.Client.Extensions;
 using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
-using Sources.Client.UseCases.Common.Components.ComponentsListenets;
 using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Controllers.NPCs.Ogres.ViewModels.Components
 {
     public class QuestObserverViewModelComponent : IViewModelComponent
     {
-        private readonly int _id;
         private readonly IBindableViewBuilder<QuestViewModel> _questViewBuilder;
-        private readonly AddAfterComponentsChangedListnerCommand _addAfterComponentsChangedListnerCommand;
-        private readonly RemoveAfterComponentsChangedListnerCommand _removeAfterComponentsChangedListnerCommand;
-        private readonly GetQuestsIdsQuery _getQuestsIdsQuery;
+        private readonly LiveData<int[]> _questsIds;
         
         [PropertyBinding(typeof(IAttachableViewPropertyBind))]
         private IBindableProperty<IAttachableView> _view;
@@ -30,32 +27,25 @@ namespace Sources.Client.Controllers.NPCs.Ogres.ViewModels.Components
         (
             int id, 
             IBindableViewBuilder<QuestViewModel> questViewBuilder,
-            AddAfterComponentsChangedListnerCommand addAfterComponentsChangedListnerCommand,
-            RemoveAfterComponentsChangedListnerCommand removeAfterComponentsChangedListnerCommand,
             GetQuestsIdsQuery getQuestsIdsQuery
         )
         {
-            _id = id;
             _questViewBuilder = questViewBuilder;
-            _addAfterComponentsChangedListnerCommand = addAfterComponentsChangedListnerCommand;
-            _removeAfterComponentsChangedListnerCommand = removeAfterComponentsChangedListnerCommand;
-            _getQuestsIdsQuery = getQuestsIdsQuery;
+            _questsIds = getQuestsIdsQuery.Handle(id, 0); //todo: fill ownerId
         }
 
         public void Enable()
         {
-            _addAfterComponentsChangedListnerCommand.Hanlde(_id, OnAfterComponentsChanged);
+            _questsIds.Observe(OnMissionChanged);
         }
 
         public void Disable()
         {
-            _removeAfterComponentsChangedListnerCommand.Hanlde(_id, OnAfterComponentsChanged);
+            _questsIds.Unobserve(OnMissionChanged);
         }
 
-        private void OnAfterComponentsChanged()
+        private void OnMissionChanged(int[] questSlotsIds)
         {
-            int[] questSlotsIds = _getQuestsIdsQuery.Handle(_id, 0); //todo: fill ownerId
-
             (IEnumerable<int> added, IEnumerable<int> removed) = _questSlotsIds.Diff(questSlotsIds, Compare);
 
             foreach (int addedQuest in added)

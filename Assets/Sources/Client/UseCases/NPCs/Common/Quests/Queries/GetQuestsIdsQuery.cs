@@ -2,7 +2,11 @@
 using System.Linq;
 using Sources.Client.Domain;
 using Sources.Client.Domain.NPCs.Components;
+using Sources.Client.Domain.NPCs.Ogres;
+using Sources.Client.Domain.Progresses;
 using Sources.Client.InfrastructureInterfaces.Repositories;
+using UnityEngine;
+using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.UseCases.NPCs.Common.Quests.Queries
 {
@@ -15,15 +19,17 @@ namespace Sources.Client.UseCases.NPCs.Common.Quests.Queries
             _entityRepository = entityRepository;
         }
 
-        public int[] Handle(int questHolderid, int questOwnerId)
+        public LiveData<int[]> Handle(int questHolderId, int questOwnerId)
         {
-            if (_entityRepository.Get(questHolderid) is not Composite questHolder)
+            Debug.Log(questHolderId);
+            
+            if (_entityRepository.Get(questHolderId) is not Ogre ogre)
                 throw new InvalidCastException();
 
-            if (questHolder.TryGetComponents(out Quest[] quests) == false)
-                throw new NullReferenceException();
-            
-            return quests.Select(quest => quest.Id).ToArray(); // todo: Add QuestOwner filter
+            if (ogre.TryGetComponent(out Mission mission) == false)
+                throw new InvalidOperationException();
+
+            return mission.QuestIds; // todo: Add QuestOwner filter
         }
     }
 }

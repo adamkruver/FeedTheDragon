@@ -3,6 +3,7 @@ using Sources.Client.App.Configs;
 using Sources.Client.Controllers;
 using Sources.Client.Controllers.NPCs.Ogres.Actions;
 using Sources.Client.Controllers.NPCs.Ogres.ViewModels;
+using Sources.Client.Controllers.NPCs.Ogres.ViewModels.Components;
 using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
