@@ -39,11 +39,11 @@ namespace Sources.Client.Infrastructure.StateMachines
         protected override void Enter<T>(T payload)
         {
         }
-
+        
         private async UniTask LoadScene<T>(T payload) where T : IScenePayload
         {
             await SceneManager.LoadSceneAsync(payload.SceneName);
-
+        
             base.Enter(payload);
         }
     }

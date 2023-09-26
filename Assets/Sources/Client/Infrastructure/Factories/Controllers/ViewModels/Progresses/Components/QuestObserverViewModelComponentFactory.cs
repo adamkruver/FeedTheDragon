@@ -16,8 +16,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Co
     public class QuestObserverViewModelComponentFactory
     {
         private readonly IBindableViewBuilder<QuestViewModel> _questViewBuilder;
-        private readonly AddAfterComponentsChangedListnerCommand _addAfterComponentsChangedListnerCommand;
-        private readonly RemoveAfterComponentsChangedListnerCommand _removeAfterComponentsChangedListnerCommand;
         private readonly GetQuestsIdsQuery _getQuestsIdsQuery;
 
         public QuestObserverViewModelComponentFactory
@@ -57,11 +55,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Co
                     environment.View["QuestSlot"]
                 );
 
-            _addAfterComponentsChangedListnerCommand =
-                new AddAfterComponentsChangedListnerCommand(entityRepository);
-            _removeAfterComponentsChangedListnerCommand =
-                new RemoveAfterComponentsChangedListnerCommand(entityRepository);
-
             _getQuestsIdsQuery = getQuestsIdsQuery;
         }
 
@@ -71,8 +64,6 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Co
             (
                 id,
                 _questViewBuilder,
-                _addAfterComponentsChangedListnerCommand,
-                _removeAfterComponentsChangedListnerCommand,
                 _getQuestsIdsQuery
             );
         }

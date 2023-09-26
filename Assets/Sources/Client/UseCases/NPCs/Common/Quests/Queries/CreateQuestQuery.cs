@@ -1,6 +1,7 @@
 ﻿using System;
 using Sources.Client.Domain;
 using Sources.Client.Domain.NPCs.Components;
+using Sources.Client.Domain.Progresses;
 using Sources.Client.InfrastructureInterfaces.Factories.Domain.NPCs;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
@@ -27,15 +28,16 @@ namespace Sources.Client.UseCases.NPCs.Common.Quests.Queries
 
         public int Handle(int ownerId)
         {
-            if (_entityRepository.Get(ownerId) is not Composite owner)
+            if (_entityRepository.Get(ownerId) is not Mission mission)
                 throw new InvalidCastException();
-
+            
             int id = _idGenerator.GetId();
 
             Quest quest = _questFactory.Create(id);
             _entityRepository.Add(quest);
 
-            owner.AddComponent(quest);
+            mission.AddComponent(quest);
+            mission.Add(quest);
 
             return id;
         }

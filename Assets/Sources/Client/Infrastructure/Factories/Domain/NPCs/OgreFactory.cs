@@ -1,6 +1,7 @@
 ﻿using Sources.Client.Domain.Components;
 using Sources.Client.Domain.NPCs;
 using Sources.Client.Domain.NPCs.Ogres;
+using Sources.Client.Domain.Progresses;
 
 namespace Sources.Client.Infrastructure.Factories.Domain.NPCs
 {

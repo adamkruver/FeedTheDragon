@@ -39,7 +39,7 @@ namespace Sources.Client.UseCases.NPCs.Common.Quests.Commands
             InventorySlot inventorySlot = inventory.FirstOrDefault(slot => slot.HasSameType(questSlot.RequiredType));
 
             if (inventorySlot is null)
-                throw new NullReferenceException();
+                throw new NullReferenceException("No inventory slot with required type");
             
             questSlot.Reach();
             inventorySlot.Clear();
