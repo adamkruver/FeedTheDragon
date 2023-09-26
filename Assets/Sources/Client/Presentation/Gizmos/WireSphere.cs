@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Sources.Editor
+namespace Sources.Client.Presentation.Gizmos
 {
     public class WireSphere : MonoBehaviour
     {
@@ -9,8 +9,8 @@ namespace Sources.Editor
 
         void OnDrawGizmosSelected()
         {
-            Gizmos.color = _color;
-            Gizmos.DrawWireSphere(transform.position, _radius);
+            UnityEngine.Gizmos.color = _color;
+            UnityEngine.Gizmos.DrawWireSphere(transform.position, _radius);
         }
     }
 }

@@ -11,7 +11,7 @@ using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableView
 using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
-namespace Sources.Client.Controllers.NPCs.Ogres.ViewModels.Components
+namespace Sources.Client.Controllers.Progresses.ViewModels.Components
 {
     public class QuestObserverViewModelComponent : IViewModelComponent
     {

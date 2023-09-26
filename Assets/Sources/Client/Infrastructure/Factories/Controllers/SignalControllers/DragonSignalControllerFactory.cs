@@ -3,7 +3,6 @@ using Sources.Client.Controllers;
 using Sources.Client.Controllers.NPCs.Ogres.Actions;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs;
-using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
@@ -12,6 +11,7 @@ using Sources.Client.App.Configs;
 using Sources.Client.Controllers.NPCs.Dragons.Actions;
 using Sources.Client.Controllers.NPCs.Dragons.ViewModels;
 using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Progresses.Components;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions;
 using Sources.Client.UseCases.NPCs.Dragons;
 

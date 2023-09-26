@@ -8,7 +8,7 @@ using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
-using Sources.Client.Infrastructure.Services.CameraFollowService;
+using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.Services.IdGenerators;

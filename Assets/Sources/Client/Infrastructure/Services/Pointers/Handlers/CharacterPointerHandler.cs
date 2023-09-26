@@ -1,19 +1,19 @@
-﻿using Sources.Client.Infrastructure.Services.Terrains;
+﻿using Sources.Client.Controllers.Characters;
+using Sources.Client.Infrastructure.Services.Terrains;
 using Sources.Client.InfrastructureInterfaces.Pointers;
 using UnityEngine;
-using CharacterController = Sources.Client.Controllers.Characters.CharacterController;
 
 namespace Sources.Client.Infrastructure.Services.Pointers.Handlers
 {
     public class CharacterPointerHandler : IPointerHandler
     {
         private readonly TerrainService _terrainService;
-        private readonly CharacterController _characterController;
+        private readonly CharacterMovementService _characterMovementService;
 
-        public CharacterPointerHandler(TerrainService terrainService, CharacterController characterController)
+        public CharacterPointerHandler(TerrainService terrainService, CharacterMovementService characterMovementService)
         {
             _terrainService = terrainService;
-            _characterController = characterController;
+            _characterMovementService = characterMovementService;
         }
 
         public void OnStart(Vector3 position) => 
@@ -28,10 +28,10 @@ namespace Sources.Client.Infrastructure.Services.Pointers.Handlers
                 return;
             }
 
-            _characterController.MoveTo(hitPoint);
+            _characterMovementService.MoveTo(hitPoint);
         }
 
         public void OnFinish(Vector3 position) => 
-            _characterController.Stop();
+            _characterMovementService.Stop();
     }
 }

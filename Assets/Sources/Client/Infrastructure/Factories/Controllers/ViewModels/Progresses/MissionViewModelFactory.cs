@@ -2,7 +2,6 @@
 using Sources.Client.Controllers.Progresses.ViewModels;
 using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
-using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components;
 using Sources.Client.InfrastructureInterfaces.Factories.Controllers.ViewModels;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Progresses

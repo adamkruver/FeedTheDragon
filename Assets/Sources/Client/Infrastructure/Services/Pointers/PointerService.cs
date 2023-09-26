@@ -15,6 +15,9 @@ namespace Sources.Client.Infrastructure.Services.Pointers
 
         public void Register(IPointerHandler pointerHandler) =>
             _pointerHandler = pointerHandler;
+        
+        public void Unregister() =>
+            _pointerHandler = null;
 
         public void Update(float deltaTime)
         {

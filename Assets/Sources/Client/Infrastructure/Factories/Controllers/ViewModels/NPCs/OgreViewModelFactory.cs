@@ -1,9 +1,8 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.NPCs.Ogres.ViewModels;
-using Sources.Client.Controllers.NPCs.Ogres.ViewModels.Components;
 using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
-using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components;
+using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Progresses.Components;
 using Sources.Client.InfrastructureInterfaces.Factories.Controllers.ViewModels;
 
 namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs

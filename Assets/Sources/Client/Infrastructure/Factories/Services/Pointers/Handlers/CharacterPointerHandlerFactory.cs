@@ -1,7 +1,8 @@
-﻿using Sources.Client.Infrastructure.Services.Pointers.Handlers;
+﻿using Sources.Client.Controllers.Characters;
+using Sources.Client.Infrastructure.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Services.Terrains;
+using Sources.Client.InfrastructureInterfaces.Providers;
 using UnityEngine;
-using CharacterController = Sources.Client.Controllers.Characters.CharacterController;
 
 namespace Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers
 {
@@ -9,10 +10,10 @@ namespace Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers
     {
         private readonly TerrainService _terrainService;
 
-        public CharacterPointerHandlerFactory(Camera camera) =>
-            _terrainService = new TerrainService(camera);
+        public CharacterPointerHandlerFactory(ICameraProvider cameraProvider) =>
+            _terrainService = new TerrainService(cameraProvider);
 
-        public CharacterPointerHandler Create(CharacterController characterController) =>
-            new CharacterPointerHandler(_terrainService, characterController);
+        public CharacterPointerHandler Create(CharacterMovementService characterMovementService) =>
+            new CharacterPointerHandler(_terrainService, characterMovementService);
     }
 }

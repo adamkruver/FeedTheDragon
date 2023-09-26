@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 #if UNITY_EDITOR
-namespace RTS.Utils.Editor
+namespace Sources.Client.Utils
 {
     public static class MeshSaverEditor
     {

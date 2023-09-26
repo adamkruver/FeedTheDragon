@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Sources.Client.InfrastructureInterfaces.Providers;
+using Sources.Client.Presentation.Cameras;
+using UnityEngine;
 
 namespace Sources.Client.Infrastructure.Services.Terrains
 {
@@ -7,9 +9,9 @@ namespace Sources.Client.Infrastructure.Services.Terrains
         private readonly Camera _camera;
         private readonly int _layer;
 
-        public TerrainService(Camera camera)
+        public TerrainService(ICameraProvider cameraProvider)
         {
-            _camera = camera;
+            _camera = cameraProvider.Get<MainCamera>();
             _layer = 1 << LayerMask.NameToLayer("Terrain"); //todo Move to constants
         }
 

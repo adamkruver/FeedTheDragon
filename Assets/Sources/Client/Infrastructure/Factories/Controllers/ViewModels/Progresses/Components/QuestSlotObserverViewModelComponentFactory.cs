@@ -1,12 +1,11 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.Controllers.NPCs.Common.ViewModels;
 using Sources.Client.Controllers.NPCs.Common.ViewModels.Components;
-using Sources.Client.Domain.Entities;
 using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 
-namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components
+namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Progresses.Components
 {
     public class QuestSlotObserverViewModelComponentFactory
     {

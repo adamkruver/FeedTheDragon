@@ -5,7 +5,7 @@ using Sources.Client.Controllers.Characters.Signals;
 using Sources.Client.Controllers.Characters.ViewModels;
 using Sources.Client.Controllers.Inventories.Signals;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
-using Sources.Client.Infrastructure.Services.CameraFollowService;
+using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.SignalBus;

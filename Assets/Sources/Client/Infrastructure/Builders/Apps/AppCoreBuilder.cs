@@ -33,14 +33,14 @@ namespace Sources.Client.Infrastructure.Builders.Apps
             
             #endregion
 
-            GameplaySceneBuilder gameplaySceneBuilder =
-                new GameplaySceneBuilder(signalBus, signalHandler, bindableViewFactory, prefabFactory, environment);
+            GameplaySceneStateBuilder gameplaySceneStateBuilder =
+                new GameplaySceneStateBuilder(signalBus, signalHandler, bindableViewFactory, prefabFactory, environment);
             InitialSceneBuilder initialSceneBuilder = new InitialSceneBuilder();
 
             Dictionary<Type, Func<IStateMachine<IScenePayload>, IScenePayload, ISceneState>> stateBuilders =
                 new Dictionary<Type, Func<IStateMachine<IScenePayload>, IScenePayload, ISceneState>>
                 {
-                    [typeof(GameplayPayload)] = gameplaySceneBuilder.Build,
+                    [typeof(GameplayPayload)] = gameplaySceneStateBuilder.Build,
                     [typeof(InitialPayload)] = initialSceneBuilder.Build,
                 };
 

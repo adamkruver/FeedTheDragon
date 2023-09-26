@@ -1,17 +1,16 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.App.Configs;
 using Sources.Client.Controllers.NPCs.Common.ViewModels;
-using Sources.Client.Controllers.NPCs.Ogres.ViewModels.Components;
+using Sources.Client.Controllers.Progresses.ViewModels.Components;
 using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
 using Sources.Client.InfrastructureInterfaces.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
-using Sources.Client.UseCases.Common.Components.ComponentsListenets;
 using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 
-namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs.Components
+namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Progresses.Components
 {
     public class QuestObserverViewModelComponentFactory
     {

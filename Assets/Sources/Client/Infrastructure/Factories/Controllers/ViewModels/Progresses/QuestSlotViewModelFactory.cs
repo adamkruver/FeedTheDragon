@@ -6,7 +6,7 @@ using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 
-namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs
+namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Progresses
 {
     public class QuestSlotViewModelFactory : IViewModelFactory<QuestSlotViewModel>
     {

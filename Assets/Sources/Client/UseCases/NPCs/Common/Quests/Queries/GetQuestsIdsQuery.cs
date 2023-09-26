@@ -21,8 +21,6 @@ namespace Sources.Client.UseCases.NPCs.Common.Quests.Queries
 
         public LiveData<int[]> Handle(int questHolderId, int questOwnerId)
         {
-            Debug.Log(questHolderId);
-            
             if (_entityRepository.Get(questHolderId) is not Ogre ogre)
                 throw new InvalidCastException();
 

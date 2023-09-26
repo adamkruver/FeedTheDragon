@@ -4,7 +4,7 @@ using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Actions.Generic;
 using Sources.Client.UseCases.Enemies.Bears;
 
-namespace Sources.Client.Controllers.NPCs.Bears.Actions
+namespace Sources.Client.Controllers.Enemies.Bears.Actions
 {
     public class CreateBearSignalAction : ISignalAction<CreateBearSignal>
     {

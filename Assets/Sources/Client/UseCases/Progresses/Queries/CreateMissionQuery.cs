@@ -37,8 +37,6 @@ namespace Sources.Client.UseCases.Progresses.Queries
             
             owner.AddComponent(mission);
             
-            Debug.Log("Mission owner id: " + owner);
-            
             return id;
         }
     }
