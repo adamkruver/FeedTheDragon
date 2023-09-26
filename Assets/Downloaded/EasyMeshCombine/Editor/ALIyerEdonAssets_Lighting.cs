@@ -4,44 +4,46 @@
 using UnityEditor;
 using UnityEngine;
 
-public class ALIyerEdonAssets_Lighting : EditorWindow
+namespace Downloaded.EasyMeshCombine.Editor
 {
-    [MenuItem("Window/Lighting Tools")]
-    public static void ShowWindow()
+    public class ALIyerEdonAssets_Lighting : EditorWindow
     {
-        GetWindow<ALIyerEdonAssets_Lighting>(false, "Lighting Tools", true);
-    }
-    public static void DrawUILine(Color color, int thickness = 2, int padding = 10)
-    {
-        Rect r = EditorGUILayout.GetControlRect(GUILayout.Height(padding + thickness));
-        r.height = thickness;
-        r.y += padding / 2;
-        r.x -= 2;
-        r.width += 6;
-        EditorGUI.DrawRect(r, color);
-    }
+        [MenuItem("Window/Lighting Tools")]
+        public static void ShowWindow()
+        {
+            GetWindow<ALIyerEdonAssets_Lighting>(false, "Lighting Tools", true);
+        }
+        public static void DrawUILine(Color color, int thickness = 2, int padding = 10)
+        {
+            Rect r = EditorGUILayout.GetControlRect(GUILayout.Height(padding + thickness));
+            r.height = thickness;
+            r.y += padding / 2;
+            r.x -= 2;
+            r.width += 6;
+            EditorGUI.DrawRect(r, color);
+        }
 
-    private const int windowWidth = 610;
-    private const int windowHeight = 500;
-    Vector2 _scrollPosition;
-    public bool dontShow;
+        private const int windowWidth = 610;
+        private const int windowHeight = 500;
+        Vector2 _scrollPosition;
+        public bool dontShow;
 
-    void OnEnable()
-    {
-        titleContent = new GUIContent("Lighting Tools and Assets");
-        maxSize = new Vector2(windowWidth, windowHeight);
-        minSize = maxSize;
+        void OnEnable()
+        {
+            titleContent = new GUIContent("Lighting Tools and Assets");
+            maxSize = new Vector2(windowWidth, windowHeight);
+            minSize = maxSize;
 
-        if (EditorPrefs.GetInt("dontShow_easyMeshCombineTool") == 3)
-            dontShow = true;
-        if (EditorPrefs.GetInt("dontShow_easyMeshCombineTool") != 3)
-            dontShow = false;
+            if (EditorPrefs.GetInt("dontShow_easyMeshCombineTool") == 3)
+                dontShow = true;
+            if (EditorPrefs.GetInt("dontShow_easyMeshCombineTool") != 3)
+                dontShow = false;
                         
-    }
+        }
 
-    private void OnGUI()
-    {
- /*       
+        private void OnGUI()
+        {
+            /*       
         Texture2D border = EditorGUIUtility.Load("Assets/EasyMeshCombine/Editor/Textures/UI/Ads/border.psd") as Texture2D;
         Texture2D ad1 = EditorGUIUtility.Load("Assets/EasyMeshCombine/Editor/Textures/UI/Ads/ad1.psd") as Texture2D;
         Texture2D ad2 = EditorGUIUtility.Load("Assets/EasyMeshCombine/Editor/Textures/UI/Ads/ad2.psd") as Texture2D;
@@ -147,27 +149,28 @@ public class ALIyerEdonAssets_Lighting : EditorWindow
         }
         EditorGUILayout.EndScrollView();
 */
+        }
+    }
+
+
+    [InitializeOnLoad]
+    public class Startup
+    {
+        static Startup()
+        {
+            EditorPrefs.SetInt("showCounts_easyMeshCombineTool", EditorPrefs.GetInt("showCounts_easyMeshCombineTool") + 1);
+            if (EditorPrefs.GetInt("showCounts_easyMeshCombineTool") < 2)
+            { 
+
+                EditorApplication.ExecuteMenuItem("Window/Lighting Tools");
+                if (EditorPrefs.GetInt("dontShow_easyMeshCombineTool") == 3)
+                    EditorWindow.GetWindow(typeof(ALIyerEdonAssets_Lighting)).Close();
+            }
+            else          
+            {
+                if(EditorPrefs.GetInt("showCounts_easyMeshCombineTool") >= 50)          
+                    EditorPrefs.SetInt("showCounts_easyMeshCombineTool", 0);
+            }            
+        }
     }
 }
-
-
-[InitializeOnLoad]
-public class Startup
-{
-    static Startup()
-    {
-        EditorPrefs.SetInt("showCounts_easyMeshCombineTool", EditorPrefs.GetInt("showCounts_easyMeshCombineTool") + 1);
-        if (EditorPrefs.GetInt("showCounts_easyMeshCombineTool") < 2)
-        { 
-
-            EditorApplication.ExecuteMenuItem("Window/Lighting Tools");
-            if (EditorPrefs.GetInt("dontShow_easyMeshCombineTool") == 3)
-                EditorWindow.GetWindow(typeof(ALIyerEdonAssets_Lighting)).Close();
-        }
-        else          
-        {
-            if(EditorPrefs.GetInt("showCounts_easyMeshCombineTool") >= 50)          
-               EditorPrefs.SetInt("showCounts_easyMeshCombineTool", 0);
-        }            
-    }
-} 

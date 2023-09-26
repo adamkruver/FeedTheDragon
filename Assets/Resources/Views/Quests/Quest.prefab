@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5023273597041197489}
   - component: {fileID: -1007165169778011507}
   - component: {fileID: 3921822128486441521}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Quest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 4125429873796423764}
   - component: {fileID: 941703234481415400}
   - component: {fileID: 909243545470917835}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.83137256, g: 0.8392157, b: 0.84313726, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 374122221237642736}
   - component: {fileID: 3370460300079833605}
   - component: {fileID: 655086492262680140}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: IsCompleted
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -67,7 +67,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 920001020532026023}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LinePoint (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6906236196564671828}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LinePoint (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 6378702116206702619}
   - component: {fileID: 2700520667168368118}
   - component: {fileID: 3985443262714918469}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5627,7 +5627,7 @@ GameObject:
   - component: {fileID: 1668252368616521539}
   - component: {fileID: 6767156171602652629}
   - component: {fileID: 6857774604751735196}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LineRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5799,7 +5799,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8741472813940921369}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LinePoint (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5834,7 +5834,7 @@ GameObject:
   - component: {fileID: 7334942636964983709}
   - component: {fileID: 552375264199320114}
   - component: {fileID: 6200100767562705382}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5965,7 +5965,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5978329381774821238}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LineEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6001,7 +6001,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4244688834975592489}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LinePoint (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6068,7 +6068,7 @@ GameObject:
   - component: {fileID: 5812177106478833496}
   - component: {fileID: 5930721240037143719}
   - component: {fileID: 4327629927595833998}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: ImageMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6182,7 +6182,7 @@ GameObject:
   - component: {fileID: 5812177107231437308}
   - component: {fileID: 5812177107231437309}
   - component: {fileID: 837107657173963710}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6309,7 +6309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2975594198170870677}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LinePoint (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6340,7 +6340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2146553867834288726}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LinePoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6371,7 +6371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3390373478043419150}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LineStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6402,7 +6402,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1945373369336059439}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LinePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6568,7 +6568,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4537924622951982283}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: LinePoint (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
