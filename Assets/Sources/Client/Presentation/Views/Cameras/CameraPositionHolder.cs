@@ -6,6 +6,7 @@ namespace Sources.Client.Presentation.Views.Cameras
     [RequireComponent(typeof(Camera))]
     public class CameraPositionHolder : MonoBehaviour
     {
+        [SerializeField] private float _divider = 10f;
         private readonly float _epsilon = .01f;
 
         private Transform _transform;
@@ -42,7 +43,7 @@ namespace Sources.Client.Presentation.Views.Cameras
             Physics.Raycast(rightTopCornerRay, out RaycastHit rightRaycastHit, Mathf.Infinity, _layer);
 
             Vector3 position = _transform.localPosition;
-            position.x = Vector3.Distance(leftRaycastHit.point, rightRaycastHit.point) / 2.5f;
+            position.x = Vector3.Distance(leftRaycastHit.point, rightRaycastHit.point) / _divider;
             _transform.localPosition = position;
         }
     }
