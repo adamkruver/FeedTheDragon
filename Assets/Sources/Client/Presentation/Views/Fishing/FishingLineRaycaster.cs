@@ -19,6 +19,9 @@ namespace Sources.Client.Presentation.Views.Fishing
         {
             if (_pointerUIService.IsPointerOverUI == false)
                 return;
+            
+            if(Input.GetMouseButton(0))
+                return;
 
             Vector3 mousePosition = Input.mousePosition;
             Ray ray = _camera.ScreenPointToRay(mousePosition);

@@ -15,6 +15,7 @@ namespace Sources.Client.Presentation.Views.Fishing
 
         private void Awake()
         {
+            
             _lineRenderer = GetComponent<LineRenderer>();
 
             _points = new Transform[]
