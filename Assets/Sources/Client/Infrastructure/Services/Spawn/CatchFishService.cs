@@ -1,78 +1,105 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Sources.Client.Frameworks.StateMachines;
+using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
+using Sources.Client.Infrastructure.Services.CoroutineRunners;
+using Sources.Client.Infrastructure.Services.Raycasts;
+using Sources.Client.InfrastructureInterfaces.Pointers;
 using Sources.Client.Presentation.Views.Fishing;
+using Sources.Client.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Sources.Client.Infrastructure.Services.Spawn
 {
-    public class CatchFishService : MonoBehaviour
+    public class CatchFishService : IUpdatable
     {
-        [SerializeField] private RectTransform _catchCursorRectTransform;
-        [SerializeField] private RectTransform _cursor;
-        [SerializeField] private Image _catchCursor;
-        [SerializeField] private FishingLine _fishingLine;
-        [SerializeField] private FishingSightSphereCaster _fishingSightSphereCaster;
-        [SerializeField] private Camera _camera;
-        [SerializeField] private RectTransform _water;
-        
-        private Coroutine _catchJob;
+        private readonly CoroutineMonoRunner _coroutineMonoRunner;
+        private readonly ScreenSphereCastService _screenSphereCastService;
+        private readonly ScreenRayCastService _screenRayCastService;
 
-        private void Update()
+        private RectTransform _catchCursorRectTransform;
+        private RectTransform _cursor;
+        private RectTransform _water;
+        private Image _catchCursor;
+        private FishingLine _fishingLine;
+
+        private Vector3 _pointerPosition;
+        private Vector3 _fishPosition;
+        private FishView _fish;
+
+        private bool _isRunning;
+
+        public CatchFishService
+        (
+            CoroutineMonoRunnerFactory coroutineMonoRunnerFactory,
+            Camera camera
+        )
         {
-            if (Input.GetMouseButtonDown(0))
-                if (_fishingSightSphereCaster.TryGetFish(Input.mousePosition, 1f, out FishView fish))
-                {
-                    _catchCursorRectTransform.gameObject.SetActive(true);
-                    _cursor.gameObject.SetActive(false);
-                    StartCatch(fish);
-                }
+            int transparentMask = 1 << LayerMask.NameToLayer(LayerConstants.TransparentFX);
+            int interactableMask = 1 << LayerMask.NameToLayer(LayerConstants.Interactable);
 
-            if (Input.GetMouseButtonUp(0))
-            {
-                _catchCursorRectTransform.gameObject.SetActive(false);
-                _cursor.gameObject.SetActive(true);
-            }
+            _screenRayCastService = new ScreenRayCastService(camera, transparentMask);
+            _screenSphereCastService = new ScreenSphereCastService(camera, interactableMask);
+
+            _coroutineMonoRunner = coroutineMonoRunnerFactory.Create();
         }
 
-        private void StartCatch(FishView fish)
+        public void Run()
         {
-            Stop();
-
-            _catchJob = StartCoroutine(Catch(fish));
-        }
-
-        private void Stop()
-        {
-            if (_catchJob == null)
+            if (_screenSphereCastService.TryGetComponents(Input.mousePosition, 1f, out FishView[] fishes) == false)
                 return;
 
-            StopCoroutine(_catchJob);
+            _isRunning = true;
+
+            FishView fishView = GetFish(fishes);
+
+            _catchCursorRectTransform.gameObject.SetActive(true);
+            _cursor.gameObject.SetActive(false);
+            //_coroutineMonoRunner.Run();
         }
 
-        private IEnumerator Catch(FishView fish)
+        public void SetPointerPosition(Vector3 position)
         {
-            Vector3 position = Input.mousePosition;
+        }
+
+        public void Stop()
+        {
+            _catchCursorRectTransform.gameObject.SetActive(false);
+            _cursor.gameObject.SetActive(true);
+
+            _isRunning = false;
+        }
+
+        public void Update(float deltaTime)
+        {
+            if (_isRunning == false)
+                return;
+
             float radius = 5f;
 
-            while (position.y < _water.sizeDelta.y && _fishingSightSphereCaster.HasCollision(position, fish, radius))
+            while (_fishPosition.y < _water.sizeDelta.y &&
+                   _screenSphereCastService.CheckCollision(_pointerPosition, radius, _fish))
             {
-                Vector3 nextPosition = position + Vector3.up;
-                position = Vector3.MoveTowards(position, nextPosition, 500 * Time.deltaTime);
-                if (Physics.Raycast(_camera.ScreenPointToRay(position), out RaycastHit hit, Mathf.Infinity,
-                        1 << LayerMask.NameToLayer("TransparentFX")))
+                Vector3 nextPosition = _pointerPosition + Vector3.up;
+                _pointerPosition = Vector3.MoveTowards(_pointerPosition, nextPosition, 500 * Time.deltaTime);
+
+                if (_screenRayCastService.TryRaycast(_pointerPosition, out RaycastHit hit))
                 {
-                    fish.SetEndPoint(hit.point);
                     _fishingLine.SetEndPoint(hit.point);
                 }
-                radius = Mathf.Max(radius - .05f, 2);
 
-                _catchCursorRectTransform.anchoredPosition = position;
+                radius = Mathf.Max(radius - 0.05f, 2);
+
+                _catchCursorRectTransform.anchoredPosition = _pointerPosition;
                 _catchCursor.transform.localScale = Vector3.one * radius;
-
-                yield return null;
             }
+        }
 
-            Stop();
+        private FishView GetFish(IEnumerable<FishView> fishes)
+        {
+            return fishes.First();
         }
     }
 }

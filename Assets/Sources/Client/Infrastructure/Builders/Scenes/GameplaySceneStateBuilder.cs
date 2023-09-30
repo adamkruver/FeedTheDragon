@@ -12,6 +12,7 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Progresses.Components;
 using Sources.Client.Infrastructure.Factories.Presentation.Cameras;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
+using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
 using Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Factories.StateMachines;
 using Sources.Client.Infrastructure.Providers;
@@ -169,13 +170,19 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
 
             #endregion
 
+            CoroutineMonoRunnerFactory coroutineMonoRunnerFactory = new CoroutineMonoRunnerFactory();
+            
             GameplayStateMachineFactory gameplayStateMachineFactory = new GameplayStateMachineFactory
             (
                 cameraFollowService,
+                cameraService,
+                cameraProvider,
+                _prefabFactory,
                 characterPointerHandlerFactory,
                 characterMovementServiceFactory,
                 pointerService,
-                cameraService
+                coroutineMonoRunnerFactory,
+                _environment
             );
 
             return new GameplaySceneState(

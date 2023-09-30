@@ -10,5 +10,11 @@
   },
   "UI": {
     "MissionView": "Views/Missions/"
+  },
+  "Fishes": {
+    "Fish1": "Views/Fishes/Fish1",
+    "Fish2": "Views/Fishes/Fish2",
+    "Fish3": "Views/Fishes/Fish3",
+    "Fish4": "Views/Fishes/Fish4"
   }
 }

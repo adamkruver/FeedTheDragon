@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Presentation.Frameworks.Mvvm.Factories;
+using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.Controllers.Characters;
 using Sources.Client.Controllers.Gameplays;
 using Sources.Client.Domain.Gameplays;
@@ -7,12 +9,13 @@ using Sources.Client.Domain.Gameplays.Payloads;
 using Sources.Client.Frameworks.StateMachines;
 using Sources.Client.Infrastructure.Builders.Gameplays;
 using Sources.Client.Infrastructure.Factories.Controllers;
-using Sources.Client.Infrastructure.Factories.Presentation.Cameras;
+using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
 using Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers;
-using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.Infrastructure.StateMachines;
+using Sources.Client.InfrastructureInterfaces.Providers;
 using Sources.Client.InfrastructureInterfaces.Services.Cameras;
+using Environment = Sources.Client.App.Configs.Environment;
 
 namespace Sources.Client.Infrastructure.Factories.StateMachines
 {
@@ -22,21 +25,33 @@ namespace Sources.Client.Infrastructure.Factories.StateMachines
         private readonly CharacterPointerHandlerFactory _characterPointerHandlerFactory;
         private readonly CharacterMovementServiceFactory _characterMovementServiceFactory;
         private readonly PointerService _pointerService;
+        private readonly CoroutineMonoRunnerFactory _coroutineMonoRunnerFactory;
+        private readonly Environment _environment;
+        private readonly IPrefabFactory _prefabFactory;
         private readonly ICameraService _cameraService;
+        private readonly ICameraProvider _cameraProvider;
 
         public GameplayStateMachineFactory(
             ICameraFollowService cameraFollowService,
+            ICameraService cameraService,
+            ICameraProvider cameraProvider,
+            IPrefabFactory prefabFactory,
             CharacterPointerHandlerFactory characterPointerHandlerFactory,
             CharacterMovementServiceFactory characterMovementServiceFactory,
             PointerService pointerService,
-            ICameraService cameraService
+            CoroutineMonoRunnerFactory coroutineMonoRunnerFactory,
+            Environment environment
         )
         {
             _cameraFollowService = cameraFollowService;
             _characterPointerHandlerFactory = characterPointerHandlerFactory;
             _characterMovementServiceFactory = characterMovementServiceFactory;
             _pointerService = pointerService;
+            _coroutineMonoRunnerFactory = coroutineMonoRunnerFactory;
+            _environment = environment;
+            _prefabFactory = prefabFactory;
             _cameraService = cameraService;
+            _cameraProvider = cameraProvider;
         }
 
         public GameplayStateMachine Create()
@@ -51,8 +66,16 @@ namespace Sources.Client.Infrastructure.Factories.StateMachines
                 _pointerService,
                 _cameraService
             );
-            
-            FishingGameplayStateBuilder fishingGameplayStateBuilder = new FishingGameplayStateBuilder(_cameraService);
+
+            FishingGameplayStateBuilder fishingGameplayStateBuilder = new FishingGameplayStateBuilder
+            (
+                _cameraService,
+                _cameraProvider,
+                _prefabFactory,
+                _coroutineMonoRunnerFactory,
+                _pointerService,
+                _environment
+            );
 
             return new GameplayStateMachine
             (

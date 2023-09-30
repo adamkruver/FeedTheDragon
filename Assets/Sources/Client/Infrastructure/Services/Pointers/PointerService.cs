@@ -1,4 +1,5 @@
 ﻿using Sources.Client.Frameworks.StateMachines;
+using Sources.Client.Infrastructure.Services.Pointers.Handlers;
 using Sources.Client.InfrastructureInterfaces.Pointers;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace Sources.Client.Infrastructure.Services.Pointers
         public void Register(IPointerHandler pointerHandler) =>
             _pointerHandler = pointerHandler;
         
-        public void Unregister() =>
+        public void Unregister(IPointerHandler pointerHandler) =>
             _pointerHandler = null;
 
         public void Update(float deltaTime)

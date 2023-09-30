@@ -8,5 +8,6 @@ namespace Sources.Client.App.Configs
     {
         public Dictionary<string, string> View;
         public Dictionary<string, string> UI;
+        public Dictionary<string, string> Fishes;
     }
 }

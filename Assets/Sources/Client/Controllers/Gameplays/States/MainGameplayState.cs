@@ -4,6 +4,7 @@ using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.InfrastructureInterfaces.Pointers;
 using Sources.Client.InfrastructureInterfaces.Services.Cameras;
 using Sources.Client.Presentation.Cameras;
+using Sources.Client.Presentation.Cameras.Types;
 
 namespace Sources.Client.Controllers.Gameplays.States
 {
@@ -54,7 +55,7 @@ namespace Sources.Client.Controllers.Gameplays.States
 
         public void Exit()
         {
-            _pointerService.Unregister();
+            _pointerService.Unregister(_characterPointerHandler);
         }
     }
 }

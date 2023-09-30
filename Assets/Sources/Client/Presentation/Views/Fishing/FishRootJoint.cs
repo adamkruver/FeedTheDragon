@@ -13,15 +13,14 @@ namespace Sources.Client.Presentation.Views.Fishing
             _transform = GetComponent<Transform>();
         }
 
-        public void SetStartPosition(Vector3 position)
+        public void SetPosition(Vector3 position)
         {
             _transform.position = position;
         }
 
-        public void SetPosition(Vector3 position)
+        public void SetViewAngle(float angle)
         {
-            _transform.right = _transform.position - position;
-            _transform.position = position;
+            _transform.localRotation = Quaternion.Euler(0, angle, 0);
         }
     }
 }

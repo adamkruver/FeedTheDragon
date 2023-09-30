@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Sources.Client.Presentation.Cameras
+﻿namespace Sources.Client.Presentation.Cameras.Types
 {
     public class MainCamera : CameraType
     {

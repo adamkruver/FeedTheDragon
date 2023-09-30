@@ -5,7 +5,7 @@ namespace Sources.Client.Presentation.Views.Fishing
     public class FishingSight : MonoBehaviour
     {
         [SerializeField] private FishingLineCursor _cursor;
-        [SerializeField] private FishingSightSphereCaster _fishingSightSphereCaster;
+        // private FishingSightSphereCaster _fishingSightSphereCaster;
         [SerializeField] private float _radius = 1f;
 
         private void Update()
@@ -14,7 +14,7 @@ namespace Sources.Client.Presentation.Views.Fishing
             
             _cursor.SetPosition(mousePosition);
 
-            _cursor.CanCatch = _fishingSightSphereCaster.TryGetFish(mousePosition, _radius, out FishView fish);
+           // _cursor.CanCatch = _fishingSightSphereCaster.TryGetFish(mousePosition, _radius, out FishView fish);
         }
     }
 }

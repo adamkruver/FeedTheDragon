@@ -1,41 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Sources.Client.Domain;
-using Sources.Client.Presentation.Views.Fishing;
+using Sources.Client.Infrastructure.Builders.Presentation.Fishes;
+using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
+using Sources.Client.Infrastructure.Services.Cameras;
+using Sources.Client.Infrastructure.Services.CoroutineRunners;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Sources.Client.Infrastructure.Services.Spawn
 {
-    public class FishSpawnService : MonoBehaviour
+    public class FishSpawnService
     {
-        [SerializeField] private Camera _camera;
-        [SerializeField] private FishView[] _prefabs;
+        private readonly FishingBoundsService _fishingBoundsService;
+        private readonly FishViewBuilder _fishViewBuilder;
+        private readonly CoroutineMonoRunner _coroutineMonoRunner;
 
-        private Coroutine _spawnJob;
         private Transform _transform;
 
-        private void Awake()
+        public FishSpawnService
+        (
+            FishingBoundsService fishingBoundsService,
+            CoroutineMonoRunnerFactory coroutineMonoRunnerFactory,
+            FishViewBuilder fishViewBuilder
+        )
         {
-            _transform = GetComponent<Transform>();
+            _fishingBoundsService = fishingBoundsService;
+            _fishViewBuilder = fishViewBuilder;
+            _coroutineMonoRunner = coroutineMonoRunnerFactory.Create();
         }
 
-        private void Start()
+        public void Enable()
         {
-            Run();
+            _coroutineMonoRunner.Run(Spawn());
         }
 
-        public void Run()
+        public void Disable()
         {
-            Stop();
-
-            _spawnJob = StartCoroutine(Spawn());
-        }
-
-        public void Stop()
-        {
-            if (_spawnJob == null)
-                return;
-
-            StopCoroutine(_spawnJob);
+            _coroutineMonoRunner.Stop();
         }
 
         private IEnumerator Spawn()
@@ -49,22 +51,29 @@ namespace Sources.Client.Infrastructure.Services.Spawn
 
         private void CreateFish()
         {
-            FishView fishPrefab = _prefabs[Random.Range(0, _prefabs.Length)];
+            Vector3 direction = default;
+            Vector3 startPosition = default;
+            
+            Bounds bounds = _fishingBoundsService.Bounds;
 
-            FishView fishView = Instantiate(fishPrefab, _transform);
+            float speed = Random.Range(0.8f, 1.2f);
+            float height = Random.Range(bounds.min.y, bounds.max.y);
 
-            (Vector3 leftPosition, Vector3 rightPosition) = CreatePositions(Random.Range(0f, 1f));
-
-            Direction direction = GetRandomDirection();
-
-            if (direction == Direction.Left)
-                (leftPosition, rightPosition) = (rightPosition, leftPosition);
-
-            fishView
-                .SetStartPoint(leftPosition)
-                .SetEndPoint(rightPosition)
-                //         .SetDirection(direction)
-                .SetSpeed(Random.Range(2.5f, 4.5f))
+            switch (GetRandomDirection())
+            {
+                case Direction.Left:
+                    direction = Vector3.left;
+                    startPosition = new Vector3(bounds.max.x, height, bounds.center.z);
+                    break;
+                
+                case Direction.Right:
+                    direction = Vector3.right;
+                    startPosition = new Vector3(bounds.min.x, height, bounds.center.z);
+                    break;
+            }
+            
+            _fishViewBuilder
+                .Build(startPosition, direction, speed)
                 .Run();
         }
 
@@ -75,24 +84,15 @@ namespace Sources.Client.Infrastructure.Services.Spawn
                 : Direction.Right;
         }
 
-        private (Vector3 leftPosition, Vector3 rightPosition) CreatePositions(float depth)
-        {
-            float halfScreenHeight = Screen.height / 3f;
-            float fishDepth = halfScreenHeight * depth + Screen.height / 30f;
-
-            Vector3 leftScreenPosition = new Vector3(-200, fishDepth, 0);
-            Vector3 rightScreenPosition = new Vector3(Screen.width + 200, fishDepth, 0);
-
-            return (RaycastFromScreenPosition(leftScreenPosition), RaycastFromScreenPosition(rightScreenPosition));
-        }
-
-        private Vector3 RaycastFromScreenPosition(Vector3 position)
-        {
-            Ray ray = _camera.ScreenPointToRay(position);
-            Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity,
-                1 << LayerMask.NameToLayer("TransparentFX"));
-
-            return hit.point;
-        }
+        // private (Vector3 leftPosition, Vector3 rightPosition) CreatePositions(float depth)
+        // {
+        //     float halfScreenHeight = Screen.height / 3f;
+        //     float fishDepth = halfScreenHeight * depth + Screen.height / 30f;
+        //
+        //     Vector3 leftScreenPosition = new Vector3(-200, fishDepth, 0);
+        //     Vector3 rightScreenPosition = new Vector3(Screen.width + 200, fishDepth, 0);
+        //
+        //     return (RaycastFromScreenPosition(leftScreenPosition), RaycastFromScreenPosition(rightScreenPosition));
+        // }
     }
 }

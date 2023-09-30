@@ -1,6 +1,7 @@
 using Sources.Client.InfrastructureInterfaces.Providers;
 using Sources.Client.InfrastructureInterfaces.Services.Cameras;
 using Sources.Client.Presentation.Cameras;
+using Sources.Client.Presentation.Cameras.Types;
 using UnityEngine;
 
 namespace Sources.Client.Infrastructure.Services.Cameras

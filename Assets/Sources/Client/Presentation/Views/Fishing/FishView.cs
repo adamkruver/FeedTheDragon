@@ -1,5 +1,8 @@
-﻿using System.Collections;
-using Sources.Client.Domain;
+﻿using System;
+using System.Collections;
+using Sources.Client.Infrastructure.Services.Cameras;
+using Sources.Client.Infrastructure.Services.CoroutineRunners;
+using Sources.Client.Presentation.PoolComponents;
 using UnityEngine;
 
 namespace Sources.Client.Presentation.Views.Fishing
@@ -8,75 +11,75 @@ namespace Sources.Client.Presentation.Views.Fishing
     {
         [SerializeField] private float _speedMultiplier = 1f;
         [SerializeField] private FishRootJoint _fishRootJoint;
-        [SerializeField] private Transform _transform;
+
+        private Vector3 _direction;
+        private float _directionAngle;
+        private FishingBoundsService _fishingBoundsService;
+        private CoroutineMonoRunner _coroutineMonoRunner;
 
         private WaitForSeconds _waitForSeconds;
-        private Vector3 _startPosition;
-        private Vector3 _endPosition;
         private Coroutine _moveJob;
         private float _speed;
 
-        public FishView SetStartPoint(Vector3 position)
-        {
-            _fishRootJoint.SetStartPosition(position);
-            _transform.position = position;
-            _startPosition = position;
+        private Func<float, bool> _isReachedCondition;
 
-            return this;
+        private bool ReachedLeftBoundX(float current) =>
+            current < _fishingBoundsService.Bounds.min.x;
+
+        private bool ReachedRightBoundX(float current) =>
+            current > _fishingBoundsService.Bounds.max.x;
+
+        public void Construct(CoroutineMonoRunner coroutineMonoRunner, FishingBoundsService fishingBoundsService)
+        {
+            _fishingBoundsService = fishingBoundsService;
+            _coroutineMonoRunner = coroutineMonoRunner;
         }
 
-        public FishView SetEndPoint(Vector3 position)
+        public void Init(Vector3 startPosition, Vector3 direction, float speed)
         {
-            _endPosition = position;
+            _fishRootJoint.SetPosition(startPosition);
 
-            return this;
-        }
+            _direction = direction;
 
-        public FishView SetSpeed(float speed)
-        {
+            _isReachedCondition = _direction.x < 0
+                ? ReachedLeftBoundX
+                : ReachedRightBoundX;
+
+            _directionAngle = _direction.x > 0
+                ? 90
+                : -90;
+
             _speed = speed * _speedMultiplier;
-            _waitForSeconds = new WaitForSeconds(_speed/10);
-
-            return this;
+            _waitForSeconds = new WaitForSeconds(0.333f);
         }
 
         public void Run()
         {
-            Stop();
-            gameObject.SetActive(true);
-
-            _moveJob = StartCoroutine(Move());
+            _coroutineMonoRunner.Run(Move());
         }
 
         public void Stop()
         {
-            if (_moveJob == null)
-                return;
-
-            StopCoroutine(_moveJob);
-            gameObject.SetActive(false);
+            _coroutineMonoRunner.Stop();
+            GetComponent<FishPoolComponent>().Release();
         }
 
         private IEnumerator Move()
         {
-            Vector3 direction;
-            Vector3 currentPosition;
-
-            bool even = false;
-
-            while (Vector3.Distance(_fishRootJoint.Position, _endPosition) > 2f)
+            float angle = 10;
+            float fishRootJointPositionZ = _fishRootJoint.Position.x;
+            
+            while (_isReachedCondition.Invoke(fishRootJointPositionZ) == false)
             {
-                currentPosition = _fishRootJoint.Position;
-                direction = _endPosition - currentPosition;
+                fishRootJointPositionZ = _fishRootJoint.Position.x;
 
-                Vector3 nextPosition = currentPosition + (_speed/4) * direction.normalized ;
+                Vector3 nextPosition = _fishRootJoint.Position + _speed * _direction.normalized;
 
-                nextPosition += even ? Vector3.forward / 6 : -Vector3.forward / 6;
+                angle *= -1;
 
-                even = !even;
-                
                 _fishRootJoint.SetPosition(nextPosition);
-                
+                _fishRootJoint.SetViewAngle(_directionAngle + angle);
+
                 yield return _waitForSeconds;
             }
 
