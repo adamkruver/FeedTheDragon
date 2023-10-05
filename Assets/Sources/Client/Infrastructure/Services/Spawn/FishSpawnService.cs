@@ -17,8 +17,6 @@ namespace Sources.Client.Infrastructure.Services.Spawn
         private readonly FishViewBuilder _fishViewBuilder;
         private readonly CoroutineMonoRunner _coroutineMonoRunner;
 
-        private Transform _transform;
-
         public FishSpawnService
         (
             FishingBoundsService fishingBoundsService,

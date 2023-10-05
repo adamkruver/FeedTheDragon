@@ -12,11 +12,6 @@ namespace Sources.Client.Presentation.Views.Fishing
 
         private RectTransform _rectTransform;
 
-        public bool CanCatch
-        {
-            set => ApplyColor(value);
-        }
-
         private void Awake() =>
             _rectTransform = GetComponent<RectTransform>();
 
@@ -32,9 +27,9 @@ namespace Sources.Client.Presentation.Views.Fishing
             _rectTransform.localScale = Screen.height * Vector3.one / _screenHeight;
         }
 
-        private void ApplyColor(bool canCatch)
+        public void SetCatchStatus(bool canCatch)
         {
-            Debug.Log(canCatch);
+//            Debug.Log(canCatch);
 
             Color color = canCatch
                 ? _hasFishColor

@@ -14,24 +14,19 @@ namespace Sources.Client.Controllers.Progresses.Actions
         private readonly CreateMissionQuery _createMissionQuery;
 
         private readonly ISignalBus _signalBus;
-        // private readonly BindableViewBuilder<MissionViewModel> _bindableViewBuilder;
 
         public CreateMissionSignalAction(
             CreateMissionQuery createMissionQuery,
             ISignalBus signalBus
-            //BindableViewBuilder<MissionViewModel> bindableViewBuilder
         )
         {
             _createMissionQuery = createMissionQuery;
             _signalBus = signalBus;
-            //_bindableViewBuilder = bindableViewBuilder;
         }
 
         public void Handle(CreateMissionSignal signal)
         {
             int id = _createMissionQuery.Handle(signal.OwnerId, signal.RequiredAmount);
-
-            //_bindableViewBuilder.Build(id, "Mission");
 
             for (int i = 0; i < signal.RequiredAmount; i++)
             {

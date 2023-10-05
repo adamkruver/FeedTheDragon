@@ -18,14 +18,14 @@ namespace Sources.Client.Infrastructure.Services.Fishing
         }
 
         public Bounds Bounds { get; private set; }
-        public Vector2 CanvasBounds => _boundsRectTransform.sizeDelta;
+        public Vector2 BoundsSize => _boundsRectTransform.sizeDelta;
 
         public bool ContainScreenPoint(Vector3 screenPoint)
         {
-            if (screenPoint.x < 0 || screenPoint.x > CanvasBounds.x)
+            if (screenPoint.x < 0 || screenPoint.x > BoundsSize.x)
                 return false;
 
-            if (screenPoint.y < 0 || screenPoint.y > CanvasBounds.y)
+            if (screenPoint.y < 0 || screenPoint.y > BoundsSize.y)
                 return false;
 
             return true;
@@ -34,7 +34,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
         public void Update(float deltaTime)
         {
             Vector3 screenLeftBottom = Vector3.zero;
-            Vector3 screenRightTop = CanvasBounds;
+            Vector3 screenRightTop = BoundsSize;
 
             if (_screenRayCastService.TryRaycast(screenLeftBottom, out RaycastHit leftBottomHit) == false)
                 throw new InvalidOperationException();

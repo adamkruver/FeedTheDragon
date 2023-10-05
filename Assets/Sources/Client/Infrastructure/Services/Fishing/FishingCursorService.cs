@@ -21,9 +21,9 @@ namespace Sources.Client.Infrastructure.Services.Fishing
 
         public void SetPosition(Vector3 position)
         {
-            _fishingLineCursor.CanCatch = _screenSphereCastService
-                .TryGetComponents(position, .3f, out FishCollider[] fishColliders);
-                
+            bool hasFish = _screenSphereCastService.TryGetComponents(position, .3f, out FishCollider[] fishColliders);
+            _fishingLineCursor.SetCatchStatus(hasFish);
+
             _fishingLineCursor.SetPosition(position);
         }
 

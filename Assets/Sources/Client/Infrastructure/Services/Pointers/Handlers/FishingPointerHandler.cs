@@ -24,19 +24,19 @@ namespace Sources.Client.Infrastructure.Services.Pointers.Handlers
         public void OnTouchStart(Vector3 position)
         {
             _fishingCursorService.Disable();
-  //          _catchFishService.Run();
-  //          _catchFishService.SetPointerPosition(position);
+            _catchFishService.Run();
+            _catchFishService.SetPointerPosition(position);
         }
 
         public void OnMove(Vector3 position)
         {
-     //       _catchFishService.SetPointerPosition(position);
+            _catchFishService.SetPointerPosition(position);
         }
 
         public void OnTouchEnd(Vector3 position)
         {
             _fishingCursorService.Enable();
-     //       _catchFishService.Stop();
+            _catchFishService.Stop();
         }
     }
 }

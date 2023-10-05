@@ -56,16 +56,23 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
         {
             Camera camera = _cameraProvider.Get<FishingCamera>();
 
-            CatchFishService catchFishService = new CatchFishService(_coroutineMonoRunnerFactory, camera);
-            
             FishingBoundsService fishingBoundsService = new FishingBoundsService(camera, _fishing.UnderWaterRect);
-            
+
             FishingLineService fishingLineService =
-                new FishingLineServiceFactory(fishingBoundsService, camera).Create(_fishing.FishingCharacter.FishingLine);
+                new FishingLineServiceFactory(fishingBoundsService, camera).Create(
+                    _fishing.FishingCharacter.FishingLine);
+
+            CatchFishService catchFishService = new CatchFishService
+            (
+                _coroutineMonoRunnerFactory,
+                camera,
+                fishingBoundsService,
+                fishingLineService,
+                _cameraProvider
+            );
 
             FishingCursorService fishingCursorService =
                 new FishingCursorServiceFactory(camera).Create(_fishing.FishingCanvas.FishingLineCursor);
-
 
             FishingPointerHandler fishingPointerHandler =
                 new FishingPointerHandler(
@@ -79,7 +86,6 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
                     fishingLineService,
                     fishingCursorService
                 );
-            
 
             FishPoolService fishPoolService = new FishPoolService(_prefabFactory, _environment,
                 _coroutineMonoRunnerFactory, fishingBoundsService);
@@ -99,7 +105,8 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
                 fishingBoundsService,
                 fishPoolService,
                 fishingLineService,
-                fishingCursorService
+                fishingCursorService,
+                catchFishService
             );
         }
     }

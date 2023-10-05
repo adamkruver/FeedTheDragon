@@ -144,6 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4076985153980313120}
   - component: {fileID: 5302377191150981905}
+  - component: {fileID: -7389867322760519997}
   m_Layer: 8
   m_Name: RuneFish01
   m_TagString: Untagged
@@ -179,4 +180,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a94da1ce8694e2b84d343b64ec06be2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fishAnimation: {fileID: -7389867322760519997}
   _speedMultiplier: 1
+--- !u!114 &-7389867322760519997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925816010571807997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cca9c6055a94306a1682e30b6589c19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 100957387308093205}
