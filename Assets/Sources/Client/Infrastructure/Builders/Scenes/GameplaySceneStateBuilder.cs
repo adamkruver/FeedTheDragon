@@ -26,6 +26,7 @@ using Sources.Client.InfrastructureInterfaces.SignalBus;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Controllers;
 using Sources.Client.InfrastructureInterfaces.SignalBus.Handlers;
 using Sources.Client.Presentation.Cameras;
+using Sources.Client.Presentation.Views.Fishing;
 using Sources.Client.UseCases.NPCs.Common.Quests.Queries;
 using UnityEngine;
 
@@ -73,7 +74,8 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
             IdGenerator idGenerator = new IdGenerator(4516); // todo: initial value
 
             #endregion
-            
+
+            Fishing fishing = Object.FindObjectOfType<Fishing>();
             CameraProviderFactory cameraProviderFactory = new CameraProviderFactory();
             CameraProvider cameraProvider = cameraProviderFactory.Create();
             CameraService cameraService = new CameraService(cameraProvider);
@@ -182,7 +184,8 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                 characterMovementServiceFactory,
                 pointerService,
                 coroutineMonoRunnerFactory,
-                _environment
+                _environment,
+                fishing
             );
 
             return new GameplaySceneState(

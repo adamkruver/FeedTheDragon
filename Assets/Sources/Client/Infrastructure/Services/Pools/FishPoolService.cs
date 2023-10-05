@@ -6,6 +6,7 @@ using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
 using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.CoroutineRunners;
+using Sources.Client.Infrastructure.Services.Fishing;
 using Sources.Client.Presentation.PoolComponents;
 using Sources.Client.Presentation.Views.Fishing;
 using UnityEngine.Pool;
@@ -72,12 +73,11 @@ namespace Sources.Client.Infrastructure.Services.Pools
 
         private void OnTakeFromPool(FishView fish)
         {
-            fish.gameObject.SetActive(true);
         }
 
         private void OnReturnToPool(FishView fish)
         {
-            fish.gameObject.SetActive(false);
+            fish.Disable();
 
             if (_isDisposed)
                 OnDestroyPoolObject(fish);

@@ -9,13 +9,13 @@ namespace Sources.Client.Presentation.Views.Fishing
         [SerializeField] private Transform _startPointTransform;
         [SerializeField] private Transform _endPointTransform;
         [SerializeField] private Transform _waterlineTransform;
-        
+
         private LineRenderer _lineRenderer;
         private Transform[] _points;
 
         private void Awake()
         {
-            
+
             _lineRenderer = GetComponent<LineRenderer>();
 
             _points = new Transform[]

@@ -2,6 +2,7 @@
 using System.Collections;
 using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.CoroutineRunners;
+using Sources.Client.Infrastructure.Services.Fishing;
 using Sources.Client.Presentation.PoolComponents;
 using UnityEngine;
 
@@ -10,24 +11,26 @@ namespace Sources.Client.Presentation.Views.Fishing
     public class FishView : MonoBehaviour
     {
         [SerializeField] private float _speedMultiplier = 1f;
-        [SerializeField] private FishRootJoint _fishRootJoint;
 
         private Vector3 _direction;
-        private float _directionAngle;
         private FishingBoundsService _fishingBoundsService;
         private CoroutineMonoRunner _coroutineMonoRunner;
 
-        private WaitForSeconds _waitForSeconds;
-        private Coroutine _moveJob;
         private float _speed;
 
         private Func<float, bool> _isReachedCondition;
+        private Transform _transform;
 
         private bool ReachedLeftBoundX(float current) =>
             current < _fishingBoundsService.Bounds.min.x;
 
         private bool ReachedRightBoundX(float current) =>
             current > _fishingBoundsService.Bounds.max.x;
+
+        private void Awake()
+        {
+            _transform = GetComponent<Transform>();
+        }
 
         public void Construct(CoroutineMonoRunner coroutineMonoRunner, FishingBoundsService fishingBoundsService)
         {
@@ -37,24 +40,26 @@ namespace Sources.Client.Presentation.Views.Fishing
 
         public void Init(Vector3 startPosition, Vector3 direction, float speed)
         {
-            _fishRootJoint.SetPosition(startPosition);
-
             _direction = direction;
-
-            _isReachedCondition = _direction.x < 0
+            _transform.right = -direction;
+            _transform.position = startPosition;
+            
+            _isReachedCondition = direction.x < 0
                 ? ReachedLeftBoundX
                 : ReachedRightBoundX;
 
-            _directionAngle = _direction.x > 0
-                ? 90
-                : -90;
-
-            _speed = speed * _speedMultiplier;
-            _waitForSeconds = new WaitForSeconds(0.333f);
+            _speed = Mathf.Clamp(speed * _speedMultiplier, 1f, 10f);
         }
+
+        public void Enable() => 
+            gameObject.SetActive(true);
+
+        public void Disable() => 
+            gameObject.SetActive(false);
 
         public void Run()
         {
+            Enable();
             _coroutineMonoRunner.Run(Move());
         }
 
@@ -66,21 +71,11 @@ namespace Sources.Client.Presentation.Views.Fishing
 
         private IEnumerator Move()
         {
-            float angle = 10;
-            float fishRootJointPositionZ = _fishRootJoint.Position.x;
-            
-            while (_isReachedCondition.Invoke(fishRootJointPositionZ) == false)
+            while (_isReachedCondition.Invoke(_transform.position.x) == false)
             {
-                fishRootJointPositionZ = _fishRootJoint.Position.x;
-
-                Vector3 nextPosition = _fishRootJoint.Position + _speed * _direction.normalized;
-
-                angle *= -1;
-
-                _fishRootJoint.SetPosition(nextPosition);
-                _fishRootJoint.SetViewAngle(_directionAngle + angle);
-
-                yield return _waitForSeconds;
+                _transform.position += _speed * Time.deltaTime * _direction.normalized ;
+                
+                yield return null;
             }
 
             Stop();

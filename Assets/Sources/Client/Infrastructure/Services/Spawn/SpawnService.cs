@@ -42,8 +42,6 @@ namespace Sources.Client.Infrastructure.Services.Spawn
         {
             TSpawnerBase[] spawnPoints = Object.FindObjectsOfType<TSpawnerBase>();
             
-            Debug.Log("Spawning " + spawnPoints.Length + " " + typeof(TType).Name);
-
             foreach (TSpawnerBase spawnPoint in spawnPoints)
             {
                 _spawnStrategies[typeof(TType)].Invoke(_signalBus, spawnPoint.Type, spawnPoint.Position);

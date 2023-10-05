@@ -12,9 +12,14 @@
     "MissionView": "Views/Missions/"
   },
   "Fishes": {
-    "Fish1": "Views/Fishes/Fish1",
-    "Fish2": "Views/Fishes/Fish2",
-    "Fish3": "Views/Fishes/Fish3",
-    "Fish4": "Views/Fishes/Fish4"
+    "Fish1": "Views/Fishes/Fish01",
+    "Fish2": "Views/Fishes/Fish02",
+    "Fish3": "Views/Fishes/Fish03",
+    "Fish4": "Views/Fishes/Fish04",
+    "Fish5": "Views/Fishes/Fish05",
+    "Fish6": "Views/Fishes/Fish06",
+    "Fish7": "Views/Fishes/Fish07",
+    "Fish8": "Views/Fishes/Fish08",
+    "RuneFish1": "Views/Fishes/RuneFish01"
   }
 }

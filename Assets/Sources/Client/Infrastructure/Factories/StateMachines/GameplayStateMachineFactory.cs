@@ -15,6 +15,7 @@ using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.Infrastructure.StateMachines;
 using Sources.Client.InfrastructureInterfaces.Providers;
 using Sources.Client.InfrastructureInterfaces.Services.Cameras;
+using Sources.Client.Presentation.Views.Fishing;
 using Environment = Sources.Client.App.Configs.Environment;
 
 namespace Sources.Client.Infrastructure.Factories.StateMachines
@@ -27,6 +28,7 @@ namespace Sources.Client.Infrastructure.Factories.StateMachines
         private readonly PointerService _pointerService;
         private readonly CoroutineMonoRunnerFactory _coroutineMonoRunnerFactory;
         private readonly Environment _environment;
+        private readonly Fishing _fishing;
         private readonly IPrefabFactory _prefabFactory;
         private readonly ICameraService _cameraService;
         private readonly ICameraProvider _cameraProvider;
@@ -40,7 +42,8 @@ namespace Sources.Client.Infrastructure.Factories.StateMachines
             CharacterMovementServiceFactory characterMovementServiceFactory,
             PointerService pointerService,
             CoroutineMonoRunnerFactory coroutineMonoRunnerFactory,
-            Environment environment
+            Environment environment,
+            Fishing fishing
         )
         {
             _cameraFollowService = cameraFollowService;
@@ -49,6 +52,7 @@ namespace Sources.Client.Infrastructure.Factories.StateMachines
             _pointerService = pointerService;
             _coroutineMonoRunnerFactory = coroutineMonoRunnerFactory;
             _environment = environment;
+            _fishing = fishing;
             _prefabFactory = prefabFactory;
             _cameraService = cameraService;
             _cameraProvider = cameraProvider;
@@ -74,7 +78,8 @@ namespace Sources.Client.Infrastructure.Factories.StateMachines
                 _prefabFactory,
                 _coroutineMonoRunnerFactory,
                 _pointerService,
-                _environment
+                _environment,
+                _fishing
             );
 
             return new GameplayStateMachine

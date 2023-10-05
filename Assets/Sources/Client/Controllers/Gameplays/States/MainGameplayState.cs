@@ -1,10 +1,10 @@
 ﻿using Sources.Client.Controllers.Characters;
-using Sources.Client.Infrastructure.Services.Cameras;
+using Sources.Client.Domain.Pointers;
 using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.InfrastructureInterfaces.Pointers;
 using Sources.Client.InfrastructureInterfaces.Services.Cameras;
-using Sources.Client.Presentation.Cameras;
 using Sources.Client.Presentation.Cameras.Types;
+using UnityEngine;
 
 namespace Sources.Client.Controllers.Gameplays.States
 {
@@ -35,7 +35,10 @@ namespace Sources.Client.Controllers.Gameplays.States
         public void Enter()
         {
             _cameraService.Enable<MainCamera>();
-            _pointerService.Register(_characterPointerHandler);
+            _pointerService.RegisterHandler(MousePointer.LeftButton, _characterPointerHandler);
+            RenderSettings.fogColor = new Color(90 / 255f, 113 / 255f, 118 / 255f);
+            RenderSettings.fogDensity = 0.012f;
+            RenderSettings.fogMode = FogMode.ExponentialSquared;
         }
 
         public void Update(float deltaTime)
@@ -55,7 +58,7 @@ namespace Sources.Client.Controllers.Gameplays.States
 
         public void Exit()
         {
-            _pointerService.Unregister(_characterPointerHandler);
+            _pointerService.UnregisterAll();
         }
     }
 }

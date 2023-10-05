@@ -20,6 +20,12 @@ namespace Sources.Client.Presentation.Views.Fishing
         private void Awake() =>
             _rectTransform = GetComponent<RectTransform>();
 
+        public void Enable() =>
+            gameObject.SetActive(true);
+
+        public void Disable() =>
+            gameObject.SetActive(false);
+
         public void SetPosition(Vector3 mousePosition)
         {
             _rectTransform.anchoredPosition = mousePosition;

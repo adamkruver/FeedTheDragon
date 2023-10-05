@@ -2,10 +2,9 @@
 
 namespace Sources.Client.InfrastructureInterfaces.Pointers
 {
-    public interface IPointerHandler
+    public interface IPointerHandler : IPointerUntouchedMoveHandler
     {
-        void OnStart(Vector3 position);
-        void OnMove(Vector3 position);
-        void OnFinish(Vector3 position);
+        void OnTouchStart(Vector3 position);
+        void OnTouchEnd(Vector3 position);
     }
 }

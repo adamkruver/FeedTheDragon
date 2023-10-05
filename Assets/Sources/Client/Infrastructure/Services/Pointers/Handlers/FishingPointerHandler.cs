@@ -1,4 +1,4 @@
-﻿using Sources.Client.Infrastructure.Services.Spawn;
+﻿using Sources.Client.Infrastructure.Services.Fishing;
 using Sources.Client.InfrastructureInterfaces.Pointers;
 using UnityEngine;
 
@@ -7,26 +7,36 @@ namespace Sources.Client.Infrastructure.Services.Pointers.Handlers
     public class FishingPointerHandler : IPointerHandler
     {
         private readonly CatchFishService _catchFishService;
+        private readonly FishingLineService _fishingLineService;
+        private readonly FishingCursorService _fishingCursorService;
 
-        public FishingPointerHandler(CatchFishService catchFishService)
+        public FishingPointerHandler(
+            CatchFishService catchFishService,
+            FishingLineService fishingLineService,
+            FishingCursorService fishingCursorService
+        )
         {
             _catchFishService = catchFishService;
+            _fishingLineService = fishingLineService;
+            _fishingCursorService = fishingCursorService;
         }
-        
-        public void OnStart(Vector3 position)
+
+        public void OnTouchStart(Vector3 position)
         {
-            _catchFishService.SetPointerPosition(position);
-            _catchFishService.Run();
+            _fishingCursorService.Disable();
+  //          _catchFishService.Run();
+  //          _catchFishService.SetPointerPosition(position);
         }
 
         public void OnMove(Vector3 position)
         {
-            _catchFishService.SetPointerPosition(position);
+     //       _catchFishService.SetPointerPosition(position);
         }
 
-        public void OnFinish(Vector3 position)
+        public void OnTouchEnd(Vector3 position)
         {
-            _catchFishService.Stop();
+            _fishingCursorService.Enable();
+     //       _catchFishService.Stop();
         }
     }
 }

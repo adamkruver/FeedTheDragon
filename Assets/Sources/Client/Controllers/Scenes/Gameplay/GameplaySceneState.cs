@@ -42,8 +42,8 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
 
         private GameplayStateMachine _gameplayStateMachine;
 
-        public GameplaySceneState
-        (ISignalBus signalBus,
+        public GameplaySceneState(
+            ISignalBus signalBus,
             ISignalHandlerRegisterer signalHandler,
             ISignalController[] signalControllers,
             GameUpdateService gameUpdateService,

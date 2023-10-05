@@ -5,6 +5,7 @@ using Sources.Client.Infrastructure.Builders.Presentation.Fishes;
 using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
 using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.CoroutineRunners;
+using Sources.Client.Infrastructure.Services.Fishing;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -45,7 +46,7 @@ namespace Sources.Client.Infrastructure.Services.Spawn
             while (true)
             {
                 CreateFish();
-                yield return new WaitForSeconds(Random.Range(.1f, 2f));
+                yield return new WaitForSeconds(Random.Range(.3f, 2f));
             }
         }
 
@@ -53,11 +54,13 @@ namespace Sources.Client.Infrastructure.Services.Spawn
         {
             Vector3 direction = default;
             Vector3 startPosition = default;
-            
+
             Bounds bounds = _fishingBoundsService.Bounds;
 
-            float speed = Random.Range(0.8f, 1.2f);
-            float height = Random.Range(bounds.min.y, bounds.max.y);
+            float speed = Random.Range(1f, 10f);
+            float depth = Random.Range(0, bounds.size.y);
+
+            float height = bounds.min.y + depth / 2 + bounds.size.y / 12;
 
             switch (GetRandomDirection())
             {
@@ -65,13 +68,13 @@ namespace Sources.Client.Infrastructure.Services.Spawn
                     direction = Vector3.left;
                     startPosition = new Vector3(bounds.max.x, height, bounds.center.z);
                     break;
-                
+
                 case Direction.Right:
                     direction = Vector3.right;
                     startPosition = new Vector3(bounds.min.x, height, bounds.center.z);
                     break;
             }
-            
+
             _fishViewBuilder
                 .Build(startPosition, direction, speed)
                 .Run();

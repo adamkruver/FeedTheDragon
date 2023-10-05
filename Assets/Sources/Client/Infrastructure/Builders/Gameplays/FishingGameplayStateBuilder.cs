@@ -1,5 +1,4 @@
-﻿using Presentation.Frameworks.Mvvm.Factories;
-using PresentationInterfaces.Frameworks.Mvvm.Factories;
+﻿using PresentationInterfaces.Frameworks.Mvvm.Factories;
 using Sources.Client.App.Configs;
 using Sources.Client.Controllers.Gameplays;
 using Sources.Client.Controllers.Gameplays.States;
@@ -8,7 +7,9 @@ using Sources.Client.Domain.Gameplays.Payloads;
 using Sources.Client.Frameworks.StateMachines;
 using Sources.Client.Infrastructure.Builders.Presentation.Fishes;
 using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
+using Sources.Client.Infrastructure.Factories.Services.Fishings;
 using Sources.Client.Infrastructure.Services.Cameras;
+using Sources.Client.Infrastructure.Services.Fishing;
 using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.Infrastructure.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Services.Pools;
@@ -16,6 +17,7 @@ using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.InfrastructureInterfaces.Providers;
 using Sources.Client.InfrastructureInterfaces.Services.Cameras;
 using Sources.Client.Presentation.Cameras.Types;
+using Sources.Client.Presentation.Views.Fishing;
 using UnityEngine;
 
 namespace Sources.Client.Infrastructure.Builders.Gameplays
@@ -27,6 +29,7 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
         private readonly CoroutineMonoRunnerFactory _coroutineMonoRunnerFactory;
         private readonly PointerService _pointerService;
         private readonly Environment _environment;
+        private readonly Fishing _fishing;
         private readonly IPrefabFactory _prefabFactory;
 
         public FishingGameplayStateBuilder(
@@ -35,7 +38,8 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
             IPrefabFactory prefabFactory,
             CoroutineMonoRunnerFactory coroutineMonoRunnerFactory,
             PointerService pointerService,
-            Environment environment
+            Environment environment,
+            Fishing fishing
         )
         {
             _cameraService = cameraService;
@@ -43,6 +47,7 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
             _coroutineMonoRunnerFactory = coroutineMonoRunnerFactory;
             _pointerService = pointerService;
             _environment = environment;
+            _fishing = fishing;
             _prefabFactory = prefabFactory;
         }
 
@@ -52,9 +57,29 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
             Camera camera = _cameraProvider.Get<FishingCamera>();
 
             CatchFishService catchFishService = new CatchFishService(_coroutineMonoRunnerFactory, camera);
-            FishingPointerHandler fishingPointerHandler = new FishingPointerHandler(catchFishService);
+            
+            FishingBoundsService fishingBoundsService = new FishingBoundsService(camera, _fishing.UnderWaterRect);
+            
+            FishingLineService fishingLineService =
+                new FishingLineServiceFactory(fishingBoundsService, camera).Create(_fishing.FishingCharacter.FishingLine);
 
-            FishingBoundsService fishingBoundsService = new FishingBoundsService(camera);
+            FishingCursorService fishingCursorService =
+                new FishingCursorServiceFactory(camera).Create(_fishing.FishingCanvas.FishingLineCursor);
+
+
+            FishingPointerHandler fishingPointerHandler =
+                new FishingPointerHandler(
+                    catchFishService,
+                    fishingLineService,
+                    fishingCursorService
+                );
+
+            FishingUntouchedMoveHandler fishingUntouchedMoveHandler =
+                new FishingUntouchedMoveHandler(
+                    fishingLineService,
+                    fishingCursorService
+                );
+            
 
             FishPoolService fishPoolService = new FishPoolService(_prefabFactory, _environment,
                 _coroutineMonoRunnerFactory, fishingBoundsService);
@@ -69,9 +94,12 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
                 _cameraService,
                 fishSpawnService,
                 fishingPointerHandler,
+                fishingUntouchedMoveHandler,
                 _pointerService,
                 fishingBoundsService,
-                fishPoolService
+                fishPoolService,
+                fishingLineService,
+                fishingCursorService
             );
         }
     }

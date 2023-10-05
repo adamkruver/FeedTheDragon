@@ -16,14 +16,14 @@ namespace Sources.Client.Infrastructure.Services.Pointers.Handlers
             _characterMovementService = characterMovementService;
         }
 
-        public void OnStart(Vector3 position) => 
+        public void OnTouchStart(Vector3 position) => 
             OnMove(position);
 
         public void OnMove(Vector3 position)
         {
             if (_terrainService.TryGetRaycastHit(position, out Vector3 hitPoint) == false)
             {
-                OnFinish(position);
+                OnTouchEnd(position);
                 
                 return;
             }
@@ -31,7 +31,7 @@ namespace Sources.Client.Infrastructure.Services.Pointers.Handlers
             _characterMovementService.MoveTo(hitPoint);
         }
 
-        public void OnFinish(Vector3 position) => 
+        public void OnTouchEnd(Vector3 position) => 
             _characterMovementService.Stop();
     }
 }

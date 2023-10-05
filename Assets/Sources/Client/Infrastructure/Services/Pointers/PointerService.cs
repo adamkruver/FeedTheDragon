@@ -1,5 +1,5 @@
-﻿using Sources.Client.Frameworks.StateMachines;
-using Sources.Client.Infrastructure.Services.Pointers.Handlers;
+﻿using System.Collections.Generic;
+using Sources.Client.Frameworks.StateMachines;
 using Sources.Client.InfrastructureInterfaces.Pointers;
 using UnityEngine;
 
@@ -7,50 +7,88 @@ namespace Sources.Client.Infrastructure.Services.Pointers
 {
     public class PointerService : IUpdatable
     {
-        private IPointerHandler _pointerHandler;
-        private const int PointerButton = 0;
-
+        private readonly Dictionary<int, IPointerHandler> _handlers = new Dictionary<int, IPointerHandler>();
+        private readonly Dictionary<int, bool> _touchFlags = new Dictionary<int, bool>();
         private readonly PointerUIService _pointerUIService = new PointerUIService();
 
-        private bool _isPressed;
+        private IPointerUntouchedMoveHandler _pointerUntouchedMoveHandler;
 
-        public void Register(IPointerHandler pointerHandler) =>
-            _pointerHandler = pointerHandler;
-        
-        public void Unregister(IPointerHandler pointerHandler) =>
-            _pointerHandler = null;
+        public void RegisterHandler(int pointerId, IPointerHandler handler)
+        {
+            _handlers[pointerId] = handler;
+            _touchFlags[pointerId] = false;
+        }
+
+        public void RegisterUntouchedMoveHandler(IPointerUntouchedMoveHandler handler) => 
+            _pointerUntouchedMoveHandler = handler;
+
+        public void UnregisterAll()
+        {
+            _handlers.Clear();
+            _pointerUntouchedMoveHandler = null;
+            _touchFlags.Clear();
+        }
 
         public void Update(float deltaTime)
         {
-            if (_pointerHandler is null)
-                return;
+            Vector2 pointerPosition = Input.mousePosition;
+            
+            foreach (KeyValuePair<int, IPointerHandler> pair in _handlers)
+                Handle(pair.Key, pair.Value, pointerPosition);
 
-            Vector3 position = Input.mousePosition;
+            if(IsTouched() == false)
+                HandleUntouchedMove(pointerPosition);
+        }
 
-            if (Input.GetMouseButtonUp(PointerButton))
+        private bool IsTouched()
+        {
+            foreach (bool flag in _touchFlags.Values)
+                if (flag)
+                    return true;
+
+            return false;
+        }
+
+        private void Handle(int pointerId, IPointerHandler pointerHandler, Vector2 pointerPosition)
+        {
+            if (_touchFlags[pointerId] == false)
             {
-                _isPressed = false;
-                _pointerHandler.OnFinish(position);
-
-                return;
+                if (Input.GetMouseButtonDown(pointerId))
+                    HandleTouchStart(pointerId, pointerHandler, pointerPosition);
             }
-
-            if (Input.GetMouseButtonDown(PointerButton))
+            else
             {
-                if (_pointerUIService.IsPointerOverUI)
-                    return;
+                if (Input.GetMouseButtonUp(pointerId))
+                    HandleTouchEnd(pointerId, pointerHandler, pointerPosition);
+                else
+                    HandleTouchMove(pointerHandler, pointerPosition);
+            }
+        }
 
-                _isPressed = true;
-                _pointerHandler.OnStart(position);
-
+        private void HandleTouchStart(int pointerId, IPointerHandler pointerHandler, Vector2 pointerPosition)
+        {
+            if(_pointerUIService.IsPointerOverUI)
                 return;
-            }
+            
+            pointerHandler.OnTouchStart(pointerPosition);
+            _touchFlags[pointerId] = true;
+        }
 
-            if (Input.GetMouseButton(PointerButton))
-            {
-                if (_isPressed)
-                    _pointerHandler.OnMove(position);
-            }
+        private void HandleTouchEnd(int pointerId, IPointerHandler pointerHandler, Vector2 pointerPosition)
+        {
+            pointerHandler.OnTouchEnd(pointerPosition);
+            _touchFlags[pointerId] = false;
+        }
+
+        private void HandleTouchMove(IPointerHandler pointerHandler, Vector2 pointerPosition) => 
+            pointerHandler.OnMove(pointerPosition);
+
+        private void HandleUntouchedMove(Vector2 pointerPosition)
+        {
+            if(_pointerUIService.IsPointerOverUI)
+                return;
+            
+            _pointerUntouchedMoveHandler?.OnMove(pointerPosition);
         }
     }
 }

@@ -9,16 +9,12 @@ namespace Sources.Client.Infrastructure.Providers
 {
     public class CameraProvider : ICameraProvider
     {
-        private Dictionary<Type, CameraType> _cameras = new Dictionary<Type, CameraType>();
+        private readonly Dictionary<Type, CameraType> _cameras = new Dictionary<Type, CameraType>();
         
         public IEnumerable<CameraType> CameraTypes => _cameras.Values;
 
-        public void Register(CameraType cameraType)
-        {
-            Debug.Log("Registered camera: " + cameraType.GetType());
-            
+        public void Register(CameraType cameraType) => 
             _cameras[cameraType.GetType()] = cameraType;
-        }
 
         public CameraType GetCameraType<T>() where T : CameraType =>
             _cameras[typeof(T)];
