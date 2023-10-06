@@ -8,7 +8,6 @@ using Sources.Client.Frameworks.StateMachines;
 using Sources.Client.Infrastructure.Builders.Presentation.Fishes;
 using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
 using Sources.Client.Infrastructure.Factories.Services.Fishings;
-using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.Fishing;
 using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.Infrastructure.Services.Pointers.Handlers;
@@ -60,7 +59,10 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
 
             FishingLineService fishingLineService =
                 new FishingLineServiceFactory(fishingBoundsService, camera).Create(
-                    _fishing.FishingCharacter.FishingLine);
+                    _fishing.Character.FishingLine);
+
+            FishingCatchCursorService fishingCatchCursorService =
+                new FishingCatchCursorService(fishingBoundsService, _fishing.Canvas.CatchCursor);
 
             CatchFishService catchFishService = new CatchFishService
             (
@@ -68,11 +70,12 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
                 camera,
                 fishingBoundsService,
                 fishingLineService,
-                _cameraProvider
+                _cameraProvider,
+                fishingCatchCursorService
             );
 
             FishingCursorService fishingCursorService =
-                new FishingCursorServiceFactory(camera).Create(_fishing.FishingCanvas.FishingLineCursor);
+                new FishingCursorServiceFactory(camera).Create(_fishing.Canvas.LineCursor);
 
             FishingPointerHandler fishingPointerHandler =
                 new FishingPointerHandler(

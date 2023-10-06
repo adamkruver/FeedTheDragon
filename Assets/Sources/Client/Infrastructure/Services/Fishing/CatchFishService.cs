@@ -18,19 +18,12 @@ namespace Sources.Client.Infrastructure.Services.Fishing
     {
         private readonly FishingBoundsService _fishingBoundsService;
         private readonly FishingLineService _fishingLineService;
+        private readonly FishingCatchCursorService _fishingCatchCursorService;
         private readonly CoroutineMonoRunner _coroutineMonoRunner;
         private readonly ScreenSphereCastService _screenSphereCastService;
         private readonly ScreenRayCastService _screenRayCastService;
         private readonly Camera _camera;
 
-        // private RectTransform _catchCursorRectTransform;
-        // private RectTransform _cursor;
-        // private RectTransform _water;
-        // private Image _catchCursor;
-        // private FishingLine _fishingLine;
-        //
-        // private Vector3 _pointerPosition;
-        // private Vector3 _fishPosition;
         private FishView _caughtFish;
 
         private Vector3 _pointerPosition;
@@ -43,11 +36,13 @@ namespace Sources.Client.Infrastructure.Services.Fishing
             Camera camera,
             FishingBoundsService fishingBoundsService,
             FishingLineService fishingLineService,
-            ICameraProvider cameraProvider
+            ICameraProvider cameraProvider,
+            FishingCatchCursorService fishingCatchCursorService
         )
         {
             _fishingBoundsService = fishingBoundsService;
             _fishingLineService = fishingLineService;
+            _fishingCatchCursorService = fishingCatchCursorService;
             _camera = cameraProvider.Get<FishingCamera>();
             
             int transparentMask = 1 << LayerMask.NameToLayer(LayerConstants.TransparentFX);
@@ -71,6 +66,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
             _caughtFish.Catch();
 
             _coroutineMonoRunner.Run(ChangeFishDirection());
+            _fishingCatchCursorService.Enable();
         }
 
         public void SetPointerPosition(Vector3 position)
@@ -80,6 +76,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
 
         public void Stop()
         {
+            _fishingCatchCursorService.Disable();
             _coroutineMonoRunner.Stop();
             _isRunning = false;
 
@@ -94,6 +91,11 @@ namespace Sources.Client.Infrastructure.Services.Fishing
             
             Vector3 fishCameraPosition = _camera.WorldToScreenPoint(_caughtFish.transform.position);
             _fishingLineService.SetPosition(fishCameraPosition);
+
+            Vector3 catchCursorPosition = new Vector3(_pointerPosition.x, fishCameraPosition.y);
+            
+            _fishingCatchCursorService.SetPosition(catchCursorPosition);
+            _fishingCatchCursorService.SetWidth(300);
 
             //float radius = 5f;
 
