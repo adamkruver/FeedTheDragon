@@ -44,7 +44,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
             _fishingLineService = fishingLineService;
             _fishingCatchCursorService = fishingCatchCursorService;
             _camera = cameraProvider.Get<FishingCamera>();
-            
+
             int transparentMask = 1 << LayerMask.NameToLayer(LayerConstants.TransparentFX);
             int interactableMask = 1 << LayerMask.NameToLayer(LayerConstants.Interactable);
 
@@ -53,6 +53,11 @@ namespace Sources.Client.Infrastructure.Services.Fishing
 
             _coroutineMonoRunner = coroutineMonoRunnerFactory.Create();
         }
+
+        private float _minRatio = 5;
+        private float _maxRatio = 2;
+
+        private float _tanAlfa => (_minRatio - _maxRatio) / (2 * (_minRatio * _maxRatio)) * _fishingBoundsService.Ratio;
 
         public void Run()
         {
@@ -88,34 +93,39 @@ namespace Sources.Client.Infrastructure.Services.Fishing
         {
             if (_isRunning == false)
                 return;
-            
+
+            float minWidth = _fishingBoundsService.BoundsSize.x / _minRatio;
+
             Vector3 fishCameraPosition = _camera.WorldToScreenPoint(_caughtFish.transform.position);
             _fishingLineService.SetPosition(fishCameraPosition);
 
             Vector3 catchCursorPosition = new Vector3(_pointerPosition.x, fishCameraPosition.y);
-            
+
             _fishingCatchCursorService.SetPosition(catchCursorPosition);
-            _fishingCatchCursorService.SetWidth(300);
 
-            //float radius = 5f;
+            float minSide = catchCursorPosition.x - (minWidth / 2f);
+            float maxSide = catchCursorPosition.x + (minWidth / 2f);
 
-            // while (_pointerPosition.y < _fishingBoundsService.BoundsSize.y &&
-            //        _screenSphereCastService.CheckCollision(_pointerPosition, radius, _caughtFish))
-            // {
-            //     Vector3 nextPosition = _pointerPosition + Vector3.up;
-            //     _pointerPosition = Vector3.MoveTowards(_pointerPosition, nextPosition, 500 * deltaTime);
-            //
-            //     if (_screenRayCastService.TryRaycast(_pointerPosition, out RaycastHit hit))
-            //     {
-            //         _fishingLine.SetEndPoint(hit.point);
-            //     }
-            //
-            //     radius = Mathf.Max(radius - 0.05f, 2);
-            //
-            //     _catchCursorRectTransform.anchoredPosition = _pointerPosition;
-            //     _catchCursor.transform.localScale = Vector3.one * radius;
-            // }
+            float deltaY = _fishingBoundsService.BoundsSize.y - catchCursorPosition.y;
+
+            if (fishCameraPosition.x > minSide && fishCameraPosition.x < maxSide)
+            {
+                float otrezok = _tanAlfa * deltaY;
+                _fishingCatchCursorService.SetWidth(minWidth + (otrezok * 2));
+                
+                if (_caughtFish.transform.position.y >= _fishingBoundsService.Bounds.max.y)
+                {
+                    Debug.Log("Рыбка выловлена");
+                    Stop();
+                    _caughtFish.Disable();
+                }
+            }
+            else
+            {
+                Stop();
+            }
         }
+
 
         private FishView GetFish(IEnumerable<FishCollider> fishColliders)
         {
@@ -131,9 +141,9 @@ namespace Sources.Client.Infrastructure.Services.Fishing
                 x *= Random.Range(0, 1f) < 0.5f ? -1 : 1;
 
                 Vector3 fishCameraPosition = _camera.WorldToScreenPoint(_caughtFish.transform.position);
-                
+
                 float fishX = fishCameraPosition.x + x;
-                
+
                 if (fishX < 0 || fishX > _fishingBoundsService.BoundsSize.x)
                     x *= -1;
 
@@ -144,7 +154,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
                 _caughtFish.SetDirection(direction);
                 _caughtFish.SetViewDirection(direction);
 
-                _caughtFish.SetSpeed(15f);
+                _caughtFish.SetSpeed(9f);
 
                 float time = Random.Range(0.5f, 1f);
                 yield return new WaitForSeconds(time);

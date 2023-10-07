@@ -19,7 +19,8 @@ namespace Sources.Client.Infrastructure.Services.Fishing
 
         public Bounds Bounds { get; private set; }
         public Vector2 BoundsSize => _boundsRectTransform.sizeDelta;
-
+        public float Ratio => BoundsSize.x / BoundsSize.y;
+        
         public bool ContainScreenPoint(Vector3 screenPoint)
         {
             if (screenPoint.x < 0 || screenPoint.x > BoundsSize.x)
