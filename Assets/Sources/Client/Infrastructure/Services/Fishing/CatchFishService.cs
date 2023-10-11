@@ -10,7 +10,6 @@ using Sources.Client.Presentation.Cameras.Types;
 using Sources.Client.Presentation.Views.Fishing;
 using Sources.Client.Utils;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Sources.Client.Infrastructure.Services.Fishing
 {
@@ -21,7 +20,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
         private readonly FishingCatchCursorService _fishingCatchCursorService;
         private readonly CoroutineMonoRunner _coroutineMonoRunner;
         private readonly ScreenSphereCastService _screenSphereCastService;
-        private readonly ScreenRayCastService _screenRayCastService;
+        private readonly ScreenRaycastService _screenRaycastService;
         private readonly Camera _camera;
 
         private FishView _caughtFish;
@@ -48,7 +47,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
             int transparentMask = 1 << LayerMask.NameToLayer(LayerConstants.TransparentFX);
             int interactableMask = 1 << LayerMask.NameToLayer(LayerConstants.Interactable);
 
-            _screenRayCastService = new ScreenRayCastService(camera, transparentMask);
+            _screenRaycastService = new ScreenRaycastService(camera, transparentMask);
             _screenSphereCastService = new ScreenSphereCastService(camera, interactableMask);
 
             _coroutineMonoRunner = coroutineMonoRunnerFactory.Create();
@@ -65,13 +64,13 @@ namespace Sources.Client.Infrastructure.Services.Fishing
                 false)
                 return;
 
+            _fishingCatchCursorService.Enable();
             _isRunning = true;
 
             _caughtFish = GetFish(fishColliders);
             _caughtFish.Catch();
 
             _coroutineMonoRunner.Run(ChangeFishDirection());
-            _fishingCatchCursorService.Enable();
         }
 
         public void SetPointerPosition(Vector3 position)
@@ -125,7 +124,6 @@ namespace Sources.Client.Infrastructure.Services.Fishing
                 Stop();
             }
         }
-
 
         private FishView GetFish(IEnumerable<FishCollider> fishColliders)
         {

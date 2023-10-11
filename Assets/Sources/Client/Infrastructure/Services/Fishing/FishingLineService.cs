@@ -6,19 +6,19 @@ namespace Sources.Client.Infrastructure.Services.Fishing
 {
     public class FishingLineService
     {
-        private readonly ScreenRayCastService _screenRayCastService;
+        private readonly ScreenRaycastService _screenRaycastService;
         private readonly FishingBoundsService _fishingBoundsService;
         private readonly FishingLine _fishingLine;
 
         private bool _isEnabled = false;
 
         public FishingLineService(
-            ScreenRayCastService screenRayCastService,
+            ScreenRaycastService screenRaycastService,
             FishingBoundsService fishingBoundsService,
             FishingLine fishingLine
         )
         {
-            _screenRayCastService = screenRayCastService;
+            _screenRaycastService = screenRaycastService;
             _fishingBoundsService = fishingBoundsService;
             _fishingLine = fishingLine;
         }
@@ -31,7 +31,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
             if (_fishingBoundsService.ContainScreenPoint(position) == false)
                 return;
 
-            if (_screenRayCastService.TryRaycast(position, out RaycastHit hit) == false)
+            if (_screenRaycastService.TryRaycast(position, out RaycastHit hit) == false)
                 return;
 
             _fishingLine.SetEndPoint(hit.point);

@@ -1,5 +1,4 @@
 ﻿using Sources.Client.Domain.Pointers;
-using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.Fishing;
 using Sources.Client.Infrastructure.Services.Pointers;
 using Sources.Client.Infrastructure.Services.Pools;
@@ -23,6 +22,7 @@ namespace Sources.Client.Controllers.Gameplays.States
         private readonly FishingLineService _fishingLineService;
         private readonly FishingCursorService _fishingCursorService;
         private readonly CatchFishService _catchFishService;
+        private readonly FishingCameraService _fishingCameraService;
 
         public FishingGameplayState
         (ICameraService cameraService,
@@ -34,7 +34,8 @@ namespace Sources.Client.Controllers.Gameplays.States
             FishPoolService fishPoolService,
             FishingLineService fishingLineService,
             FishingCursorService fishingCursorService,
-            CatchFishService catchFishService
+            CatchFishService catchFishService,
+            FishingCameraService fishingCameraService 
         )
         {
             _cameraService = cameraService;
@@ -47,6 +48,7 @@ namespace Sources.Client.Controllers.Gameplays.States
             _fishingLineService = fishingLineService;
             _fishingCursorService = fishingCursorService;
             _catchFishService = catchFishService;
+            _fishingCameraService = fishingCameraService;
         }
 
         public void Enter()
@@ -87,6 +89,7 @@ namespace Sources.Client.Controllers.Gameplays.States
 
         public void LateUpdate(float deltaTime)
         {
+            _fishingCameraService.LateUpdate(deltaTime);
         }
     }
 }

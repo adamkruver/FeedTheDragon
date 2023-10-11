@@ -75,7 +75,7 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
             );
 
             FishingCursorService fishingCursorService =
-                new FishingCursorServiceFactory(camera).Create(_fishing.Canvas.LineCursor);
+                new FishingCursorServiceFactory(camera, fishingBoundsService).Create(_fishing.Canvas.LineCursor);
 
             FishingPointerHandler fishingPointerHandler =
                 new FishingPointerHandler(
@@ -98,6 +98,9 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
             FishSpawnService fishSpawnService =
                 new FishSpawnService(fishingBoundsService, _coroutineMonoRunnerFactory, fishViewBuilder);
 
+
+            FishingCameraService fishingCameraService = new FishingCameraServiceFactory(camera, _fishing.Camera).Create();
+                
             return new FishingGameplayState
             (
                 _cameraService,
@@ -109,7 +112,8 @@ namespace Sources.Client.Infrastructure.Builders.Gameplays
                 fishPoolService,
                 fishingLineService,
                 fishingCursorService,
-                catchFishService
+                catchFishService,
+                fishingCameraService
             );
         }
     }

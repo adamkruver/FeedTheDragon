@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Sources.Client.Presentation.Cameras.Types;
+using UnityEngine;
 
 namespace Sources.Client.Presentation.Views.Fishing
 {
@@ -7,5 +8,6 @@ namespace Sources.Client.Presentation.Views.Fishing
         [field: SerializeField] public FishingCharacter Character { get; private set; }
         [field: SerializeField] public FishingCanvas Canvas { get; private set; }
         [field: SerializeField] public RectTransform UnderWaterRect { get; private set; }
+        [field: SerializeField] public FishingCamera Camera { get; private set; }
     }
 }

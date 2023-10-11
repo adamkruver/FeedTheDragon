@@ -2,12 +2,12 @@
 
 namespace Sources.Client.Infrastructure.Services.Raycasts
 {
-    public class ScreenRayCastService
+    public class ScreenRaycastService
     {
         private readonly ScreenPointToRayService _screenPointToRayService;
         private readonly int _layerMask;
 
-        public ScreenRayCastService(Camera camera, int layerMask)
+        public ScreenRaycastService(Camera camera, int layerMask)
         {
             _screenPointToRayService = new ScreenPointToRayService(camera);
             _layerMask = layerMask;

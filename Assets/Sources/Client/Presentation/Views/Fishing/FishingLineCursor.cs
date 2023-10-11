@@ -24,8 +24,11 @@ namespace Sources.Client.Presentation.Views.Fishing
         public void SetPosition(Vector3 mousePosition)
         {
             _rectTransform.anchoredPosition = mousePosition;
-            _rectTransform.localScale = Screen.height * Vector3.one / _screenHeight;
+            //_rectTransform.localScale = Screen.height * Vector3.one / _screenHeight;
         }
+
+        public void SetScale(Vector3 scale) =>
+            _rectTransform.localScale = scale;
 
         public void SetCatchStatus(bool canCatch)
         {

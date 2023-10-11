@@ -22,8 +22,9 @@ namespace Sources.Client.Infrastructure.Services.Fishing
 
         public void SetWidth(float width)
         {
-            Vector2 size = new Vector2(width, _fishingBoundsService.BoundsSize.y - _fishingCatchCursor.Position.y);
-
+            float height = _fishingCatchCursor.Height * _fishingBoundsService.Scale.y;
+            Vector2 size = new Vector2(width, height);
+            
             _fishingCatchCursor.SetSize(size);
         }
 

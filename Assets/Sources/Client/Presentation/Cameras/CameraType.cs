@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Sources.Client.Presentation.Cameras
 {
@@ -7,6 +8,12 @@ namespace Sources.Client.Presentation.Cameras
         [SerializeField] private Canvas _canvas;
 
         [field: SerializeField] public Camera Camera { get; private set; }
+
+        private void Awake() =>
+            OnAwake();
+
+        protected virtual void OnAwake()
+        {}
 
         public void Enable()
         {

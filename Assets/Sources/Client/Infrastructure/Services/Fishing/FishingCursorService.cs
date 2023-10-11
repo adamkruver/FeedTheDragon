@@ -6,16 +6,18 @@ namespace Sources.Client.Infrastructure.Services.Fishing
 {
     public class FishingCursorService
     {
-        private readonly ScreenRayCastService _screenRayCastService;
         private readonly FishingLineCursor _fishingLineCursor;
         private readonly ScreenSphereCastService _screenSphereCastService;
+        private readonly FishingBoundsService _fishingBoundsService;
 
         public FishingCursorService(
             ScreenSphereCastService screenSphereCastService,
+            FishingBoundsService fishingBoundsService,
             FishingLineCursor fishingLineCursor
         )
         {
             _screenSphereCastService = screenSphereCastService;
+            _fishingBoundsService = fishingBoundsService;
             _fishingLineCursor = fishingLineCursor;
         }
 
@@ -25,6 +27,7 @@ namespace Sources.Client.Infrastructure.Services.Fishing
             _fishingLineCursor.SetCatchStatus(hasFish);
 
             _fishingLineCursor.SetPosition(position);
+            _fishingLineCursor.SetScale(Vector3.one * _fishingBoundsService.Scale.y);
         }
 
         public void Enable() =>
