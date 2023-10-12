@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 
 namespace NodeCanvas.DialogueTrees.UI.Examples
 {
@@ -27,7 +28,9 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
         //Group...
         [Header("Subtitles")]
         public RectTransform subtitlesGroup;
-        public Text actorSpeech;
+
+        [SerializeField] private TextMeshProUGUI _actorSpeech;
+        
         public Text actorName;
         public Image actorPortrait;
         public RectTransform waitInputIndicator;
@@ -114,10 +117,10 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
             var actor = info.actor;
 
             subtitlesGroup.gameObject.SetActive(true);
-            actorSpeech.text = "";
+            _actorSpeech.text = "";
 
             actorName.text = actor.name;
-            actorSpeech.color = actor.dialogueColor;
+            _actorSpeech.color = actor.dialogueColor;
 
             actorPortrait.gameObject.SetActive(actor.portraitSprite != null);
             actorPortrait.sprite = actor.portraitSprite;
@@ -127,7 +130,7 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
                 playSource = actorSource != null ? actorSource : localSource;
                 playSource.clip = audio;
                 playSource.Play();
-                actorSpeech.text = text;
+                _actorSpeech.text = text;
                 var timer = 0f;
                 while ( timer < audio.length ) {
                     if ( skipOnInput && Input.anyKeyDown ) {
@@ -149,7 +152,7 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
                 for ( int i = 0; i < text.Length; i++ ) {
 
                     if ( skipOnInput && inputDown ) {
-                        actorSpeech.text = text;
+                        _actorSpeech.text = text;
                         yield return null;
                         break;
                     }
@@ -171,7 +174,7 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
                         PlayTypeSound();
                     }
 
-                    actorSpeech.text = tempText;
+                    _actorSpeech.text = tempText;
                 }
 
                 if ( !waitForInput ) {
