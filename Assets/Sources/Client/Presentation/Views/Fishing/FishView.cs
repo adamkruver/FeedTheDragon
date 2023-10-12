@@ -26,12 +26,8 @@ namespace Sources.Client.Presentation.Views.Fishing
         private Func<float, bool> _isReachedCondition;
         private Transform _transform;
 
-        private bool ReachedLeftBoundX(float current) =>
-            current < _fishingBoundsService.Bounds.min.x;
-
-        private bool ReachedRightBoundX(float current) =>
-            current > _fishingBoundsService.Bounds.max.x;
-
+        public Vector3 Position => _transform.position;
+        
         private void Awake() =>
             _transform = GetComponent<Transform>();
 
@@ -94,6 +90,12 @@ namespace Sources.Client.Presentation.Views.Fishing
             SetViewDirection(_baseDirection);
             SetSpeed(_maxSpeed);
         }
+
+        private bool ReachedLeftBoundX(float current) =>
+            current < _fishingBoundsService.Bounds.min.x;
+
+        private bool ReachedRightBoundX(float current) =>
+            current > _fishingBoundsService.Bounds.max.x;
 
         private void ReturnToPool()
         {

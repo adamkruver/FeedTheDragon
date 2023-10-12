@@ -20,13 +20,12 @@ namespace Sources.Client.Infrastructure.Services.Fishing
         private readonly FishingCatchCursorService _fishingCatchCursorService;
         private readonly CoroutineMonoRunner _coroutineMonoRunner;
         private readonly ScreenSphereCastService _screenSphereCastService;
-        private readonly ScreenRaycastService _screenRaycastService;
         private readonly Camera _camera;
+        private readonly float _minRatio = 5;
+        private readonly float _maxRatio = 2;
 
         private FishView _caughtFish;
-
         private Vector3 _pointerPosition;
-
         private bool _isRunning;
 
         public CatchFishService
@@ -42,21 +41,13 @@ namespace Sources.Client.Infrastructure.Services.Fishing
             _fishingBoundsService = fishingBoundsService;
             _fishingLineService = fishingLineService;
             _fishingCatchCursorService = fishingCatchCursorService;
+
             _camera = cameraProvider.Get<FishingCamera>();
-
-            int transparentMask = 1 << LayerMask.NameToLayer(LayerConstants.TransparentFX);
-            int interactableMask = 1 << LayerMask.NameToLayer(LayerConstants.Interactable);
-
-            _screenRaycastService = new ScreenRaycastService(camera, transparentMask);
-            _screenSphereCastService = new ScreenSphereCastService(camera, interactableMask);
-
+            _screenSphereCastService = new ScreenSphereCastService(camera, LayerConstants.InteractableMask);
             _coroutineMonoRunner = coroutineMonoRunnerFactory.Create();
         }
 
-        private float _minRatio = 5;
-        private float _maxRatio = 2;
-
-        private float _tanAlfa => (_minRatio - _maxRatio) / (2 * (_minRatio * _maxRatio)) * _fishingBoundsService.Ratio;
+        private float TanAlfa => (_minRatio - _maxRatio) / (2 * (_minRatio * _maxRatio)) * _fishingBoundsService.Ratio;
 
         public void Run()
         {
@@ -102,26 +93,25 @@ namespace Sources.Client.Infrastructure.Services.Fishing
 
             _fishingCatchCursorService.SetPosition(catchCursorPosition);
 
-            float minSide = catchCursorPosition.x - (minWidth / 2f);
-            float maxSide = catchCursorPosition.x + (minWidth / 2f);
-
             float deltaY = _fishingBoundsService.BoundsSize.y - catchCursorPosition.y;
+            float otrezok = TanAlfa * deltaY;
 
-            if (fishCameraPosition.x > minSide && fishCameraPosition.x < maxSide)
-            {
-                float otrezok = _tanAlfa * deltaY;
-                _fishingCatchCursorService.SetWidth(minWidth + (otrezok * 2));
-                
-                if (_caughtFish.transform.position.y >= _fishingBoundsService.Bounds.max.y)
-                {
-                    Debug.Log("Рыбка выловлена");
-                    Stop();
-                    _caughtFish.Disable();
-                }
-            }
-            else
+            float minSide = catchCursorPosition.x - (minWidth / 2f + otrezok);
+            float maxSide = catchCursorPosition.x + (minWidth / 2f + otrezok);
+
+            _fishingCatchCursorService.SetWidth(minWidth + (otrezok * 2));
+
+            if (fishCameraPosition.x <= minSide || fishCameraPosition.x >= maxSide)
             {
                 Stop();
+
+                return;
+            }
+
+            if (_caughtFish.transform.position.y >= _fishingBoundsService.Bounds.max.y)
+            {
+                Stop();
+                _caughtFish.Disable();
             }
         }
 

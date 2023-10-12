@@ -12,6 +12,9 @@ namespace Sources.Client.Presentation.Views.Fishing
 
         private void Awake() =>
             _rectTransform = GetComponent<RectTransform>();
+            
+        private void Start() =>
+            Disable();
 
         public void SetSize(Vector2 size) =>
             _widthBorderRectTransform.sizeDelta = size;
