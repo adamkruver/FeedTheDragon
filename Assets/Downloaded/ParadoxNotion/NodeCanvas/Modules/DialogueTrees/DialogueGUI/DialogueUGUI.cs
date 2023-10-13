@@ -3,14 +3,16 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
+using NodeCanvas.Tasks.Actions;
 using TMPro;
 
 namespace NodeCanvas.DialogueTrees.UI.Examples
 {
 
+    [RequireComponent(typeof(CanvasGroup))]
     public class DialogueUGUI : MonoBehaviour
     {
-
         [System.Serializable]
         public class SubtitleDelays
         {
@@ -30,6 +32,8 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
         public RectTransform subtitlesGroup;
 
         [SerializeField] private TextMeshProUGUI _actorSpeech;
+        private RectTransform _rectTransform;
+        private CanvasGroup _canvasGroup;
         
         public Text actorName;
         public Image actorPortrait;
@@ -47,11 +51,20 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
         private bool isWaitingChoice;
 
         private AudioSource _localSource;
+        [SerializeField] private float _fadeSpeed = 1;
+
         private AudioSource localSource {
             get { return _localSource != null ? _localSource : _localSource = gameObject.AddComponent<AudioSource>(); }
         }
 
-        void Awake() { Subscribe(); Hide(); }
+        void Awake()
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+            _rectTransform = GetComponent<RectTransform>();
+            _canvasGroup.alpha = 0.001f;
+            Subscribe(); 
+            Hide();
+        }
         void OnEnable() { UnSubscribe(); Subscribe(); }
         void OnDisable() { UnSubscribe(); }
 
@@ -110,6 +123,28 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
             StartCoroutine(Internal_OnSubtitlesRequestInfo(info));
         }
 
+        private async UniTask SetText(string text)
+        {
+            _canvasGroup.alpha = 0.001f;
+            _actorSpeech.text = text;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTransform);
+            await UniTask.Yield();
+            await FadeIn();
+        }
+
+        private async UniTask FadeIn()
+        {
+            _canvasGroup.alpha = 0.001f;
+            
+            while (_canvasGroup.alpha < 1)
+            {
+                _canvasGroup.alpha += _fadeSpeed * Time.deltaTime;
+                await UniTask.Yield();
+            }
+
+            _canvasGroup.alpha = 1;
+        }
+
         IEnumerator Internal_OnSubtitlesRequestInfo(SubtitlesRequestInfo info) {
 
             var text = info.statement.text;
@@ -117,20 +152,21 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
             var actor = info.actor;
 
             subtitlesGroup.gameObject.SetActive(true);
-            _actorSpeech.text = "";
 
             actorName.text = actor.name;
             _actorSpeech.color = actor.dialogueColor;
 
             actorPortrait.gameObject.SetActive(actor.portraitSprite != null);
             actorPortrait.sprite = actor.portraitSprite;
-
+            _actorSpeech.text = "\n";
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTransform);
+            
             if ( audio != null ) {
                 var actorSource = actor.transform != null ? actor.transform.GetComponent<AudioSource>() : null;
                 playSource = actorSource != null ? actorSource : localSource;
                 playSource.clip = audio;
                 playSource.Play();
-                _actorSpeech.text = text;
+                SetText(text);
                 var timer = 0f;
                 while ( timer < audio.length ) {
                     if ( skipOnInput && Input.anyKeyDown ) {
@@ -152,7 +188,7 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
                 for ( int i = 0; i < text.Length; i++ ) {
 
                     if ( skipOnInput && inputDown ) {
-                        _actorSpeech.text = text;
+                        SetText(text);
                         yield return null;
                         break;
                     }
@@ -174,7 +210,7 @@ namespace NodeCanvas.DialogueTrees.UI.Examples
                         PlayTypeSound();
                     }
 
-                    _actorSpeech.text = tempText;
+                    SetText(tempText);
                 }
 
                 if ( !waitForInput ) {
