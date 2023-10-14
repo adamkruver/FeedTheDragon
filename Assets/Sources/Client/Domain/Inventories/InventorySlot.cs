@@ -5,13 +5,14 @@ using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Domain.Inventories
 {
-    public class InventorySlot : Composite, IEntity
+    public class InventorySlot : Composite, IEntity, IEntityType
     {
         private readonly MutableLiveData<Type> _type = new MutableLiveData<Type>();
 
         public InventorySlot(int id) =>
             Id = id;
 
+        public IEntityType EntityType => this;
         public int Id { get; }
         public Ingredient Item { get; private set; }
         public LiveData<Type> Type => _type;

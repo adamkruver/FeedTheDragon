@@ -28,7 +28,8 @@
   "AudioClips": {
     "FirstContacts": {
       "ToxicFrog": "AudioClips/FirstContacts/FirstContactWithToxicFrog",
-      "Chanterelle" : "AudioClips/FirstContacts/FirstContactWithChanterelle"
+      "Chanterelle" : "AudioClips/FirstContacts/FirstContactWithChanterelle",
+      "Ogre" : "AudioClips/FirstContacts/FirstContactWithOgre"
     }
   }
 }

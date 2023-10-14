@@ -12,10 +12,7 @@ namespace Sources.Client.Infrastructure.Data.Providers
         public KnownTypeAudioClipProvider(Environment environment) =>
             _environment = environment;
 
-        public AudioClip Provide(Type type)
-        {
-            Debug.Log(type.Name);
-            return Resources.Load<AudioSource>(_environment.AudioClips.FirstContacts[type.Name])?.clip;
-        }
+        public AudioClip Provide(Type type) =>
+            Resources.Load<AudioSource>(_environment.AudioClips.FirstContacts[type.Name])?.clip;
     }
 }

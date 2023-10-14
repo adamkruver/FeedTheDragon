@@ -10,6 +10,7 @@ namespace Sources.Client.Domain.Ingredients
             Type = type;
         }
 
+        public IEntityType EntityType => Type;
         public IIngredientType Type { get; }
         public int Id { get; }
     }

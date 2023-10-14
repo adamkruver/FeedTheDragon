@@ -6,7 +6,7 @@ using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Domain.NPCs.Components
 {
-    public class Quest : Composite, IEntity, IComponent // todo: Add QuestOwner Id
+    public class Quest : Composite, IEntity, IComponent, IEntityType // todo: Add QuestOwner Id
     {
         private readonly List<QuestSlot> _slots = new List<QuestSlot>();
         private readonly MutableLiveData<int[]> _slotsIds = new MutableLiveData<int[]>(Array.Empty<int>());
@@ -17,6 +17,7 @@ namespace Sources.Client.Domain.NPCs.Components
             Id = id;
         }
 
+        public IEntityType EntityType => this;
         public int Id { get; }
         public LiveData<int[]> SlotsIds => _slotsIds;
         public LiveData<bool> IsCompleted => _isCompleted;

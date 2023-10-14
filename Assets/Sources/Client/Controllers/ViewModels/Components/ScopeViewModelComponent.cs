@@ -4,7 +4,7 @@ using PresentationInterfaces.Frameworks.Mvvm.Binds.Triggers;
 using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
 using Sources.Client.PresentationInterfaces.Binds.Ids;
 using Sources.Client.UseCases.Common.Components.FirstContacts.Commands;
-using Sources.Client.UseCases.Ingredients.Queries;
+using Sources.Client.UseCases.Entities.Queries;
 using UnityEngine;
 
 namespace Sources.Client.Controllers.ViewModels.Components
@@ -13,17 +13,17 @@ namespace Sources.Client.Controllers.ViewModels.Components
     {
         private readonly int _id;
         private readonly AddKnownTypeCommand _addKnownTypeCommand;
-        private readonly GetIngredientTypeQuery _getIngredientTypeQuery;
+        private readonly GetEntityTypeQuery _getEntityTypeQuery;
 
         public ScopeViewModelComponent(
             int id,
             AddKnownTypeCommand addKnownTypeCommand,
-            GetIngredientTypeQuery getIngredientTypeQuery
+            GetEntityTypeQuery getEntityTypeQuery
         )
         {
             _id = id;
             _addKnownTypeCommand = addKnownTypeCommand;
-            _getIngredientTypeQuery = getIngredientTypeQuery;
+            _getEntityTypeQuery = getEntityTypeQuery;
         }
 
         public void Enable()
@@ -34,16 +34,14 @@ namespace Sources.Client.Controllers.ViewModels.Components
         {
         }
 
-        [MethodBinding(typeof(ITriggerEnterMethodBind), componentName: "IngredientInteractor")]
+        [MethodBinding(typeof(ITriggerEnterMethodBind), componentName: "Scope")]
         private void OnTriggerEnter(Component component)
         {
-            Debug.Log(component.name);
-            
             if (component.TryGetComponent(out IIdPropertyBind idPropertyBind) == false)
                 return;
 
-            Type type = _getIngredientTypeQuery.Handle(idPropertyBind.Id).GetType();
-            
+            Type type = _getEntityTypeQuery.Handle(idPropertyBind.Id).GetType();
+
             _addKnownTypeCommand.Handle(_id, type);
         }
     }

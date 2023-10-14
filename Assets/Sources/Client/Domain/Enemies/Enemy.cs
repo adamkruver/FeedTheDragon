@@ -11,6 +11,7 @@ namespace Sources.Client.Domain.Enemies
         }
 
         public int Id { get; }
+        public IEntityType EntityType => Type;
         public IEnemyType Type { get; }
     }
 }

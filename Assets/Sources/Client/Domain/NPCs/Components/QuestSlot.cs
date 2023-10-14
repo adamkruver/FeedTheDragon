@@ -4,7 +4,7 @@ using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Domain.NPCs.Components
 {
-    public class QuestSlot : Composite, IEntity, IComponent
+    public class QuestSlot : Composite, IEntity, IComponent, IEntityType
     {
         private MutableLiveData<bool> _isReached = new MutableLiveData<bool>(false);
 
@@ -14,6 +14,7 @@ namespace Sources.Client.Domain.NPCs.Components
             RequiredType = requiredType;
         }
         
+        public IEntityType EntityType => this;
         public int Id { get; }
         public IIngredientType RequiredType { get; }
         public LiveData<bool> IsReached => _isReached;

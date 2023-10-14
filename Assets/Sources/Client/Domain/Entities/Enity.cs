@@ -2,6 +2,7 @@
 {
     public interface IEntity
     {
-        public int Id { get; }
+        int Id { get; }
+        IEntityType EntityType { get; }
     }
 }

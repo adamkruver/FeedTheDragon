@@ -7,7 +7,7 @@ using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Domain.Progresses
 {
-    public class Mission : Composite, IEntity, IComponent
+    public class Mission : Composite, IEntity, IComponent, IEntityType
     {
         private List<Quest> _quests = new List<Quest>();
         private MutableLiveData<int> _completedAmount = new MutableLiveData<int>();
@@ -20,11 +20,11 @@ namespace Sources.Client.Domain.Progresses
             RequiredAmount = requiredAmount;
         }
 
+        public IEntityType EntityType => this;
         public int Id { get; }
-        
         public int RequiredAmount { get; }
         public LiveData<int> CompletedAmount => _completedAmount;
-        
+
         public LiveData<bool> IsCompleted => _isCompleted;
         public LiveData<int[]> QuestIds => _questIds;
 
@@ -40,7 +40,7 @@ namespace Sources.Client.Domain.Progresses
         {
             if (_quests.Remove(quest))
                 quest.IsCompleted.Unobserve(OnQuestCompleted);
-            
+
             _questIds.Value = _quests.Select(quest => quest.Id).ToArray();
         }
 

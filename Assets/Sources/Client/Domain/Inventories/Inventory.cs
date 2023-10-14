@@ -7,7 +7,7 @@ using Utils.LiveDatas.Sources.Frameworks.LiveDatas;
 
 namespace Sources.Client.Domain.Inventories
 {
-    public class Inventory : Composite, IEntity, IComponent, IEnumerable<InventorySlot>
+    public class Inventory : Composite, IEntity, IComponent, IEnumerable<InventorySlot>, IEntityType
     {
         private readonly List<InventorySlot> _slots = new List<InventorySlot>();
         private readonly MutableLiveData<int[]> _ids = new MutableLiveData<int[]>(new int[] { });
@@ -15,6 +15,7 @@ namespace Sources.Client.Domain.Inventories
         public Inventory(int id) =>
             Id = id;
 
+        public IEntityType EntityType => this;
         public int Id { get; }
         public int Capacity => _slots.Count;
         public int Count => _slots.Count(slot => slot.Item is not null);

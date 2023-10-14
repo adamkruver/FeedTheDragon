@@ -28,6 +28,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.NPCs
         public IViewModel Create(int id) =>
             new OgreViewModel(new[]
             {
+                new EntityIdViewModelComponent(id),
                 _visibilityViewModelComponentFactory.Create(id),
                 _positionViewModelComponentFactory.Create(id),
                 _questObserverViewModelComponentFactory.Create(id),
