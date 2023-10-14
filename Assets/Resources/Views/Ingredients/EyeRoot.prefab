@@ -983,6 +983,7 @@ GameObject:
   - component: {fileID: 8174576871671470578}
   - component: {fileID: 4333557018867193321}
   - component: {fileID: 950939970358693574}
+  - component: {fileID: 699740354679323259}
   m_Layer: 7
   m_Name: EyeRoot
   m_TagString: Untagged
@@ -1079,6 +1080,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa3a1490c9a14dfeb49aefb0566c12a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &699740354679323259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8304425827730237573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d361a2522c9c4bf7826d2bf7aad379cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8749492646101350086

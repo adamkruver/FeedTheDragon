@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 217797152322929094}
   - component: {fileID: 5645200730096405981}
   - component: {fileID: 9171090107953157874}
+  - component: {fileID: 2006465676389463167}
   m_Layer: 7
   m_Name: DualTongue
   m_TagString: Untagged
@@ -111,6 +112,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa3a1490c9a14dfeb49aefb0566c12a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2006465676389463167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93190530403823793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d361a2522c9c4bf7826d2bf7aad379cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &799488121423376114

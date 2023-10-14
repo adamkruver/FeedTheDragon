@@ -12,6 +12,7 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Progresses.Components;
 using Sources.Client.Infrastructure.Factories.Presentation.Cameras;
 using Sources.Client.Infrastructure.Factories.Presentation.Views;
+using Sources.Client.Infrastructure.Factories.Services.AudioPlayers;
 using Sources.Client.Infrastructure.Factories.Services.CoroutineRunners;
 using Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Factories.StateMachines;
@@ -80,6 +81,8 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
             CameraProvider cameraProvider = cameraProviderFactory.Create();
             CameraService cameraService = new CameraService(cameraProvider);
 
+            AudioPlayerServiceFactory audioPlayerServiceFactory = new AudioPlayerServiceFactory(_environment);
+            
             #region Services
 
             GameUpdateService gameUpdateService = new GameUpdateService();
@@ -135,7 +138,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
 
             CharacterSignalControllerFactory characterSignalControllerFactory =
                 new CharacterSignalControllerFactory(currentPlayerService, _signalBus, cameraFollowService,
-                    _bindableViewFactory, _environment, entityRepository, idGenerator);
+                    _bindableViewFactory, _environment, entityRepository, audioPlayerServiceFactory, idGenerator);
 
             IngredientSignalControllerFactory ingredientSignalControllerFactory =
                 new IngredientSignalControllerFactory(entityRepository, _environment, _bindableViewFactory,

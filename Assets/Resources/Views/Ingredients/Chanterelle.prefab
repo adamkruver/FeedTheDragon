@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 397543283712597017}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Models
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 148305425254952242}
   - component: {fileID: 3864433086323925655}
   - component: {fileID: 1316685116642842205}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 6261313484042475238}
   - component: {fileID: 4879440491627621342}
   - component: {fileID: 2716753912195513148}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Cantharellaceae_big (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,7 +516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7386608391157570227}
   - component: {fileID: 2502426936522534434}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Cantharellaceae
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 2292482931011249402}
   - component: {fileID: 2918141798144371551}
   - component: {fileID: 1124674813735837589}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Cantharellaceae_big
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -650,7 +650,7 @@ GameObject:
   - component: {fileID: 6942262520636472174}
   - component: {fileID: 7942335534312416067}
   - component: {fileID: 5753866986854155540}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Cantharellaceae_big (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -835,7 +835,8 @@ GameObject:
   - component: {fileID: 3123893587926445495}
   - component: {fileID: 7352198780841173420}
   - component: {fileID: 6276267652232034947}
-  m_Layer: 5
+  - component: {fileID: 5743180635903581074}
+  m_Layer: 7
   m_Name: Chanterelle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -933,6 +934,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3a1490c9a14dfeb49aefb0566c12a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5743180635903581074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2960164280702557376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d361a2522c9c4bf7826d2bf7aad379cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3014738329214701345
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +957,7 @@ GameObject:
   - component: {fileID: 1820876322095918254}
   - component: {fileID: 845959991947514800}
   - component: {fileID: 6892632598388251794}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Cantharellaceae_big (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

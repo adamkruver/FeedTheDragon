@@ -1,4 +1,5 @@
 ﻿using PresentationInterfaces.Frameworks.Mvvm.ViewModels;
+using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredients.Components;
 

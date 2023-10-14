@@ -8,6 +8,7 @@ using Sources.Client.Infrastructure.Builders.Presentation.BindableViews;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
+using Sources.Client.Infrastructure.Factories.Services.AudioPlayers;
 using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.Repositories;
@@ -30,11 +31,18 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
         private readonly IBindableViewFactory _bindableViewFactory;
         private readonly Environment _environment;
         private readonly IEntityRepository _entityRepository;
+        private readonly AudioPlayerServiceFactory _audioPlayerServiceFactory;
         private readonly IIdGenerator _idGenerator;
 
-        public CharacterSignalControllerFactory(CurrentPlayerService currentPlayerService, ISignalBus signalBus,
-            CameraFollowService cameraFollowService, IBindableViewFactory bindableViewFactory, Environment environment,
-            IEntityRepository entityRepository, IIdGenerator idGenerator)
+        public CharacterSignalControllerFactory(
+            CurrentPlayerService currentPlayerService,
+            ISignalBus signalBus,
+            CameraFollowService cameraFollowService,
+            IBindableViewFactory bindableViewFactory,
+            Environment environment,
+            IEntityRepository entityRepository,
+            AudioPlayerServiceFactory audioPlayerServiceFactory,
+            IIdGenerator idGenerator)
         {
             _currentPlayerService = currentPlayerService;
             _signalBus = signalBus;
@@ -42,6 +50,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             _bindableViewFactory = bindableViewFactory;
             _environment = environment;
             _entityRepository = entityRepository;
+            _audioPlayerServiceFactory = audioPlayerServiceFactory;
             _idGenerator = idGenerator;
         }
 
@@ -68,12 +77,20 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             CharacterControllerMovementViewModelComponentFactory characterControllerMovementViewModelComponentFactory =
                 new CharacterControllerMovementViewModelComponentFactory(_entityRepository);
 
+            FirstContactViewModelComponentFactory firstContactViewModelComponentFactory =
+                new FirstContactViewModelComponentFactory(_entityRepository, _audioPlayerServiceFactory, _environment);
+
+            ScopeViewModelComponentFactory scopeViewModelComponentFactory =
+                new ScopeViewModelComponentFactory(_entityRepository);
+
             CharacterViewModelFactory characterViewModelFactory = new CharacterViewModelFactory(
                 visibilityViewModelComponentFactory,
                 animationSpeedViewModelComponentFactory,
                 lookDirectionViewModelComponentFactory,
                 characterControllerMovementViewModelComponentFactory,
-                ingredientInteractorViewModelComponentFactory
+                ingredientInteractorViewModelComponentFactory,
+                firstContactViewModelComponentFactory,
+                scopeViewModelComponentFactory
             );
 
             BindableViewBuilder<CharacterViewModel> characterViewBuilder = new BindableViewBuilder<CharacterViewModel>(

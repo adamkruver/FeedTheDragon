@@ -35,6 +35,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Ingredi
         private IViewModelComponent[] CreateBaseComponents(int id) =>
             new IViewModelComponent[]
             {
+                new EntityIdViewModelComponent(id),
                 _visibilityViewModelComponentFactory.Create(id),
                 _positionViewModelComponentFactory.Create(id),
                 _ingredientClickViewModelComponentFactory.Create(id),

@@ -21,5 +21,14 @@
     "Fish7": "Views/Fishes/Fish07",
     "Fish8": "Views/Fishes/Fish08",
     "RuneFish1": "Views/Fishes/RuneFish01"
+  },
+  "AudioPlayers": {
+    "CharacterAudioPlayer": "AudioPlayers/CharacterAudioPlayer"
+  },
+  "AudioClips": {
+    "FirstContacts": {
+      "ToxicFrog": "AudioClips/FirstContacts/FirstContactWithToxicFrog",
+      "Chanterelle" : "AudioClips/FirstContacts/FirstContactWithChanterelle"
+    }
   }
 }

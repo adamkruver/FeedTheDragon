@@ -15,6 +15,7 @@ namespace Sources.Client.Infrastructure.Factories.Domain.Characters
             character.AddComponent(new LookDirectionComponent(Vector3.zero));
             character.AddComponent(new PositionComponent(spawnInfo.Position));
             character.AddComponent(new SpeedComponent(10f)); //TODO: Move values into Config
+            character.AddComponent(new FirstContactComponent());
             
             return character;
         }

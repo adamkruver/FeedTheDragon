@@ -6,14 +6,11 @@ namespace Sources.Client.Presentation.UI
     public class PinToRectTransformPosition : MonoBehaviour
     {
         [SerializeField] private RectTransform _pinPoint;
-        [SerializeField] private Camera _camera;
         [SerializeField] private TextMeshProUGUI _textMeshPro;
-        
         [SerializeField] private float _fontSize = 24;
 
         private readonly float _preferredScreenHeight = 1080; 
-         
-        private readonly Vector3[] _worldCorners = new Vector3[4];
+        private readonly Vector3[] _screenCorners = new Vector3[4];
 
         private RectTransform _rectTransform;
 
@@ -28,9 +25,9 @@ namespace Sources.Client.Presentation.UI
 
         private Vector3 GetScreenPosition(RectTransform uiElement)
         {
-            uiElement.GetWorldCorners(_worldCorners);
+            uiElement.GetWorldCorners(_screenCorners);
 
-            return _worldCorners[0];
+            return _screenCorners[0];
         }
     }
 }

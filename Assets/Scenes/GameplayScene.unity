@@ -1411,7 +1411,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pinPoint: {fileID: 1878547649}
-  _camera: {fileID: 963194227}
   _textMeshPro: {fileID: 286772616}
   _fontSize: 36
 --- !u!114 &24112517
@@ -10649,7 +10648,10 @@ MonoBehaviour:
     \u043f\u044b\u0442\u0430\u0435\u0442\u0441\u044f \n\u0441\u0436\u0435\u0447\u044c
     \u043d\u0430\u0448 \u0437\u0430\u043c\u043e\u043a..","_audio":6},"_actorName":"Ogre","_actorParameterID":"d52e8718-4c8c-4514-9a44-d7cb2c3addc9","_position":{"x":389.4874,"y":799.6247},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"7"},{"statement":{"_text":"\u0414\u0443\u043c\u0430\u044e
     \u043d\u0443\u0436\u043d\u043e \n\u0441\u0432\u0430\u0440\u0438\u0442\u044c \u0435\u043c\u0443
-    \n\u0441\u043d\u043e\u0442\u0432\u043e\u0440\u043d\u043e\u0435 \u0437\u0435\u043b\u044c\u0435..","_audio":7},"_actorName":"Ogre","_actorParameterID":"d52e8718-4c8c-4514-9a44-d7cb2c3addc9","_position":{"x":401.4161,"y":905.6247},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"8"},{"_action":{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"OgreSpeech","_targetVariableID":"49cac6c8-d949-47b9-9325-c3b534eb595a"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},"_actorName":"Ogre","_actorParameterID":"d52e8718-4c8c-4514-9a44-d7cb2c3addc9","_position":{"x":372.708,"y":1207.098},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"9"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"Ogre","_id":"d52e8718-4c8c-4514-9a44-d7cb2c3addc9","_actorObject":8}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+    \n\u0441\u043d\u043e\u0442\u0432\u043e\u0440\u043d\u043e\u0435 \u0437\u0435\u043b\u044c\u0435..","_audio":7},"_actorName":"Ogre","_actorParameterID":"d52e8718-4c8c-4514-9a44-d7cb2c3addc9","_position":{"x":401.4161,"y":905.6247},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"8"},{"statement":{"_text":"\u0414\u043e\u0440\u0430\u043a\u043e\u043d
+    \u043d\u0435 \u0443\u0441\u043f\u0435\u0435\u0442 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0438\u0442\u044c
+    \u0437\u0430\u043c\u043e\u043a, \u044f \u0443\u0441\u043f\u0435\u044e \u0441\u043e\u0431\u0440\u0430\u0442\u044c
+    \u0438\u043d\u0433\u0440\u0435\u0434\u0438\u0435\u043d\u0442\u044b","_audio":8},"_position":{"x":356.9993,"y":1075.998},"$type":"NodeCanvas.DialogueTrees.StatementNode","$id":"9"},{"_action":{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"OgreSpeech","_targetVariableID":"49cac6c8-d949-47b9-9325-c3b534eb595a"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},"_actorName":"Ogre","_actorParameterID":"d52e8718-4c8c-4514-9a44-d7cb2c3addc9","_position":{"x":372.708,"y":1207.098},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"10"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"9"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"Ogre","_id":"d52e8718-4c8c-4514-9a44-d7cb2c3addc9","_actorObject":9}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
   - {fileID: 8300000, guid: 47fd2c4872c84ad4fbac0fe00ec52653, type: 3}
@@ -10659,12 +10661,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e17f2071947e5334aabdfca3104a8014, type: 3}
   - {fileID: 8300000, guid: f3665b7515caf9f46aae85c53cdce0cf, type: 3}
   - {fileID: 8300000, guid: 7b030c7d034769e48bb0e1696cc44850, type: 3}
+  - {fileID: 8300000, guid: 1a1c71b3662a597448180afce63cb2d0, type: 3}
   - {fileID: 2011036797}
   _boundGraphSource:
     _version: 3.25
     _category: 
     _comments: 
-    _translation: {x: 61, y: 177}
+    _translation: {x: -2, y: -675}
     _zoomFactor: 1
   _firstActivation: 0
   _enableAction: 1
@@ -20566,7 +20569,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
