@@ -18,6 +18,7 @@ using Sources.Client.Infrastructure.Factories.Services.Pointers.Handlers;
 using Sources.Client.Infrastructure.Factories.StateMachines;
 using Sources.Client.Infrastructure.Providers;
 using Sources.Client.Infrastructure.Repositories;
+using Sources.Client.Infrastructure.Services.AudioPlayers;
 using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.Infrastructure.Services.GameUpdate;
@@ -82,6 +83,8 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
             CameraService cameraService = new CameraService(cameraProvider);
 
             AudioPlayerServiceFactory audioPlayerServiceFactory = new AudioPlayerServiceFactory(_environment);
+
+            AudioPlayerService audioPlayerService = audioPlayerServiceFactory.Create();
             
             #region Services
 
@@ -138,7 +141,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
 
             CharacterSignalControllerFactory characterSignalControllerFactory =
                 new CharacterSignalControllerFactory(currentPlayerService, _signalBus, cameraFollowService,
-                    _bindableViewFactory, _environment, entityRepository, audioPlayerServiceFactory, idGenerator);
+                    _bindableViewFactory, _environment, entityRepository, audioPlayerService, idGenerator);
 
             IngredientSignalControllerFactory ingredientSignalControllerFactory =
                 new IngredientSignalControllerFactory(entityRepository, _environment, _bindableViewFactory,
@@ -205,6 +208,7 @@ namespace Sources.Client.Infrastructure.Builders.Scenes
                     questSignalControllerFactory.Create(availableIngredientTypes),
                     missionSignalControllerFactory.Create()
                 },
+                audioPlayerService,
                 gameUpdateService,
                 gameplayStateMachineFactory);
         }

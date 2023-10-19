@@ -9,10 +9,10 @@ namespace Sources.Client.Domain.Progresses
 {
     public class Mission : Composite, IEntity, IComponent, IEntityType
     {
-        private List<Quest> _quests = new List<Quest>();
-        private MutableLiveData<int> _completedAmount = new MutableLiveData<int>();
-        private MutableLiveData<bool> _isCompleted = new MutableLiveData<bool>();
-        private MutableLiveData<int[]> _questIds = new MutableLiveData<int[]>(Array.Empty<int>());
+        private readonly List<Quest> _quests = new List<Quest>();
+        private readonly MutableLiveData<int> _completedAmount = new MutableLiveData<int>();
+        private readonly MutableLiveData<bool> _isCompleted = new MutableLiveData<bool>();
+        private readonly MutableLiveData<int[]> _questIds = new MutableLiveData<int[]>(Array.Empty<int>());
 
         public Mission(int id, int requiredAmount)
         {

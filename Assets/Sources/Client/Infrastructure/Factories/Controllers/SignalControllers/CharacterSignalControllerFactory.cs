@@ -9,6 +9,7 @@ using Sources.Client.Infrastructure.Factories.Controllers.ViewModels;
 using Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Factories.Domain.Characters;
 using Sources.Client.Infrastructure.Factories.Services.AudioPlayers;
+using Sources.Client.Infrastructure.Services.AudioPlayers;
 using Sources.Client.Infrastructure.Services.Cameras;
 using Sources.Client.Infrastructure.Services.CurrentPlayer;
 using Sources.Client.InfrastructureInterfaces.Repositories;
@@ -31,7 +32,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
         private readonly IBindableViewFactory _bindableViewFactory;
         private readonly Environment _environment;
         private readonly IEntityRepository _entityRepository;
-        private readonly AudioPlayerServiceFactory _audioPlayerServiceFactory;
+        private readonly AudioPlayerService _audioPlayerService;
         private readonly IIdGenerator _idGenerator;
 
         public CharacterSignalControllerFactory(
@@ -41,7 +42,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             IBindableViewFactory bindableViewFactory,
             Environment environment,
             IEntityRepository entityRepository,
-            AudioPlayerServiceFactory audioPlayerServiceFactory,
+            AudioPlayerService audioPlayerService,
             IIdGenerator idGenerator)
         {
             _currentPlayerService = currentPlayerService;
@@ -50,7 +51,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
             _bindableViewFactory = bindableViewFactory;
             _environment = environment;
             _entityRepository = entityRepository;
-            _audioPlayerServiceFactory = audioPlayerServiceFactory;
+            _audioPlayerService = audioPlayerService;
             _idGenerator = idGenerator;
         }
 
@@ -78,7 +79,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.SignalControllers
                 new CharacterControllerMovementViewModelComponentFactory(_entityRepository);
 
             FirstContactViewModelComponentFactory firstContactViewModelComponentFactory =
-                new FirstContactViewModelComponentFactory(_entityRepository, _audioPlayerServiceFactory, _environment);
+                new FirstContactViewModelComponentFactory(_entityRepository, _audioPlayerService, _environment);
 
             ScopeViewModelComponentFactory scopeViewModelComponentFactory =
                 new ScopeViewModelComponentFactory(_entityRepository);

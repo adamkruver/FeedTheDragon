@@ -8,6 +8,7 @@ using Sources.Client.Domain.NPCs.Bears;
 using Sources.Client.Domain.NPCs.Dragons;
 using Sources.Client.Domain.NPCs.Ogres;
 using Sources.Client.Infrastructure.Factories.StateMachines;
+using Sources.Client.Infrastructure.Services.AudioPlayers;
 using Sources.Client.Infrastructure.Services.GameUpdate;
 using Sources.Client.Infrastructure.Services.Spawn;
 using Sources.Client.Infrastructure.StateMachines;
@@ -26,6 +27,7 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
         private readonly ISignalBus _signalBus;
         private readonly ISignalHandlerRegisterer _signalHandler;
         private readonly ISignalController[] _signalControllers;
+        private readonly AudioPlayerService _audioPlayerService;
 
         private readonly SpawnService<IIngredientType, ChanterelleSpawnPoint> _mushroomSpawnService;
         private readonly SpawnService<IIngredientType, ToxicFrogSpawnPoint> _frogSpawnService;
@@ -46,12 +48,14 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
             ISignalBus signalBus,
             ISignalHandlerRegisterer signalHandler,
             ISignalController[] signalControllers,
+            AudioPlayerService audioPlayerService,
             GameUpdateService gameUpdateService,
             GameplayStateMachineFactory gameplayStateMachineFactory)
         {
             _signalBus = signalBus;
             _signalHandler = signalHandler;
             _signalControllers = signalControllers;
+            _audioPlayerService = audioPlayerService;
             _gameUpdateService = gameUpdateService;
             _gameplayStateMachineFactory = gameplayStateMachineFactory;
 
@@ -83,6 +87,7 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
 
             _gameplayStateMachine = _gameplayStateMachineFactory.Create();
             _gameplayStateMachine.Run();
+            _audioPlayerService.Enable();
         }
 
         public void Update(float deltaTime)
@@ -113,6 +118,8 @@ namespace Sources.Client.Controllers.Scenes.Gameplay
 
         public void Exit()
         {
+            _audioPlayerService.Disable();
+            
             foreach (ISignalController signalController in _signalControllers)
                 _signalHandler.Unregister(signalController);
 

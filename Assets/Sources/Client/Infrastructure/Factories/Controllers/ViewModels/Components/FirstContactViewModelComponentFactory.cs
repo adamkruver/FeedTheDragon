@@ -1,7 +1,7 @@
 ﻿using Sources.Client.App.Configs;
 using Sources.Client.Controllers.ViewModels.Components;
 using Sources.Client.Infrastructure.Data.Providers;
-using Sources.Client.Infrastructure.Factories.Services.AudioPlayers;
+using Sources.Client.Infrastructure.Services.AudioPlayers;
 using Sources.Client.InfrastructureInterfaces.Repositories;
 using Sources.Client.UseCases.Common.Components.FirstContacts.Queries;
 
@@ -9,17 +9,17 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Compone
 {
     public class FirstContactViewModelComponentFactory
     {
-        private readonly AudioPlayerServiceFactory _audioPlayerServiceFactory;
+        private readonly AudioPlayerService _audioPlayerService;
         private readonly KnownTypeAudioClipProvider _knownTypeAudioClipProvider;
         private readonly GetLastKnownTypeQuery _getLaseKnownQuery;
 
         public FirstContactViewModelComponentFactory(
             IEntityRepository entityRepository,
-            AudioPlayerServiceFactory audioPlayerServiceFactory,
+            AudioPlayerService audioPlayerService,
             Environment environment
         )
         {
-            _audioPlayerServiceFactory = audioPlayerServiceFactory;
+            _audioPlayerService = audioPlayerService;
             _knownTypeAudioClipProvider = new KnownTypeAudioClipProvider(environment);
             _getLaseKnownQuery = new GetLastKnownTypeQuery(entityRepository);
         }
@@ -27,7 +27,7 @@ namespace Sources.Client.Infrastructure.Factories.Controllers.ViewModels.Compone
         public FirstContactViewModelComponent Create(int id) =>
             new FirstContactViewModelComponent(
                 id,
-                _audioPlayerServiceFactory.Create(),
+                _audioPlayerService,
                 _knownTypeAudioClipProvider,
                 _getLaseKnownQuery
             );
